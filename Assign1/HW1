@@ -1,0 +1,39 @@
+//KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H                            00010002
+//STEP1 EXEC PGM=ASSIST                                                 00020002
+//STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR                        00030002
+//SYSPRINT DD SYSOUT=*                                                  00040002
+//SYSIN DD *                                                            00050002
+****************************************************                    00060002
+* PROGRAM HOMEWORK 1 PART C                                             00070010
+*                                                                       00080002
+* NAME: EDUARDO LEANOS                                                  00090002
+*                                                                       00100002
+* REGISTER USAGE:                                                       00110002
+*                                                                       00120002
+* 1     NUM1                                                            00130009
+* 2     NUM2 STORE ADDITION                                             00140009
+*                                                                       00150000
+* 3    NUM1                                                             00160009
+* 4    NUM2 STORE DIFFERENCE                                            00170009
+*                                                                       00180000
+*******************************************************                 00190000
+MAIN     CSECT                                                          00200000
+         USING MAIN,15                                                  00210000
+         L     1,44(,15) LOAD NUM1 INTO REGISTER 1                      00220014
+         L     2,48(,15)      NUM2               2                      00230014
+         AR    2,1       ADD REG 1 TO REG 2                             00240014
+         ST    2,52(,15) STORE INTO SUM                                 00241014
+         L     3,44(,15) LOAD NUM1 INTO REGISTER 3                      00250014
+         L     4,48(,15)      NUM2               4                      00260015
+         SR    4,3       SUBTRACT REG 3 FROM REG 4                      00270014
+         ST    4,56(,15) STORE INTO DIFF                                00271014
+         XDUMP 52(,15),4 PRINT SUM                                      00280014
+         XDUMP 56(,15),4 PRINT DIFF                                     00281014
+         BR    14                                                       00290005
+NUM1     DC    F'67'     DECLARE NUM1                                   00300014
+NUM2     DC    F'203' DECLARE NUM2                                      00310014
+SUM      DS    F      DEFINE SUM AS FULLWORD                            00320014
+DIFF     DS    F      DEFINE SUM AS FULLWORD                            00321014
+         END   MAIN                                                     00322007
+/*                                                                      00330005
+//                                                                      00340005

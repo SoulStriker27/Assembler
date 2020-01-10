@@ -1,0 +1,121 @@
+//KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H
+//STEP1 EXEC PGM=ASSIST
+//STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR
+//SYSPRINT DD SYSOUT=*
+//SYSIN DD *
+***************************************************
+* ASSIGNMENT EXTRA CREDIT ASSIGNMENT A
+*
+* NAME: EDUARDO LEANOS
+*
+***************************************************
+*MAIN
+*
+*  REGISTER USAGE:
+*  REG1: EDMK
+*  REG2: EDMK
+*  REG3: B,E
+*  REG4: A,D
+*  REG5: MULTIPLYING
+*  REG6: C*B
+*  REG7: MULTIPLYING/RESULT
+*  REG8: FLIPING SIGNS/COMPARISON
+*  REG9: RESULT OF FLIP
+*  REG10: BUFFER
+***********************************
+MAIN     CSECT
+         USING MAIN,15
+         ST    14,EXIT              ENTRY LINKAGE
+         LA    13,SAVE
+*
+         XPRNT HEADER,45            PRINT HEADER
+LOOP     DS    0H                   LOOP LABEL
+         XREAD BUFFER,80            READ INTO BUFFER
+         BL    END                  IF END OF FILE, END
+         LA    10,BUFFER            LOAD BUFFER INTO REG10
+         PACK  NUM1D(8),0(6,10)     PACK 1ST NUM INTO NUM1D
+         PACK  NUM2D(8),8(6,10)     PACK 2ND NUM INTO NUM2D
+         CVB   5,NUM1D              CONVERT BINARY
+         CVB   3,NUM2D              CONVERT BINARY
+***<GET A>
+         LA    1,NUM1+5             LOAD ADDRESS OF A - SIGN
+         MVC   NUM1(6),=X'402020202120'
+         EDMK  NUM1(6),NUM1D+5      FORMAT A
+         LTR   5,5                  CHECK IF POSITIVE
+         BC    B'1011',SKIPB        BRANCH IF TRUE
+         S     1,=F'1'              REDUCE REG1 BY 1
+         MVI   0(1),C'-'            PUT IN NEGATIVE SIGN
+***<GET B>
+SKIPB    DS    0H                   LABEL B
+         LA    1,NUM2+5             LOAD ADDRESS OF B - SIGN
+         MVC   NUM2(6),=X'402020202120'
+         EDMK  NUM2(6),NUM2D+5      FORMAT B
+         LTR   3,3                  CHECK IF B IS POSITIVE
+         BC    B'1011',SKIPC        BRANCH IF TRUE
+         S     1,=F'1'              REDUCE REG BY 1
+         MVI   0(1),C'-'            PUT IN NEGATIVE SIGN
+***<GET C>
+SKIPC    DS    0H                   LABEL C
+         M     4,=F'1'              SET UP REG4 FOR DIVISION
+         DR    4,3                  DIVIVE A BY B
+***<GET RESULT>
+         LR    7,5                  LOAD QUOTIENT INTO R7
+         MR    6,3                  MULTIPLY C * B
+***<GET E>
+         LTR   3,3                 CHECK B IF POSITIVE
+         BC    B'0010',SKIPD       SKIP IF TRUE, IS NOW E
+         LR    9,3                 LOAD B INTO R9
+         M     8,=F'-1'            MAKE POSITIVE
+         LR    3,9                 MOVE B BACK INTO REG3, TURNS INTO E
+***<GET D>
+SKIPD    DS    0H
+         LTR   5,4                 PUT REMAINDER INTO 5 - D
+         BC    B'0010',SKIPD2      CHECK POSITIVE, SKIP IF TRUE
+         LR    9,5                 LOAD D INTO R9
+         M     8,=F'-1'            MAKE POSITIVE
+         LR    5,9                 MOVE B BACK INTO REG3
+***<GET D*2>
+SKIPD2   M     4,=F'2'              MULTIPLY D * 2
+***<IF - OUT>
+         CR    5,3                  COMPARE D AND E
+         BC    B'0100',PRINT        IF D < E, PRINT
+***<IF - IN>
+         CVB   8,NUM1D              CONVERT A TO BINARY
+         LTR   8,8                  CHECK IF NEGATIVE
+         BC    B'0100',ELSE         BRANCH IF NOT
+         AR    7,3                  ADD E TO RESULT
+         B     PRINT                BRANCH TO PRINT
+***<ELSE - IN>
+ELSE     DS    0H
+         SR    7,3                  SUBTRACT E FROM RESULT
+***<END IN/IN>
+***<END IF/OUT - PRINT>
+PRINT    DS    0H                   PRINT LABEL
+         CVD   7,NUM1D              CONVERT TO DECIMAL
+         LA    1,RESULT+5           SET POINTER
+         MVC   RESULT(6),=X'402020202120'
+         EDMK  RESULT(6),NUM1D+5    FORMAT RESULT
+         XPRNT LINE,41              PRINT LINE
+         B     LOOP                 BRANCH LOOP
+END      DS    0H                   END IF END OF FILE
+*
+         L     14,EXIT              LOAD EXIT
+         BR    14                   END PROGRAM
+         LTORG
+BUFFER   DS    80C
+LINE     DC    CL1'0'
+         DC    CL2' '
+NUM1     DS    6C
+         DC    CL10'          '
+NUM2     DS    6C
+         DC    CL10'          '
+RESULT   DS    6C
+HEADER   DC    CL45'1First Number   Second Number   Rounded Value'
+NUM1D    DS    D
+NUM2D    DS    D
+SAVE     DS    18F'0'
+EXIT     DS    F
+         END   MAIN
+/*
+//FT05F001  DD  DSN=KC02314.AUTUMN19.CSCI360.HWEXDATA,DISP=SHR
+//

@@ -1,0 +1,105 @@
+//KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H                            00010000
+//STEP1 EXEC PGM=ASSIST                                                 00020000
+//STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR                        00030000
+//SYSPRINT DD SYSOUT=*                                                  00040000
+//SYSIN DD *                                                            00050000
+****************************************************                    00060000
+* PROGRAM HOMEWORK 2                                                    00070000
+*                                                                       00080000
+* NAME: EDUARDO LEANOS                                                  00090000
+*                                                                       00100000
+* REGISTER USAGE:                                                       00110000
+*                                                                       00120000
+* REGISTER 1:  UNUSED/BUFFER FOR XDECI                                  00130005
+* REGISTER 2:  COUNTER/NUMBER OF LINES                                  00140034
+* REGISTER 3:  VARIABLE STORAGE FOR XDECO                               00150034
+* REGISTER 5:  SUM OF THE LINE / SUMLINE                                00170034
+* REGISTER 6:  BUFFER FOR XSTUFF                                        00180045
+* REGISTER 7:  SUM OF ALL PRODUCTS / SUMALL                             00180134
+* REGISTER 15: BASE REGISTER          W - X - Y + Z                     00181045
+*******************************************************                 00190000
+MAIN     CSECT                                                          00200000
+         USING MAIN,15                                                  00240001
+         SR    2,2              INITIALIZE R2 WITH COUNTER=0            00241021
+         SR    5,5              INIT R5 WITH SUM=0                      00322021
+         SR    7,7              INIT R7 WITH SUM=0                      00323031
+LOOP     DS    0H               LOOP START                              00330010
+         XREAD BUFFER,80        READ LINE UP TO 28 CHARACTERS           00330120
+         BC    B'0100',LOOPEND  BREAK IF END OF FILE                    00330220
+*                                                                       00330321
+         XDECI 3,BUFFER         DECIPHER LINE AND STORE IN REG 3        00331010
+         AR    5,3              ADD REG 3 TO REG 5                      00331220
+         XDECO 3,WVAR           PUT REG 3 VAR INTO WVAR FOR XDECO       00331340
+*                                                                       00331425
+         XDECI 3,0(1)           DECIPHER REG 1 AND STORE IN REG 3       00331521
+         SR    5,3              SUB REG 3 FROM REG 5                    00331621
+         XDECO 3,XVAR           PUT REG 3 VAR INTO XVAR FOR XDECO       00331734
+*                                                                       00331822
+         XDECI 3,0(1)           DECHIPER REG 1 AND STORE IN REG 3       00331921
+         SR    5,3              SUB REG 3 FROM REG 5                    00332021
+         XDECO 3,YVAR           PUT REG 3 VAR INTO YVAR FOR XDECO       00332134
+*                                                                       00332222
+         XDECI 3,0(1)           DECHIPER REG 1 AND STORE IN REG 3       00332321
+         AR    5,3              ADD REG 3 TO REG 5                      00332421
+         XDECO 3,ZVAR           PUT REG 3 VAR INTO ZVAR FOR XDECO       00332534
+*                                                                       00332621
+         XDECO 5,SUMLINE        PUT REG 5 VAR INTO SUMLINE FOR XDECO    00332734
+         AR    7,5              ADD REG 5 TO REG 7                      00332834
+         A     2,=F'1'          ADD 1 TO REG 2                          00332934
+         XPRNT LINE,103         PRINT FROM LINE TO 103 BYTES            00333044
+         L     5,=F'0'          RESET 5 TO 0                            00333134
+         BC    B'1111',LOOP     GO BACK TO TOP OF LOOP                  00333234
+LOOPEND  DS    0H               DECLARE LOOPEND                         00333334
+         XDECO 2,COUNTER        PUT REG 2 INTO COUNTER FOR XDECO        00333534
+         XDECO 7,SUMALL         PUT REG 7 INTO SUMALL FOR XDECO         00333634
+         XPRNT FOOTER,66        PRINT FOOTER TO 66 BYTES                00333739
+         BR    14               BREAK PROGRAM                           00333834
+         LTORG                  LITERAL DECLARATIONS                    00333934
+LINE     DC    C' '             LINE DECLARATION                        00334034
+         DC    CL3'W ='                                                 00334140
+WVAR     DS    CL10             WVAR DECLARATION                        00334240
+         DC    C' '                                                     00334340
+         DC    CL3'X ='                                                 00334440
+XVAR     DS    CL10             XVAR DECLARATION                        00334534
+         DC    CL6' '                                                   00334624
+         DC    CL3'Y ='                                                 00334721
+YVAR     DS    CL10             YVAR DECLARATION                        00334834
+         DC    CL6' '                                                   00334924
+         DC    CL3'Z ='                                                 00335029
+ZVAR     DS    CL10             ZVAR DECLARATION                        00335134
+         DC    CL6' '                                                   00335224
+         DC    CL18'THE RESULT IS ='                                    00335321
+SUMLINE  DS    CL12             SUMLINE DECLARATION                     00335434
+FOOTER   DC    C' '             FOOTER DECLARATION                      00335534
+         DC    CL16'NUMBER OF LINES'                                    00335622
+COUNTER  DS    CL12                   COUNTER DECLARATION               00335734
+         DC    CL8' '                                                   00335822
+         DC    CL16'SUM OF RESULTS ='                                   00335922
+SUMALL   DS    CL12                   SUMALL DECLARATION                00336034
+BUFFER   DS    CL80                   BUFFER DECLARATION                00336134
+         END   MAIN                   END OF MAIN                       00337034
+/*                                                                   00300340002
+//FT05F001   DD  *                                                      00350003
+     0      0      0      0                                             00360003
+    10    -10     10    -10                                             00370003
+   500    230      9     58                                             00380003
+   516    853      0     17                                             00390003
+   020      0    245    316                                             00400003
+   529    977    681      0                                             00410003
+   013    250     85    831                                             00420003
+     0    364    275      0                                             00430003
+   887    100    293    993                                             00440003
+   200     80     20     50                                             00450003
+   -30     -6     12     15                                             00460003
+   234    447    591     13                                             00470003
+   -89     -7     23    104                                             00480003
+   001    002    003    004                                             00490003
+   008    007    006    005                                             00500003
+   999    998    997    996                                             00510003
+   005    005    005    005                                             00520003
+   006    001    002    004                                             00530003
+     0     +7      2    -45                                             00540003
+   100    088    035     10                                             00550003
+/*                                                                      00560003
+//FT06F001   DD SYSOUT=*                                                00570003
+//                                                                      00580003

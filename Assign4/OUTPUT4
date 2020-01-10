@@ -1,0 +1,275 @@
+1                   J E S 2  J O B  L O G  --  S Y S T E M  2 9 6 4  --  N O D E  S V S C J E S 2        
+0 
+ 19.35.28 JOB08074 ---- FRIDAY,    11 OCT 2019 ----
+ 19.35.28 JOB08074  IRR010I  USERID KC03E3E  IS ASSIGNED TO THIS JOB.
+ 19.35.28 JOB08074  ICH70001I KC03E3E  LAST ACCESS AT 19:17:23 ON FRIDAY, OCTOBER 11, 2019
+ 19.35.28 JOB08074  $HASP373 KC03E3EA STARTED - INIT 2    - CLASS A        - SYS 2964
+ 19.35.29 JOB08074  -                                      -----TIMINGS (MINS.)------                          -----PAGING COUNTS-
+ 19.35.29 JOB08074  -STEPNAME PROCSTEP    RC   EXCP   CONN       TCB       SRB  CLOCK          SERV  WORKLOAD  PAGE  SWAP   VIO SW
+ 19.35.29 JOB08074  -STEP1                00     55      5       .00       .00     .0             9  BATCH        0     0     0   
+ 19.35.29 JOB08074  -KC03E3EA ENDED.  NAME-EDUARDO LEANOS       TOTAL TCB CPU TIME=      .00 TOTAL ELAPSED TIME=    .0
+ 19.35.29 JOB08074  $HASP395 KC03E3EA ENDED - RC=0000
+0------ JES2 JOB STATISTICS ------
+-  11 OCT 2019 JOB EXECUTION DATE
+-          181 CARDS READ
+-          279 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-           30 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H                            JOB08074
+         2 //STEP1 EXEC PGM=ASSIST                                                 00020000
+         3 //STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR                        00030000
+         4 //SYSPRINT DD SYSOUT=*                                                  00040000
+         5 //SYSIN DD *                                                            00050000
+         6 //FT05F001 DD DSN=KC02314.AUTUMN19.CSCI360.HW4DATA,DISP=SHR             00570000
+ ICH70001I KC03E3E  LAST ACCESS AT 19:17:23 ON FRIDAY, OCTOBER 11, 2019
+ IEFA111I KC03E3EA IS USING THE FOLLOWING JOB RELATED SETTINGS:
+          SWA=ABOVE,TIOT SIZE=32K,DSENQSHR=DISALLOW,GDGBIAS=JOB
+ IEF236I ALLOC. FOR KC03E3EA STEP1
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IGD103I SMS ALLOCATED TO DDNAME FT05F001
+ IEF142I KC03E3EA STEP1 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC02293.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03E3E.KC03E3EA.JOB08074.D0000102.?         SYSOUT        
+ IEF285I   KC03E3E.KC03E3EA.JOB08074.D0000101.?         SYSIN         
+ IGD104I KC02314.AUTUMN19.CSCI360.HW4DATA             RETAINED,  DDNAME=FT05F001
+ IEF373I STEP/STEP1   /START 2019284.1935
+ IEF032I STEP/STEP1   /STOP  2019284.1935 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   248K  EXT:        0K  SYS:    11876K
+         ATB- REAL:                  4116K  SLOTS:                     0K
+              VIRT- ALLOC:      11M SHRD:       0M
+ IEF375I  JOB/KC03E3EA/START 2019284.1935
+ IEF033I  JOB/KC03E3EA/STOP  2019284.1935 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0                                                                                                                                 
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 ****************************************************                    00060000         
+                                       2 * PROGRAM HOMEWORK 4                                                    00070000         
+                                       3 *                                                                       00080000         
+                                       4 * NAME: EDUARDO LEANOS                                                  00090000         
+                                       5 *                                                                       00100000         
+                                       6 * REGISTER USAGE:                                                       00110000         
+                                       7 *                                                                       00120000         
+                                       8 * REGISTER 1: XDECI                                                     00130000         
+                                       9 * REGISTER 12: PARAMETERS                                               00140001         
+                                      10 * REGISTER 13: SUBROUTINE                                               00180701         
+                                      11 * REGISTER 14: DONT USE                                                 00180800         
+                                      12 * REGISTER 15: BASE REGISTER                                            00181000         
+                                      13 ***************************                                             00190012         
+ 000000                               14 MAIN     CSECT                                                          00200000         
+ 000000                               15          USING MAIN,15                                                  00240000         
+1       EDUARDO, CSCI360, PROGRAM4                                                                              PAGE    2         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                                                                                                                  
+                                                                                                                                  
+                                                                                                                                  
+ 000000 41C0 F158            00158    19          LA    12,TABLE          LOAD ADDRESS OF TABLE TO REG2          00332701         
+ 000004 50C0 F25C            0025C    20          ST    12,PARAMS         STORE TABLE IN PARAMS                  00332801         
+ 000008 41C0 F25C            0025C    21          LA    12,EOT            LOAD ADDRESS OF EOT TO REG2            00332901         
+ 00000C 50C0 F260            00260    22          ST    12,PARAMS+4       STORE EOT IN PARAMS NEXT FULLWORD      00333001         
+ 000010 41C0 F25C            0025C    23          LA    12,PARAMS         LOAD PARAMS INTO REG 2                 00333101         
+ 000014 45D0 F022            00022    24          BAL   13,BUILD          BRANCH AND LINK TO BUILD TABLE         00333201         
+ 000018 45D0 F05A            0005A    25          BAL   13,PRINT          BRANCH AND LINK TO PRINT TABLE         00333342         
+ 00001C 45D0 F0C0            000C0    26          BAL   13,ODD            BRANCH AND LINK TO PRINT ODDS          00333453         
+ 000020 07FE                          27          BR    14                END PROGRAM                            00335314         
+                                                                                                                                  
+1       EDUARDO, CSCI360, PROGRAM4                                                                              PAGE    3         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                                                                                                                  
+                                                                                                                                  
+                                      30 *******************************************************                 00335800         
+                                      31 *  SUBROUTINE: BUILD                                                    00335900         
+                                      32 *  REGISTER USAGE:                                                      00336000         
+                                      33 *                                                                       00336100         
+                                      34 *  REG 1: XDECI                                                         00336200         
+                                      35 *  REG 2: COUNTER                                                       00336300         
+                                      36 *  REG 3: TABLE                                                         00336400         
+                                      37 *  REG 4: EOT                                                           00336500         
+                                      38 *  REG 5:                                                               00336607         
+                                      39 *  REG 12: PARAMS                                                       00336801         
+                                      40 *  REG 13: SUBROUTINE                                                   00336901         
+                                      41 *  REG 14: DO NOT USE                                                   00337001         
+                                      42 *  REG 15: BASE REGISTER                                                00337101         
+                                      43 *********************************                                       00337201         
+ 000022                               44 BUILD    DS    0H                  BUILD INTERNAL SUB                   00338076         
+ 000022 1B22                          45          SR    2,2                 RESET REG2 FOR COUNTER               00338176         
+ 000024 9834 C000            00000    46          LM    3,4,0(12)           LOAD MULTIPLE FROM PARAMS            00338276         
+ 000028 E000 F391 0050 00391          47 TOPLOOPB XREAD BUFFER,80           READ THE FILE                        00338476         
+ 00002E 4740 F056            00056    48          BC    B'0100',ENDB        BRANCH TO ENDB IF END OF FILE        00338576         
+ 000032 4110 F391            00391    49          LA    1,BUFFER            LOAD ADDRESS OF BUFFER TO REG1       00338676         
+ 000036 5350 1000            00000    50 INLOOPB  XDECI 5,0(0,1)            DECODE NUMBER AND PUT INTO REG5      00338776         
+ 00003A 4710 F028            00028    51          BC    B'0001',TOPLOOPB    BRANCH TO TOPLOOPB IF FAIL TO DECODE 00338876         
+ 00003E 5050 3000            00000    52          ST    5,0(0,3)            STORE NUMBER INTO TABLE              00339176         
+ 000042 4130 3004            00004    53          LA    3,4(0,3)            MOVE POINTER OF TABLE                00339276         
+ 000046 5A20 F140            00140    54          A     2,=F'1'             ADD TO COUNTER                       00339376         
+ 00004A 5920 F144            00144    55          C     2,=F'65'            CHECK IF THE 65 LIMIT IS REACHED     00339476         
+ 00004E 4780 F056            00056    56          BC    B'1000',ENDB        IF REACHED, GOTO ENDB                00339576         
+ 000052 47F0 F036            00036    57          B     INLOOPB             BRANCH BACK TO INLOOPB               00339876         
+ 000056                               58 ENDB     DS    0H                  ENDB LABEL                           00339976         
+ 000056 1843                          59          LR    4,3                 LOAD POINTER TO EOT TO REG4          00340076         
+ 000058 07FD                          60          BR    13                  BACK TO MAIN                         00340176         
+                                                                                                                                  
+1       EDUARDO, CSCI360, PROGRAM4                                                                              PAGE    4         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                                                                                                                  
+                                                                                                                                  
+                                      63 ********************************************************                00340400         
+                                      64 * SUBROUTINE: PRINT                                                     00340501         
+                                      65 * REGISTER USAGE:                                                       00340601         
+                                      66 *                                                                       00340701         
+                                      67 * REG 1: XDECI                                                          00340801         
+                                      68 * REG 2: COUNTER                                                        00340901         
+                                      69 * REG 3: TABLE                                                          00341001         
+                                      70 * REG 4: EOT                                                            00341101         
+                                      71 * REG 5: POINTER TO PLINE                                               00341201         
+                                      72 * REG 6: XDECO                                                          00341301         
+                                      73 * REG 12: PARAMS                                                        00341401         
+                                      74 * REG 13: SUBROUTINE                                                    00341501         
+                                      75 * REG 14: DO NOT USE                                                    00341601         
+                                      76 * REG 15: BASE REGISTER                                                 00341701         
+                                      77 *******************************                                         00341801         
+ 00005A                               78 PRINT    DS    0H                  PRINT SUBROUTINE                     00341976         
+ 00005A E020 F2CE 0002 002CE          79          XPRNT NEWPAGE,2           PRINT ON NEWPAGE                     00342076         
+ 000060 E020 F264 0032 00264          80          XPRNT HEADER,50           PRINT HEADER                         00342176         
+ 000066 E020 F2CF 0055 002CF          81          XPRNT EMPTYL,85           PRINT EMPTY LINE                     00342276         
+ 00006C E020 F2CF 0055 002CF          82          XPRNT EMPTYL,85           ''                                   00342376         
+ 000072 9834 C000            00000    83          LM    3,4,0(12)           LOAD MULTIPLE FROM PARAMS            00342476         
+ 000076                               84 TOPLOOPP DS    0H                  TOPLOOPP LABEL                       00342576         
+ 000076 1B22                          85          SR    2,2                 RESET REG2 FOR COUNTER               00342676         
+ 000078 4150 F33D            0033D    86          LA    5,PLINE+1           LOAD ADDRESS OF PLINE + 1            00342776         
+ 00007C 9240 F33D      0033D          87          MVI   PLINE+1,C' '        DESTRUCTIVE                          00342876         
+ 000080 D253 F33E F33D 0033E 0033D    88          MVC   PLINE+2(84),PLINE+1 OVERLAP                              00342976         
+ 000086                               89 INLOOPP  DS    0H                  INLOOPP LABEL                        00343076         
+ 000086 1934                          90          CR    3,4                 COMPARE TABLE POINTER TO EOT POINTER 00343176         
+ 000088 4780 F0B8            000B8    91          BC    B'1000',ENDP        IF THEY MATCH, GO TO ENDP            00343276         
+ 00008C 5A20 F140            00140    92          A     2,=F'1'             ADD 1 TO COUNTER                     00343376         
+ 000090 5860 3000            00000    93          L     6,0(0,3)            LOAD NUMBER IN TABLE TO REG6         00343476         
+ 000094 5260 F324            00324    94          XDECO 6,PTABLE            PUT NUMBER IN PTABLE                 00343576         
+ 000098 D20B 5000 F324 00000 00324    95          MVC   0(12,5),PTABLE      PLACE NUMBER IN PLINE                00343676         
+ 00009E 4150 500C            0000C    96          LA    5,12(0,5)           ADVANCE PLINE POINTER                00343776         
+ 0000A2 4130 3004            00004    97          LA    3,4(0,3)            ADVANCE TABLE POINTER                00343876         
+ 0000A6 5920 F148            00148    98          C     2,=F'6'             COMPARE COUNTER TO 6                 00343976         
+ 0000AA 4740 F086            00086    99          BC    B'0100',INLOOPP     IF NO REACHED, GOTO INLOOPP          00344076         
+ 0000AE E020 F33C 0050 0033C         100          XPRNT PLINE,80            PRINT PLINE                          00344176         
+ 0000B4 47F0 F076            00076   101          B     TOPLOOPP            GO TO TOPLOOPP AND MAKE NEW LINE     00344276         
+ 0000B8                              102 ENDP     DS    0H                  ENDP LABEL                           00344376         
+ 0000B8 E020 F33C 0055 0033C         103          XPRNT PLINE,85            PRINT LAST PLINE                     00344476         
+ 0000BE 07FD                         104          BR    13                  BACK TO MAIN                         00344576         
+                                                                                                                                  
+1       EDUARDO, CSCI360, PROGRAM4                                                                              PAGE    5         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                                                                                                                  
+                                                                                                                                  
+                                     107 ******************************************************                  00344801         
+                                     108 * SUBROUTINE: ODD NUMBER PRINT                                          00344953         
+                                     109 * REGISTER USAGE:                                                       00345053         
+                                     110 *                                                                       00345153         
+                                     111 * REG 1: XDECI                                                          00345253         
+                                     112 * REG 2: COUNTER                                                        00345353         
+                                     113 * REG 3: TABLE                                                          00345453         
+                                     114 * REG 4: EOT                                                            00345553         
+                                     115 * REG 5: POINTER TO PLINE                                               00345653         
+                                     116 * REG 6,7: MULTIPLICATION/DIVISION                                      00345758         
+                                     117 * REG 12: PARAMS                                                        00345853         
+                                     118 * REG 13: SUBROUTINE                                                    00345953         
+                                     119 * REG 14: DO NOT USE                                                    00346053         
+                                     120 * REG 15: BASE REGISTER                                                 00346153         
+                                     121 * ****************************                                          00346253         
+ 0000C0                              122 ODD      DS    0H                  ODD INTERNAL SUBROUTINE              00346376         
+ 0000C0 E020 F2CE 0002 002CE         123          XPRNT NEWPAGE,2           PRINT NEWPAGE                        00346476         
+ 0000C6 E020 F296 0037 00296         124          XPRNT HEADERO,55          PRINT ODD NUMBER HEADER              00346576         
+ 0000CC E020 F2CF 0055 002CF         125          XPRNT EMPTYL,85           PRINT EMPTY LINE                     00346676         
+ 0000D2 E020 F2CF 0055 002CF         126          XPRNT EMPTYL,85                                                00346769         
+ 0000D8 9834 C000            00000   127          LM    3,4,0(12)           LOAD MULTIPLE PARAMETERS             00346876         
+ 0000DC                              128 TOPLOOPO DS    0H                  TOPLOOPO LABEL                       00346976         
+ 0000DC 1B22                         129          SR    2,2                 RESET COUNTER                        00347076         
+ 0000DE 4150 F33D            0033D   130          LA    5,PLINE+1           LOAD ADDRESS OF PLINE+1 TO REG5      00347176         
+ 0000E2 9240 F33D      0033D         131          MVI   PLINE+1,C' '        DESTRUCTIVE                          00347276         
+ 0000E6 D253 F33E F33D 0033E 0033D   132          MVC   PLINE+2(84),PLINE+1 OVERLAP                              00347376         
+ 0000EC                              133 INLOOPO  DS    0H                  INLOOPO LABEL                        00347476         
+ 0000EC 1934                         134          CR    3,4                 COMPARE TABLE POINTER TO EOT POINTER 00347576         
+ 0000EE 4780 F132            00132   135          BC    B'1000',ENDO        IF EQUAL, GOTO ENDO                  00347676         
+ 0000F2 5870 3000            00000   136          L     7,0(0,3)            LOAD NUMBER INTO REG7 FROM TABLE     00347776         
+ 0000F6 5C60 F140            00140   137          M     6,=F'1'             MULITIPLY BY 1 FOR 64 BIT            00347876         
+ 0000FA 5D60 F14C            0014C   138          D     6,=F'2'             DIVIDE BY 2                          00347976         
+ 0000FE 5960 F150            00150   139          C     6,=F'0'             COMPARE REMAINDER WITH 0             00348076         
+ 000102 4780 F11C            0011C   140          BE    INENDO              IF THEY EQUAL, GOTO INENDO           00348176         
+ 000106 5A20 F140            00140   141          A     2,=F'1'             ADD 1 TO THE COUNTER                 00348276         
+ 00010A 5870 3000            00000   142          L     7,0(0,3)            LOAD NUMBER IN TABLE TO REG7         00348376         
+ 00010E 5270 F330            00330   143          XDECO 7,OTABLE            PUT NUMBER INTO OTABLE               00348476         
+ 000112 D20B 5000 F330 00000 00330   144          MVC   0(12,5),OTABLE      PUT OTABLE INTO PLINE                00348576         
+ 000118 4150 500C            0000C   145          LA    5,12(0,5)           ADVANCE PLINE POINTER                00348676         
+ 00011C 4130 3004            00004   146 INENDO   LA    3,4(0,3)            ADVANCE POINTER IN TABLE             00348776         
+ 000120 5920 F154            00154   147          C     2,=F'7'             COMPARE COUNTER TO 7                 00348876         
+ 000124 4740 F0EC            000EC   148          BC    B'0100',INLOOPO     IF SMALLER, GOTO INLOOPO             00348976         
+ 000128 E020 F33C 0055 0033C         149          XPRNT PLINE,85            PRINT PLINE                          00349076         
+ 00012E 47F0 F0DC            000DC   150          B     TOPLOOPO            GOTO TOPLOOPO                        00349176         
+ 000132                              151 ENDO     DS    0H                  ENDO LABEL                           00349276         
+ 000132 E020 F33C 0055 0033C         152          XPRNT PLINE,85            PRINT LAST LINE IN ODD NUMBERS       00349376         
+ 000138 07FD                         153          BR    13                  BRANCH BACK TO MAIN                  00349476         
+                                                                                                                                  
+1       EDUARDO, CSCI360, PROGRAM4                                                                              PAGE    6         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                                                                                                                  
+                                                                                                                                  
+                                     156 *************************************************                       00349753         
+                                     157          LTORG                     LITERALS ORIGIN                      00349876         
+ 000140 00000001                     158                =F'1'                                                                     
+ 000144 00000041                     159                =F'65'                                                                    
+ 000148 00000006                     160                =F'6'                                                                     
+ 00014C 00000002                     161                =F'2'                                                                     
+ 000150 00000000                     162                =F'0'                                                                     
+ 000154 00000007                     163                =F'7'                                                                     
+ 000158 FFFFFF80FFFFFF80             164 TABLE    DC    65F'-128'                                                00349900         
+ 00025C                              165 EOT      DS    0H                                                       00350004         
+ 00025C                              166 PARAMS   DS    F'0'                                                     00410038         
+ 000260                              167          DS    F'0'                                                     00420038         
+ 000264 F140404040404040             168 HEADER   DC    CL50'1                                LIST OF NUMBERS'   00420173         
+ 000296 F1                           169 HEADERO  DC    CL1'1'                                                   00420370         
+ 000297 4040404040404040             170          DC    CL35' '                                                  00420474         
+ 0002BA D3C9E2E340D6C640             171          DC    CL20'LIST OF ODD NUMBERS'                                00420573         
+ 0002CE 60                           172 NEWPAGE  DC    CL1'-'                                                   00420668         
+ 0002CF 4040404040404040             173 EMPTYL   DC    CL85' '                                                  00420769         
+ 000324                              174 PTABLE   DS    CL12' '                                                  00420825         
+ 000330                              175 OTABLE   DS    CL12' '                                                  00420962         
+ 00033C F0                           176 PLINE    DC    CL1'0'                                                   00421075         
+ 00033D                              177          DS    CL84                                                     00422021         
+ 000391                              178 BUFFER   DS    80C                                                      00430037         
+ 0003E1 5C                           179          DC    C'*'                                                     00440001         
+                                     180          END   MAIN                                                     00450002         
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:   10524 HIGH:     924 LEAVING:  482120 FREE BYTES. AVERAGE:       63 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.000 SECS,   181000 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+-                                                                                                                                 
+1                                LIST OF NUMBERS                                                                                  
+                                                                                                                                  
+                                                                                                                                  
+0          -3       -2504         326         202          42          72                                                         
+0          -8       -3333        -754           9           7        3033                                                         
+0           6           7           4          -8           6        1043                                                         
+0           3         159        1692          -9          29           0                                                         
+0          89           5          90          26         360          81                                                         
+0          96        -626         168          -6        -994         529                                                         
+0          51         -57        3512       -9610         355         -87                                                         
+0        -770          -6          59        6873         -89        -757                                                         
+0           0          25         -57        -699         -63          47                                                         
+0         390          15          15         492          27        3926                                                         
+0           6        6429        -123          22       -1393                                                                     
+-                                                                                                                                 
+1                                   LIST OF ODD NUMBERS                                                                           
+                                                                                                                                  
+                                                                                                                                  
+0          -3       -3333           9           7        3033           7        1043                                             
+0           3         159          -9          29          89           5          81                                             
+0         529          51         -57         355         -87          59        6873                                             
+0         -89        -757          25         -57        -699         -63          47                                             
+0          15          15          27        6429        -123       -1393                                                         
+0*** EXECUTION TIME =    0.001 SECS.      2200 INSTRUCTIONS EXECUTED -  2200000 INSTRUCTIONS/SEC ***                              
+0*** FIRST CARD NOT READ:   25   -5     57 545                                                                                    
+0*** AM004 - NORMAL USER TERMINATION BY RETURN ***                                                                                

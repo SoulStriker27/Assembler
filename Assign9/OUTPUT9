@@ -1,0 +1,668 @@
+1                   J E S 2  J O B  L O G  --  S Y S T E M  2 9 6 4  --  N O D E  S V S C J E S 2        
+0 
+ 08.41.30 JOB02227 ---- TUESDAY,   03 DEC 2019 ----
+ 08.41.30 JOB02227  IRR010I  USERID KC03E3E  IS ASSIGNED TO THIS JOB.
+ 08.41.30 JOB02227  ICH70001I KC03E3E  LAST ACCESS AT 08:41:15 ON TUESDAY, DECEMBER 3, 2019
+ 08.41.30 JOB02227  $HASP373 KC03E3EA STARTED - INIT 1    - CLASS A        - SYS 2964
+ 08.41.30 JOB02227  -                                      -----TIMINGS (MINS.)------                          -----PAGING COUNTS-
+ 08.41.30 JOB02227  -STEPNAME PROCSTEP    RC   EXCP   CONN       TCB       SRB  CLOCK          SERV  WORKLOAD  PAGE  SWAP   VIO SW
+ 08.41.30 JOB02227  -STEP1                00    309     14       .00       .00     .0            24  BATCH        0     0     0   
+ 08.41.30 JOB02227  -KC03E3EA ENDED.  NAME-EDUARDO LEANOS       TOTAL TCB CPU TIME=      .00 TOTAL ELAPSED TIME=    .0
+ 08.41.30 JOB02227  $HASP395 KC03E3EA ENDED - RC=0000
+0------ JES2 JOB STATISTICS ------
+-  03 DEC 2019 JOB EXECUTION DATE
+-           92 CARDS READ
+-          672 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-           59 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03E3EA JOB ,'EDUARDO LEANOS',MSGCLASS=H                             JOB02227
+         2 //STEP1   EXEC  PGM=ASSIST,PARM='MACRO=H'                                       
+         3 //STEPLIB   DD  DSN=KC02293.ASSIST.LOADLIB,DISP=SHR                             
+         4 //SYSPRINT  DD  SYSOUT=*                                                        
+         5 //SYSIN     DD  *                                                               
+         6 //          DD DSN=KC02314.AUTUMN19.CSCI360.HW9.DRIVER,DISP=SHR                 
+         7 //FT05F001  DD DUMMY                                                            
+         8 //FT06F001  DD SYSOUT=*                                                         
+ ICH70001I KC03E3E  LAST ACCESS AT 08:41:15 ON TUESDAY, DECEMBER 3, 2019
+ IEFA111I KC03E3EA IS USING THE FOLLOWING JOB RELATED SETTINGS:
+          SWA=ABOVE,TIOT SIZE=32K,DSENQSHR=DISALLOW,GDGBIAS=JOB
+ IEF236I ALLOC. FOR KC03E3EA STEP1
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IGD103I SMS ALLOCATED TO DDNAME
+ IEF237I DMY  ALLOCATED TO FT05F001
+ IEF237I JES2 ALLOCATED TO FT06F001
+ IEF142I KC03E3EA STEP1 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC02293.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03E3E.KC03E3EA.JOB02227.D0000102.?         SYSOUT        
+ IEF285I   KC03E3E.KC03E3EA.JOB02227.D0000101.?         SYSIN         
+ IGD104I KC02314.AUTUMN19.CSCI360.HW9.DRIVER          RETAINED,  DDNAME=        
+ IEF285I   KC03E3E.KC03E3EA.JOB02227.D0000103.?         SYSOUT        
+ IEF373I STEP/STEP1   /START 2019337.0841
+ IEF032I STEP/STEP1   /STOP  2019337.0841 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   256K  EXT:        0K  SYS:    11604K
+         ATB- REAL:                  1044K  SLOTS:                     0K
+              VIRT- ALLOC:      11M SHRD:       0M
+ IEF375I  JOB/KC03E3EA/START 2019337.0841
+ IEF033I  JOB/KC03E3EA/STOP  2019337.0841 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0MACRO=H                                                                                                                          
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 ***************************************************                                      
+                                       2 * ASSIGNMENT NINE                                                                        
+                                       3 *                                                                                        
+                                       4 * NAME: EDUARDO LEANOS                                                                   
+                                       5 *                                                                                        
+                                       6 ***************************************************                                      
+                                       7 * Name: STRLEN                                                                           
+                                       8 *                                                                                        
+                                       9 * DESC: TAKES IN A STRING ENDED BY A X'00' (&STR) AND A D(X,B)                           
+                                      10 * ADDRESS OF A LENGTH LOCATION (&LEN), COUNTS HOW MANY                                   
+                                      11 * CHARACTERS ARE IN THE STRING THEN STORES LENGHT INTO THE                               
+                                      12 * LOCATION                                                                               
+                                      13 *                                                                                        
+                                      14 * REGISTERS: USAGE                                                                       
+                                      15 * REG8: POINTER TO &STR                                                                  
+                                      16 * REG9: LENGTH OF &STR                                                                   
+                                      17 ***********************************                                                      
+                                      18          MACRO                            MACRO! STRLEN                                  
+                                      19          STRLEN  &STR,&LEN                PARAMETERS PASSED IN                           
+                                      20          AIF     ('&STR' EQ '').ERROR     IF &STR EMPTY GOTO ERROR                       
+                                      21          AIF     ('&LEN' EQ '').ERROR     IF &LEN EMPTY GOTO ERROR                       
+                                      22          STM     8,9,B&SYSNDX             STORE REGISTERS 8-9                            
+                                      23          B       C&SYSNDX                 BRANCH PAST STORAGE                            
+                                      24 A&SYSNDX DS      F                        NEVER USED HUH..                               
+                                      25 B&SYSNDX DS      2F                       STORE REGS                                     
+                                      26 C&SYSNDX DS      0H                       LABEL FOR SKIP                                 
+                                      27          LA      8,&STR                   LOAD &STR INTO 8                               
+                                      28          SR      9,9                      RESET 9                                        
+                                      29 D&SYSNDX DS      0H                       LABEL FOR LOOP                                 
+                                      30          CLI     0(8),X'00'               CHECK FOR X'00', END OF STRIN                  
+                                      31          BE      SKIP&SYSNDX              BRANCH IF EQUAL                                
+                                      32          A       9,=F'1'                  ADD 1 IF NOT                                   
+                                      33          LA      8,1(0,8)                 ADVANCE POINTER                                
+                                      34          B       D&SYSNDX                 BRANCH BACK TO D&SYSNDX                        
+                                      35 SKIP&SYSNDX DS      0H                    SKIP IF  X'00' FOUND                           
+                                      36          ST      9,&LEN                   STORE LENGTH INTO &LEN                         
+                                      37          AGO     .STOP                    GO TO .STOP                                    
+                                      38 .ERROR   MNOTE   'Missing Argument'       MNOTE FOR MISSING ARG                          
+                                      39          MEXIT                            EXIT                                           
+                                      40 .STOP    ANOP                             .STOP LABEL                                    
+                                      41          LM      8,9,B&SYSNDX             LOAD REGISTERS BACK                            
+                                      42          MEND                             EXIT/END MACRO                                 
+                                      43 *                                                                                        
+                                      44 *                                                                                        
+                                      45 ***********************************                                                      
+                                      46 *Name: PROD                                                                              
+                                      47 *                                                                                        
+                                      48 * DESC: TAKES IN 2 PARAMS, &RESULT - THE RESULT OF ALL OF THE                            
+                                      49 * &LIST PARAMS MULTIPLIED WITH EACH OTHER. AND &LIST - A SET OF                          
+                                      50 * 0-3 PARAMS THAT NEED TO BE MULTIPLIED WITH EACH OTHER, IF NONE                         
+                                      51 * MAKE &RESULTS = 1                                                                      
+                                      52 *                                                                                        
+1                                                                                                               PAGE    2         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                      53 * REGISTER USAGE:                                                                        
+                                      54 * REG 2: SET TO 1 IF PARAM LIST IS EMPTY                                                 
+                                      55 * REG 4: MULIPLYING                                                                      
+                                      56 * REG 5: THE PRODUCT OF LIST PARAMS                                                      
+                                      57 *                                                                                        
+                                      58 ***********************************                                                      
+                                      59          MACRO                          MACRO!                                           
+                                      60          PROD  &RESULT,&LIST            NAME OF MACRO: PROD                              
+                                      61          LCLA  &CNT,&NUM                SET ARITHMETIC VARIABLES                         
+                                      62 &CNT     SETA  2                        SET &CNT TO 2 FOR &LIST                          
+                                      63 &NUM     SETA  N'&LIST                  SET &NUM AS NUM OF LIST PARAMS                   
+                                      64          AIF   ('&RESULT' EQ '').ERROR  IF &RESULT IS EMPTY, GOTO ERROR                  
+                                      65          AIF   ('&LIST' EQ '').ERROR    IF &LIST   IS EMPTY, GOTO ERROR                  
+                                      66          AIF   ('&LIST' EQ '()').SETIT  IF &LIST() IS EMPTY SET TO 1                     
+                                      67          STM   2,5,E&SYSNDX             SAVE REGISTERS 2-5                               
+                                      68          B     F&SYSNDX                 BRANCH TO F&SYSNDX                               
+                                      69 E&SYSNDX DS    4F                       DECLARE SAVE AREA                                
+                                      70 F&SYSNDX DS    0H                       LABEL                                            
+                                      71          L     5,&LIST(1)               LOAD FIRST LIST PARAM INTO REG5                  
+                                      72 .BLOOP   AIF   (&CNT  GT  &NUM).DONE    CHECK IF CNT IS GT THAN NUM                      
+                                      73          M     4,&LIST(&CNT)            MULTIPLY REG5 BY NEXT LIST PARA                  
+                                      74 &CNT     SETA  &CNT+1                   INCREASE &CNT                                    
+                                      75          AGO   .BLOOP                   LOOP BACK TO .BLOOP                              
+                                      76 .SETIT   L     2,=F'1'                  SET &RESULT TO 1                                 
+                                      77          ST    2,&RESULT                SINCE LIST () WAS EMPTY                          
+                                      78          AGO   .SKIP                    SKIP REGULAR STORE                               
+                                      79 .DONE    ST    5,&RESULT                STORE REG5 INTO &RESULT                          
+                                      80          LM    2,5,E&SYSNDX             RESTORE REGISTERS                                
+                                      81 .SKIP    MEXIT                          EXIT                                             
+                                      82 .ERROR   MNOTE 'Missing Argument'       MARK MISSING ARGUMENTS                           
+                                      83          MEND                           EXIT/END MACRO                                   
+                                      84 *                                                                                        
+                                      85 **********************************************************************                   
+                                      86 *                                                                    *                   
+                                      87 *            Name:  DRIVER.                                          *                   
+                                      88 *                                                                    *                   
+                                      89 *        Function:  Test platform for macros.                        *                   
+                                      90 *                                                                    *                   
+                                      91 *           Input:  None.                                            *                   
+                                      92 *                                                                    *                   
+                                      93 *          Output:  Results of the tests.                            *                   
+                                      94 *                                                                    *                   
+                                      95 *     Entry Conds:  14 -- Return address to the operating            *                   
+                                      96 *                         system.                                    *                   
+                                      97 *                   15 -- Address of entry to the program.           *                   
+                                      98 *                                                                    *                   
+                                      99 *  Register Usage:   2 -- Used in addresses in macro tests.          *                   
+                                     100 *                   11 -- Second base register.                      *                   
+                                     101 *                   12 -- Base register.                             *                   
+                                     102 *                                                                    *                   
+                                     103 *      Exit Conds:  14 -- Return address to the operating            *                   
+                                     104 *                         system.                                    *                   
+                                     105 *                                                                    *                   
+                                     106 **********************************************************************                   
+1                                                                                                               PAGE    3         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                                                                                                                  
+                                                                                                                                  
+                                     108 **********************************************************************                   
+                                     109 *               The DRIVER program begins here.                      *                   
+                                     110 **********************************************************************                   
+                                     111 *                                                                                        
+ 000000                              112 DRIVER   CSECT                         Beginning of the program                          
+                                     113 *                                                                                        
+                                     115 *                                                                                        
+                                     116 *  Standard entry linkage.                                                               
+                                     117 *                                                                                        
+ 000000 90EC D00C            0000C   118          STM   14,12,12(13)            Store the registers in the save                   
+                                     119 *                                      area of the calling routine                       
+                                     120 *                                                                                        
+ 000004 18CF                         121          LR    12,15                   Point register 12 at DRIVER                       
+ 000000                              122          USING DRIVER,12               The base register is 12                           
+                                     123 *                                                                                        
+ 000006 41E0 C654            00654   124          LA    14,DRIVSAV              Point register 14 at DRIVER's                     
+                                     125 *                                      save area                                         
+ 00000A 50DE 0004            00004   126          ST    13,4(14)                Store the backward pointer                        
+ 00000E 50ED 0008            00008   127          ST    14,8(13)                Store the forward pointer                         
+ 000012 18DE                         128          LR    13,14                   Point register 13 at DRIVER's                     
+                                     129 *                                      save area                                         
+                                     130 *                                                                                        
+ 000014 E020 C518 001A 00518         131          XPRNT =CL26'1Results of testing Macros',26                                      
+                                     132 *                                      Print the title                                   
+                                     133 *                                                                                        
+                                     134 * This block of code tests the STRLEN macro.                                             
+                                     135 *                                                                                        
+ 00001A E020 C59C 0001 0059C         136          XPRNT =C'0',1                 Skip an extra 2 lines                             
+ 000020 E020 C532 001E 00532         137          XPRNT =CL30'-Now we test the STRLEN macro.',30                                  
+                                     138 *                                      Print a heading                                   
+                                     139 *                                                                                        
+                                     140 * These first three calls to STRLEN all have problems which should                       
+                                     141 * result in MNOTEs.                                                                      
+                                     142 *                                                                                        
+                                     143          STRLEN   S1                                                                     
+ ----->AS***MNOTE***      1,Missing Argument                                                                      <-ERROR         
+                                     145 *                                                                                        
+                                     146          STRLEN   ,LENGTH                                                                
+ ----->AS***MNOTE***      1,Missing Argument                                                                      <-ERROR         
+                                     148 *                                                                                        
+                                     149          STRLEN                                                                          
+ ----->AS***MNOTE***      1,Missing Argument                                                                      <-ERROR         
+                                     151 *                                                                                        
+                                     152 * The next few calls to STRLEN should all work.                                          
+                                     153 *                                                                                        
+ 000026 E020 C59D 001B 0059D         154          XPRNT =CL27'0The actual length is:    0',27                                     
+                                     155          STRLEN   S1,LENGTH                                                              
+ 00002C 9089 C038            00038   156+         STM     8,9,B0004                STORE REGISTERS 8-9                            
+ 000030 47F0 C040            00040   157+         B       C0004                    BRANCH PAST STORAGE                            
+ 000034                              158+A0004    DS      F                        NEVER USED HUH..                               
+ 000038                              159+B0004    DS      2F                       STORE REGS                                     
+ 000040                              160+C0004    DS      0H                       LABEL FOR SKIP                                 
+ 000040 4180 C69C            0069C   161+         LA      8,S1                     LOAD &STR INTO 8                               
+ 000044 1B99                         162+         SR      9,9                      RESET 9                                        
+ 000046                              163+D0004    DS      0H                       LABEL FOR LOOP                                 
+1                                                                                                               PAGE    4         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 000046 9500 8000      00000         164+         CLI     0(8),X'00'               CHECK FOR X'00', END OF STRIN                  
+ 00004A 4780 C05A            0005A   165+         BE      SKIP0004                 BRANCH IF EQUAL                                
+ 00004E 5A90 C4C0            004C0   166+         A       9,=F'1'                  ADD 1 IF NOT                                   
+ 000052 4180 8001            00001   167+         LA      8,1(0,8)                 ADVANCE POINTER                                
+ 000056 47F0 C046            00046   168+         B       D0004                    BRANCH BACK TO D&SYSNDX                        
+ 00005A                              169+SKIP0004    DS      0H                    SKIP IF  X'00' FOUND                           
+ 00005A 5090 C6A4            006A4   170+         ST      9,LENGTH                 STORE LENGTH INTO &LEN                         
+ 00005E 9889 C038            00038   171+         LM      8,9,B0004                LOAD REGISTERS BACK                            
+ 000062 5840 C6A4            006A4   172          L     4,LENGTH                                                                  
+ 000066 4E40 C6C8            006C8   173          CVD   4,TEMP                                                                    
+ 00006A D203 C6BF C4C4 006BF 004C4   174          MVC   SVALUE(4),=XL4'40202120'                                                  
+ 000070 DE03 C6BF C6CE 006BF 006CE   175          ED    SVALUE(4),TEMP+6                                                          
+ 000076 E020 C6A8 001B 006A8         176          XPRNT SLINE,27                                                                  
+                                     177 *                                                                                        
+ 00007C E020 C5B8 001B 005B8         178          XPRNT =CL27'0The actual length is:    3',27                                     
+                                     179          STRLEN   S2,LENGTH                                                              
+ 000082 9089 C090            00090   180+         STM     8,9,B0005                STORE REGISTERS 8-9                            
+ 000086 47F0 C098            00098   181+         B       C0005                    BRANCH PAST STORAGE                            
+ 00008C                              182+A0005    DS      F                        NEVER USED HUH..                               
+ 000090                              183+B0005    DS      2F                       STORE REGS                                     
+ 000098                              184+C0005    DS      0H                       LABEL FOR SKIP                                 
+ 000098 4180 C69D            0069D   185+         LA      8,S2                     LOAD &STR INTO 8                               
+ 00009C 1B99                         186+         SR      9,9                      RESET 9                                        
+ 00009E                              187+D0005    DS      0H                       LABEL FOR LOOP                                 
+ 00009E 9500 8000      00000         188+         CLI     0(8),X'00'               CHECK FOR X'00', END OF STRIN                  
+ 0000A2 4780 C0B2            000B2   189+         BE      SKIP0005                 BRANCH IF EQUAL                                
+ 0000A6 5A90 C4C0            004C0   190+         A       9,=F'1'                  ADD 1 IF NOT                                   
+ 0000AA 4180 8001            00001   191+         LA      8,1(0,8)                 ADVANCE POINTER                                
+ 0000AE 47F0 C09E            0009E   192+         B       D0005                    BRANCH BACK TO D&SYSNDX                        
+ 0000B2                              193+SKIP0005    DS      0H                    SKIP IF  X'00' FOUND                           
+ 0000B2 5090 C6A4            006A4   194+         ST      9,LENGTH                 STORE LENGTH INTO &LEN                         
+ 0000B6 9889 C090            00090   195+         LM      8,9,B0005                LOAD REGISTERS BACK                            
+ 0000BA 5840 C6A4            006A4   196          L     4,LENGTH                                                                  
+ 0000BE 4E40 C6C8            006C8   197          CVD   4,TEMP                                                                    
+ 0000C2 D203 C6BF C4C4 006BF 004C4   198          MVC   SVALUE(4),=XL4'40202120'                                                  
+ 0000C8 DE03 C6BF C6CE 006BF 006CE   199          ED    SVALUE(4),TEMP+6                                                          
+ 0000CE E020 C6A8 001B 006A8         200          XPRNT SLINE,27                                                                  
+                                     201 *                                                                                        
+ 0000D4 E020 C59D 001B 0059D         202          XPRNT =CL27'0The actual length is:    0',27                                     
+                                     203          STRLEN   S3,LENGTH                                                              
+ 0000DA 9089 C0E8            000E8   204+         STM     8,9,B0006                STORE REGISTERS 8-9                            
+ 0000DE 47F0 C0F0            000F0   205+         B       C0006                    BRANCH PAST STORAGE                            
+ 0000E4                              206+A0006    DS      F                        NEVER USED HUH..                               
+ 0000E8                              207+B0006    DS      2F                       STORE REGS                                     
+ 0000F0                              208+C0006    DS      0H                       LABEL FOR SKIP                                 
+ 0000F0 4180 C6A1            006A1   209+         LA      8,S3                     LOAD &STR INTO 8                               
+ 0000F4 1B99                         210+         SR      9,9                      RESET 9                                        
+ 0000F6                              211+D0006    DS      0H                       LABEL FOR LOOP                                 
+ 0000F6 9500 8000      00000         212+         CLI     0(8),X'00'               CHECK FOR X'00', END OF STRIN                  
+ 0000FA 4780 C10A            0010A   213+         BE      SKIP0006                 BRANCH IF EQUAL                                
+ 0000FE 5A90 C4C0            004C0   214+         A       9,=F'1'                  ADD 1 IF NOT                                   
+ 000102 4180 8001            00001   215+         LA      8,1(0,8)                 ADVANCE POINTER                                
+ 000106 47F0 C0F6            000F6   216+         B       D0006                    BRANCH BACK TO D&SYSNDX                        
+ 00010A                              217+SKIP0006    DS      0H                    SKIP IF  X'00' FOUND                           
+ 00010A 5090 C6A4            006A4   218+         ST      9,LENGTH                 STORE LENGTH INTO &LEN                         
+ 00010E 9889 C0E8            000E8   219+         LM      8,9,B0006                LOAD REGISTERS BACK                            
+ 000112 5840 C6A4            006A4   220          L     4,LENGTH                                                                  
+1                                                                                                               PAGE    5         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 000116 4E40 C6C8            006C8   221          CVD   4,TEMP                                                                    
+ 00011A D203 C6BF C4C4 006BF 004C4   222          MVC   SVALUE(4),=XL4'40202120'                                                  
+ 000120 DE03 C6BF C6CE 006BF 006CE   223          ED    SVALUE(4),TEMP+6                                                          
+ 000126 E020 C6A8 001B 006A8         224          XPRNT SLINE,27                                                                  
+                                     225 *                                                                                        
+ 00012C E020 C5B8 001B 005B8         226          XPRNT =CL27'0The actual length is:    3',27                                     
+ 000132 4130 C69D            0069D   227          LA    3,S2                                                                      
+                                     228          STRLEN   0(3),LENGTH                                                            
+ 000136 9089 C144            00144   229+         STM     8,9,B0007                STORE REGISTERS 8-9                            
+ 00013A 47F0 C14C            0014C   230+         B       C0007                    BRANCH PAST STORAGE                            
+ 000140                              231+A0007    DS      F                        NEVER USED HUH..                               
+ 000144                              232+B0007    DS      2F                       STORE REGS                                     
+ 00014C                              233+C0007    DS      0H                       LABEL FOR SKIP                                 
+ 00014C 4183 0000            00000   234+         LA      8,0(3)                   LOAD &STR INTO 8                               
+ 000150 1B99                         235+         SR      9,9                      RESET 9                                        
+ 000152                              236+D0007    DS      0H                       LABEL FOR LOOP                                 
+ 000152 9500 8000      00000         237+         CLI     0(8),X'00'               CHECK FOR X'00', END OF STRIN                  
+ 000156 4780 C166            00166   238+         BE      SKIP0007                 BRANCH IF EQUAL                                
+ 00015A 5A90 C4C0            004C0   239+         A       9,=F'1'                  ADD 1 IF NOT                                   
+ 00015E 4180 8001            00001   240+         LA      8,1(0,8)                 ADVANCE POINTER                                
+ 000162 47F0 C152            00152   241+         B       D0007                    BRANCH BACK TO D&SYSNDX                        
+ 000166                              242+SKIP0007    DS      0H                    SKIP IF  X'00' FOUND                           
+ 000166 5090 C6A4            006A4   243+         ST      9,LENGTH                 STORE LENGTH INTO &LEN                         
+ 00016A 9889 C144            00144   244+         LM      8,9,B0007                LOAD REGISTERS BACK                            
+ 00016E 5840 C6A4            006A4   245          L     4,LENGTH                                                                  
+ 000172 4E40 C6C8            006C8   246          CVD   4,TEMP                                                                    
+ 000176 D203 C6BF C4C4 006BF 004C4   247          MVC   SVALUE(4),=XL4'40202120'                                                  
+ 00017C DE03 C6BF C6CE 006BF 006CE   248          ED    SVALUE(4),TEMP+6                                                          
+ 000182 E020 C6A8 001B 006A8         249          XPRNT SLINE,27                                                                  
+                                     250 *                                                                                        
+ 000188 E020 C5B8 001B 005B8         251          XPRNT =CL27'0The actual length is:    3',27                                     
+ 00018E 4150 C6A4            006A4   252          LA    5,LENGTH                                                                  
+                                     253          STRLEN   S2,0(5)                                                                
+ 000192 9089 C1A0            001A0   254+         STM     8,9,B0008                STORE REGISTERS 8-9                            
+ 000196 47F0 C1A8            001A8   255+         B       C0008                    BRANCH PAST STORAGE                            
+ 00019C                              256+A0008    DS      F                        NEVER USED HUH..                               
+ 0001A0                              257+B0008    DS      2F                       STORE REGS                                     
+ 0001A8                              258+C0008    DS      0H                       LABEL FOR SKIP                                 
+ 0001A8 4180 C69D            0069D   259+         LA      8,S2                     LOAD &STR INTO 8                               
+ 0001AC 1B99                         260+         SR      9,9                      RESET 9                                        
+ 0001AE                              261+D0008    DS      0H                       LABEL FOR LOOP                                 
+ 0001AE 9500 8000      00000         262+         CLI     0(8),X'00'               CHECK FOR X'00', END OF STRIN                  
+ 0001B2 4780 C1C2            001C2   263+         BE      SKIP0008                 BRANCH IF EQUAL                                
+ 0001B6 5A90 C4C0            004C0   264+         A       9,=F'1'                  ADD 1 IF NOT                                   
+ 0001BA 4180 8001            00001   265+         LA      8,1(0,8)                 ADVANCE POINTER                                
+ 0001BE 47F0 C1AE            001AE   266+         B       D0008                    BRANCH BACK TO D&SYSNDX                        
+ 0001C2                              267+SKIP0008    DS      0H                    SKIP IF  X'00' FOUND                           
+ 0001C2 5095 0000            00000   268+         ST      9,0(5)                   STORE LENGTH INTO &LEN                         
+ 0001C6 9889 C1A0            001A0   269+         LM      8,9,B0008                LOAD REGISTERS BACK                            
+ 0001CA 5840 C6A4            006A4   270          L     4,LENGTH                                                                  
+ 0001CE 4E40 C6C8            006C8   271          CVD   4,TEMP                                                                    
+ 0001D2 D203 C6BF C4C4 006BF 004C4   272          MVC   SVALUE(4),=XL4'40202120'                                                  
+ 0001D8 DE03 C6BF C6CE 006BF 006CE   273          ED    SVALUE(4),TEMP+6                                                          
+ 0001DE E020 C6A8 001B 006A8         274          XPRNT SLINE,27                                                                  
+                                     275 *                                                                                        
+ 0001E4 E020 C5B8 001B 005B8         276          XPRNT =CL27'0The actual length is:    3',27                                     
+ 0001EA 4130 C69D            0069D   277          LA    3,S2                                                                      
+1                                                                                                               PAGE    6         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 0001EE 4150 C6A4            006A4   278          LA    5,LENGTH                                                                  
+                                     279          STRLEN   0(3),0(5)                                                              
+ 0001F2 9089 C200            00200   280+         STM     8,9,B0009                STORE REGISTERS 8-9                            
+ 0001F6 47F0 C208            00208   281+         B       C0009                    BRANCH PAST STORAGE                            
+ 0001FC                              282+A0009    DS      F                        NEVER USED HUH..                               
+ 000200                              283+B0009    DS      2F                       STORE REGS                                     
+ 000208                              284+C0009    DS      0H                       LABEL FOR SKIP                                 
+ 000208 4183 0000            00000   285+         LA      8,0(3)                   LOAD &STR INTO 8                               
+ 00020C 1B99                         286+         SR      9,9                      RESET 9                                        
+ 00020E                              287+D0009    DS      0H                       LABEL FOR LOOP                                 
+ 00020E 9500 8000      00000         288+         CLI     0(8),X'00'               CHECK FOR X'00', END OF STRIN                  
+ 000212 4780 C222            00222   289+         BE      SKIP0009                 BRANCH IF EQUAL                                
+ 000216 5A90 C4C0            004C0   290+         A       9,=F'1'                  ADD 1 IF NOT                                   
+ 00021A 4180 8001            00001   291+         LA      8,1(0,8)                 ADVANCE POINTER                                
+ 00021E 47F0 C20E            0020E   292+         B       D0009                    BRANCH BACK TO D&SYSNDX                        
+ 000222                              293+SKIP0009    DS      0H                    SKIP IF  X'00' FOUND                           
+ 000222 5095 0000            00000   294+         ST      9,0(5)                   STORE LENGTH INTO &LEN                         
+ 000226 9889 C200            00200   295+         LM      8,9,B0009                LOAD REGISTERS BACK                            
+ 00022A 5840 C6A4            006A4   296          L     4,LENGTH                                                                  
+ 00022E 4E40 C6C8            006C8   297          CVD   4,TEMP                                                                    
+ 000232 D203 C6BF C4C4 006BF 004C4   298          MVC   SVALUE(4),=XL4'40202120'                                                  
+ 000238 DE03 C6BF C6CE 006BF 006CE   299          ED    SVALUE(4),TEMP+6                                                          
+ 00023E E020 C6A8 001B 006A8         300          XPRNT SLINE,27                                                                  
+                                     301 *                                                                                        
+                                     302 * This block of code deals with the PROD macro.                                          
+                                     303 *                                                                                        
+ 000244 E020 C59C 0001 0059C         304          XPRNT =C'0',1                 Skip an extra 2 lines.                            
+ 00024A E020 C4C8 001C 004C8         305          XPRNT =CL28'-Now we test the PROD macro.',28                                    
+                                     306 *                                      Print a heading.                                  
+                                     307 *                                                                                        
+                                     308 * These first three calls to PROD have problems which should                             
+                                     309 * result in MNOTEs.                                                                      
+                                     310 *                                                                                        
+                                     311          PROD   RESULT                                                                   
+ ----->AS***MNOTE***    1,Missing Argument                                                                        <-ERROR         
+                                     313 *                                                                                        
+                                     314          PROD  ,(ABC,GHI)                                                                
+ ----->AS***MNOTE***    1,Missing Argument                                                                        <-ERROR         
+                                     316 *                                                                                        
+                                     317          PROD                                                                            
+ ----->AS***MNOTE***    1,Missing Argument                                                                        <-ERROR         
+                                     319 *                                                                                        
+                                     320 * The next group of calls should all work.                                               
+                                     321 *                                                                                        
+ 000250 4110 C6E0            006E0   322          LA    1,PLIST                                                                   
+                                     323 *                                                                                        
+                                     324          PROD  RESULT,(ABC)                                                              
+ 000254 9025 C25C            0025C   325+         STM   2,5,E0013                SAVE REGISTERS 2-5                               
+ 000258 47F0 C26C            0026C   326+         B     F0013                    BRANCH TO F&SYSNDX                               
+ 00025C                              327+E0013    DS    4F                       DECLARE SAVE AREA                                
+ 00026C                              328+F0013    DS    0H                       LABEL                                            
+ 00026C 5850 C6D4            006D4   329+         L     5,ABC                    LOAD FIRST LIST PARAM INTO REG5                  
+ 000270 5050 C6D0            006D0   330+         ST    5,RESULT                 STORE REG5 INTO &RESULT                          
+ 000274 9825 C25C            0025C   331+         LM    2,5,E0013                RESTORE REGISTERS                                
+ 000278 45B0 C6FE            006FE   332          BAL   11,POUT                                                                   
+ 00027C E020 C5D3 0019 005D3         333          XPRNT =CL25'0Finding the product of 8',25                                       
+ 000282 E020 C6E8 0015 006E8         334          XPRNT PLINE,21                                                                  
+1                                                                                                               PAGE    7         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                     335 *                                                                                        
+                                     336          PROD  RESULT,(ABC,GHI)                                                          
+ 000288 9025 C290            00290   337+         STM   2,5,E0014                SAVE REGISTERS 2-5                               
+ 00028C 47F0 C2A0            002A0   338+         B     F0014                    BRANCH TO F&SYSNDX                               
+ 000290                              339+E0014    DS    4F                       DECLARE SAVE AREA                                
+ 0002A0                              340+F0014    DS    0H                       LABEL                                            
+ 0002A0 5850 C6D4            006D4   341+         L     5,ABC                    LOAD FIRST LIST PARAM INTO REG5                  
+ 0002A4 5C40 C6DC            006DC   342+         M     4,GHI                    MULTIPLY REG5 BY NEXT LIST PARA                  
+ 0002A8 5050 C6D0            006D0   343+         ST    5,RESULT                 STORE REG5 INTO &RESULT                          
+ 0002AC 9825 C290            00290   344+         LM    2,5,E0014                RESTORE REGISTERS                                
+ 0002B0 45B0 C6FE            006FE   345          BAL   11,POUT                                                                   
+ 0002B4 E020 C5EC 0021 005EC         346          XPRNT =CL33'0Finding the product of 8 and -10',33                               
+ 0002BA E020 C6E8 0015 006E8         347          XPRNT PLINE,21                                                                  
+                                     348 *                                                                                        
+                                     349          PROD  RESULT,(ABC,DEF,GHI)                                                      
+ 0002C0 9025 C2C8            002C8   350+         STM   2,5,E0015                SAVE REGISTERS 2-5                               
+ 0002C4 47F0 C2D8            002D8   351+         B     F0015                    BRANCH TO F&SYSNDX                               
+ 0002C8                              352+E0015    DS    4F                       DECLARE SAVE AREA                                
+ 0002D8                              353+F0015    DS    0H                       LABEL                                            
+ 0002D8 5850 C6D4            006D4   354+         L     5,ABC                    LOAD FIRST LIST PARAM INTO REG5                  
+ 0002DC 5C40 C6D8            006D8   355+         M     4,DEF                    MULTIPLY REG5 BY NEXT LIST PARA                  
+ 0002E0 5C40 C6DC            006DC   356+         M     4,GHI                    MULTIPLY REG5 BY NEXT LIST PARA                  
+ 0002E4 5050 C6D0            006D0   357+         ST    5,RESULT                 STORE REG5 INTO &RESULT                          
+ 0002E8 9825 C2C8            002C8   358+         LM    2,5,E0015                RESTORE REGISTERS                                
+ 0002EC 45B0 C6FE            006FE   359          BAL   11,POUT                                                                   
+ 0002F0 E020 C60D 0025 0060D         360          XPRNT =CL37'0Finding the product of 8, 35 and -10',37                           
+ 0002F6 E020 C6E8 0015 006E8         361          XPRNT PLINE,21                                                                  
+                                     362 *                                                                                        
+                                     363          PROD  RESULT,(ABC,ABC,ABC)                                                      
+ 0002FC 9025 C304            00304   364+         STM   2,5,E0016                SAVE REGISTERS 2-5                               
+ 000300 47F0 C314            00314   365+         B     F0016                    BRANCH TO F&SYSNDX                               
+ 000304                              366+E0016    DS    4F                       DECLARE SAVE AREA                                
+ 000314                              367+F0016    DS    0H                       LABEL                                            
+ 000314 5850 C6D4            006D4   368+         L     5,ABC                    LOAD FIRST LIST PARAM INTO REG5                  
+ 000318 5C40 C6D4            006D4   369+         M     4,ABC                    MULTIPLY REG5 BY NEXT LIST PARA                  
+ 00031C 5C40 C6D4            006D4   370+         M     4,ABC                    MULTIPLY REG5 BY NEXT LIST PARA                  
+ 000320 5050 C6D0            006D0   371+         ST    5,RESULT                 STORE REG5 INTO &RESULT                          
+ 000324 9825 C304            00304   372+         LM    2,5,E0016                RESTORE REGISTERS                                
+ 000328 45B0 C6FE            006FE   373          BAL   11,POUT                                                                   
+ 00032C E020 C550 0022 00550         374          XPRNT =CL34'0Finding the product of 8, 8 and 8',34                              
+ 000332 E020 C6E8 0015 006E8         375          XPRNT PLINE,21                                                                  
+                                     376 *                                                                                        
+                                     377          PROD  RESULT,()                                                                 
+ 000338 5820 C4C0            004C0   378+         L     2,=F'1'                  SET &RESULT TO 1                                 
+ 00033C 5020 C6D0            006D0   379+         ST    2,RESULT                 SINCE LIST () WAS EMPTY                          
+ 000340 45B0 C6FE            006FE   380          BAL   11,POUT                                                                   
+ 000344 E020 C4E4 0024 004E4         381          XPRNT =CL36'0Finding the product of an empty set',36                            
+ 00034A E020 C6E8 0015 006E8         382          XPRNT PLINE,21                                                                  
+                                     383 *                                                                                        
+                                     384          PROD  RESULT,(ABC,ABC+4,ABC+8)                                                  
+ 000350 9025 C358            00358   385+         STM   2,5,E0018                SAVE REGISTERS 2-5                               
+ 000354 47F0 C368            00368   386+         B     F0018                    BRANCH TO F&SYSNDX                               
+ 000358                              387+E0018    DS    4F                       DECLARE SAVE AREA                                
+ 000368                              388+F0018    DS    0H                       LABEL                                            
+ 000368 5850 C6D4            006D4   389+         L     5,ABC                    LOAD FIRST LIST PARAM INTO REG5                  
+ 00036C 5C40 C6D8            006D8   390+         M     4,ABC+4                  MULTIPLY REG5 BY NEXT LIST PARA                  
+ 000370 5C40 C6DC            006DC   391+         M     4,ABC+8                  MULTIPLY REG5 BY NEXT LIST PARA                  
+1                                                                                                               PAGE    8         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 000374 5050 C6D0            006D0   392+         ST    5,RESULT                 STORE REG5 INTO &RESULT                          
+ 000378 9825 C358            00358   393+         LM    2,5,E0018                RESTORE REGISTERS                                
+ 00037C 45B0 C6FE            006FE   394          BAL   11,POUT                                                                   
+ 000380 E020 C60D 0025 0060D         395          XPRNT =CL37'0Finding the product of 8, 35 and -10',37                           
+ 000386 E020 C6E8 0015 006E8         396          XPRNT PLINE,21                                                                  
+                                     397 *                                                                                        
+ 00038C 4180 C6D4            006D4   398          LA    8,ABC                                                                     
+ 000390 4190 C6D8            006D8   399          LA    9,DEF                                                                     
+                                     400          PROD  RESULT,(0(8),0(9))                                                        
+ 000394 9025 C39C            0039C   401+         STM   2,5,E0019                SAVE REGISTERS 2-5                               
+ 000398 47F0 C3AC            003AC   402+         B     F0019                    BRANCH TO F&SYSNDX                               
+ 00039C                              403+E0019    DS    4F                       DECLARE SAVE AREA                                
+ 0003AC                              404+F0019    DS    0H                       LABEL                                            
+ 0003AC 5858 0000            00000   405+         L     5,0(8)                   LOAD FIRST LIST PARAM INTO REG5                  
+ 0003B0 5C49 0000            00000   406+         M     4,0(9)                   MULTIPLY REG5 BY NEXT LIST PARA                  
+ 0003B4 5050 C6D0            006D0   407+         ST    5,RESULT                 STORE REG5 INTO &RESULT                          
+ 0003B8 9825 C39C            0039C   408+         LM    2,5,E0019                RESTORE REGISTERS                                
+ 0003BC 45B0 C6FE            006FE   409          BAL   11,POUT                                                                   
+ 0003C0 E020 C4A0 0020 004A0         410          XPRNT =CL32'0Finding the product of 8 and 35',32                                
+ 0003C6 E020 C6E8 0015 006E8         411          XPRNT PLINE,21                                                                  
+                                     412 *                                                                                        
+ 0003CC 4180 C6D4            006D4   413          LA    8,ABC                                                                     
+                                     414          PROD  RESULT,(0(8),=F'12',GHI,=F'-17')                                          
+ 0003D0 9025 C3D8            003D8   415+         STM   2,5,E0020                SAVE REGISTERS 2-5                               
+ 0003D4 47F0 C3E8            003E8   416+         B     F0020                    BRANCH TO F&SYSNDX                               
+ 0003D8                              417+E0020    DS    4F                       DECLARE SAVE AREA                                
+ 0003E8                              418+F0020    DS    0H                       LABEL                                            
+ 0003E8 5858 0000            00000   419+         L     5,0(8)                   LOAD FIRST LIST PARAM INTO REG5                  
+ 0003EC 5C40 C508            00508   420+         M     4,=F'12'                 MULTIPLY REG5 BY NEXT LIST PARA                  
+ 0003F0 5C40 C6DC            006DC   421+         M     4,GHI                    MULTIPLY REG5 BY NEXT LIST PARA                  
+ 0003F4 5C40 C50C            0050C   422+         M     4,=F'-17'                MULTIPLY REG5 BY NEXT LIST PARA                  
+ 0003F8 5050 C6D0            006D0   423+         ST    5,RESULT                 STORE REG5 INTO &RESULT                          
+ 0003FC 9825 C3D8            003D8   424+         LM    2,5,E0020                RESTORE REGISTERS                                
+ 000400 45B0 C6FE            006FE   425          BAL   11,POUT                                                                   
+ 000404 E020 C572 002A 00572         426          XPRNT =CL42'0Finding the product of 8, 12, -10 and -17',42                      
+ 00040A E020 C6E8 0015 006E8         427          XPRNT PLINE,21                                                                  
+                                     428 *                                                                                        
+ 000410 4180 C6D4            006D4   429          LA    8,ABC                                                                     
+ 000414 4190 C6D8            006D8   430          LA    9,DEF                                                                     
+ 000418 41A0 C6D0            006D0   431          LA    10,RESULT                                                                 
+                                     432          PROD  0(10),(0(8),0(9))                                                         
+ 00041C 9025 C424            00424   433+         STM   2,5,E0021                SAVE REGISTERS 2-5                               
+ 000420 47F0 C434            00434   434+         B     F0021                    BRANCH TO F&SYSNDX                               
+ 000424                              435+E0021    DS    4F                       DECLARE SAVE AREA                                
+ 000434                              436+F0021    DS    0H                       LABEL                                            
+ 000434 5858 0000            00000   437+         L     5,0(8)                   LOAD FIRST LIST PARAM INTO REG5                  
+ 000438 5C49 0000            00000   438+         M     4,0(9)                   MULTIPLY REG5 BY NEXT LIST PARA                  
+ 00043C 505A 0000            00000   439+         ST    5,0(10)                  STORE REG5 INTO &RESULT                          
+ 000440 9825 C424            00424   440+         LM    2,5,E0021                RESTORE REGISTERS                                
+ 000444 E020 C4A0 0020 004A0         441          XPRNT =CL32'0Finding the product of 8 and 35',32                                
+ 00044A 45B0 C6FE            006FE   442          BAL   11,POUT                                                                   
+ 00044E E020 C6E8 0015 006E8         443          XPRNT PLINE,21                                                                  
+                                     444 *                                                                                        
+                                     445          PROD  RESULT,(=F'14',=F'32')                                                    
+ 000454 9025 C45C            0045C   446+         STM   2,5,E0022                SAVE REGISTERS 2-5                               
+ 000458 47F0 C46C            0046C   447+         B     F0022                    BRANCH TO F&SYSNDX                               
+ 00045C                              448+E0022    DS    4F                       DECLARE SAVE AREA                                
+1                                                                                                               PAGE    9         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 00046C                              449+F0022    DS    0H                       LABEL                                            
+ 00046C 5850 C510            00510   450+         L     5,=F'14'                 LOAD FIRST LIST PARAM INTO REG5                  
+ 000470 5C40 C514            00514   451+         M     4,=F'32'                 MULTIPLY REG5 BY NEXT LIST PARA                  
+ 000474 5050 C6D0            006D0   452+         ST    5,RESULT                 STORE REG5 INTO &RESULT                          
+ 000478 9825 C45C            0045C   453+         LM    2,5,E0022                RESTORE REGISTERS                                
+ 00047C 45B0 C6FE            006FE   454          BAL   11,POUT                                                                   
+ 000480 E020 C632 0021 00632         455          XPRNT =CL33'0Finding the product of 14 and 32',33                               
+ 000486 E020 C6E8 0015 006E8         456          XPRNT PLINE,21                                                                  
+                                     457 *                                                                                        
+                                     458 *  Standard exit linkage with return code = 0.                                           
+                                     459 *                                                                                        
+ 00048C 17FF                         460          XR    15,15                   Put 0 in register 15                              
+ 00048E 58DD 0004            00004   461          L     13,4(13)                Point register 13 at the calling                  
+                                     462 *                                      program's save area                               
+ 000492 58ED 000C            0000C   463          L     14,12(13)               Restore all registers except                      
+ 000496 980C D014            00014   464          LM    0,12,20(13)             15                                                
+ 00049A 07FE                         465          BR    14                      Return to the calling program                     
+1                                                                                                               PAGE   10         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                                                                                                                  
+                                                                                                                                  
+                                     467 **********************************************************************                   
+                                     468 *          The storage section for DRIVER starts here.               *                   
+                                     469 **********************************************************************                   
+                                     470 *                                                                                        
+                                     471          LTORG                                                                           
+ 0004A0 F0C6899584899587             472                =CL32'0Finding the product of 8 and 35'                                   
+ 0004C0 00000001                     473                =F'1'                                                                     
+ 0004C4 40202120                     474                =XL4'40202120'                                                            
+ 0004C8 60D596A640A68540             475                =CL28'-Now we test the PROD macro.'                                       
+ 0004E4 F0C6899584899587             476                =CL36'0Finding the product of an empty set'                               
+ 000508 0000000C                     477                =F'12'                                                                    
+ 00050C FFFFFFEF                     478                =F'-17'                                                                   
+ 000510 0000000E                     479                =F'14'                                                                    
+ 000514 00000020                     480                =F'32'                                                                    
+ 000518 F1D985A2A493A3A2             481                =CL26'1Results of testing Macros'                                         
+ 000532 60D596A640A68540             482                =CL30'-Now we test the STRLEN macro.'                                     
+ 000550 F0C6899584899587             483                =CL34'0Finding the product of 8, 8 and 8'                                 
+ 000572 F0C6899584899587             484                =CL42'0Finding the product of 8, 12, -10 and -17'                         
+ 00059C F0                           485                =C'0'                                                                     
+ 00059D F0E38885408183A3             486                =CL27'0The actual length is:    0'                                        
+ 0005B8 F0E38885408183A3             487                =CL27'0The actual length is:    3'                                        
+ 0005D3 F0C6899584899587             488                =CL25'0Finding the product of 8'                                          
+ 0005EC F0C6899584899587             489                =CL33'0Finding the product of 8 and -10'                                  
+ 00060D F0C6899584899587             490                =CL37'0Finding the product of 8, 35 and -10'                              
+ 000632 F0C6899584899587             491                =CL33'0Finding the product of 14 and 32'                                  
+                                     492 *                                                                                        
+ 000654 FFFFFFFFFFFFFFFF             493 DRIVSAV  DC    18F'-1'                 Save area for linkage                             
+                                     494 *                                                                                        
+                                     495 * Variables for testing STRLEN                                                           
+ 00069C 00                           496 S1       DC    X'00'                                                                     
+                                     497 *                                                                                        
+ 00069D C1C2C300                     498 S2       DC    XL4'C1C2C300'                                                             
+                                     499 *                                                                                        
+ 0006A1 000000                       500 S3       DC    XL3'000000'                                                               
+                                     501 *                                                                                        
+ 0006A4                              502 LENGTH   DS    F                                                                         
+                                     503 *                                                                                        
+ 0006A8 F0                           504 SLINE    DC    C'0'                                                                      
+ 0006A9 E388854083969497             505          DC    CL22'The computed length is'                                              
+ 0006BF                              506 SVALUE   DS    4C                                                                        
+                                     507 *                                                                                        
+ 0006C8                              508 TEMP     DS    D                                                                         
+                                     509 *                                                                                        
+                                     510 * Storage for testing PROD                                                               
+ 0006D0                              511 RESULT   DS    F                                                                         
+ 0006D4 00000008                     512 ABC      DC    F'8'                                                                      
+ 0006D8 00000023                     513 DEF      DC    F'35'                                                                     
+ 0006DC FFFFFFF6                     514 GHI      DC    F'-10'                                                                    
+                                     515 *                                                                                        
+ 0006E0 000006D0000006F2             516 PLIST    DC    A(RESULT,PRESULT)                                                         
+                                     517 *                                                                                        
+ 0006E8 F0                           518 PLINE    DC    C'0'                                                                      
+ 0006E9 D7D9D6C4E4C3E340             519          DC    CL9'PRODUCT ='                                                            
+ 0006F2                              520 PRESULT  DS    CL11                                                                      
+                                     521 *                                                                                        
+1                                                                                                               PAGE   11         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                     522 **********************************************************************                   
+                                     523 *                                                                                        
+                                     524 * POUT is an internal subroutine to help print the results of PROD.                      
+                                     525 *                                                                                        
+                                     526 * Register 2 : address of RESULT, from 0(1)                                              
+                                     527 *          3 : address of PRESULT, from 4(1)                                             
+                                     528 *          4 : value of RESULT                                                           
+                                     529 *         11 : return address                                                            
+                                     530 *                                                                                        
+                                     531 **********************************************************************                   
+ 0006FE                              532 POUT     DS    0H                                                                        
+ 0006FE 9024 C720            00720   533          STM   2,4,POUTSAVE            Save registers                                    
+ 000702 9823 1000            00000   534          LM    2,3,0(1)                Unload parameter list                             
+ 000706 5840 2000            00000   535          L     4,0(0,2)                Get value of RESULT                               
+ 00070A 4E40 C730            00730   536          CVD   4,PTEMP                                                                   
+ 00070E D20A 3000 C738 00000 00738   537          MVC   0(11,3),=XL11'40206B2020206B20212060'                                     
+ 000714 DE0A 3000 C734 00000 00734   538          ED    0(11,3),PTEMP+4         and put it on the line                            
+ 00071A 9824 C720            00720   539          LM    2,4,POUTSAVE            Restore registers                                 
+ 00071E 07FB                         540          BR    11                      Return to caller                                  
+ 000720                              541 POUTSAVE DS    3F                                                                        
+ 000730                              542 PTEMP    DS    D                                                                         
+                                     543 *                                                                                        
+                                     544 **********************************************************************                   
+                                     545 *                 The DRIVER program ends here.                      *                   
+                                     546 **********************************************************************                   
+                                     547          END   DRIVER                  End of the overall program.                       
+ 000738 40206B2020206B20             548                =XL11'40206B2020206B20212060'                                             
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:   29144 HIGH:    2536 LEAVING:  461888 FREE BYTES. AVERAGE:       57 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.002 SECS,   274500 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+1Results of testing Macros                                                                                                        
+0                                                                                                                                 
+-Now we test the STRLEN macro.                                                                                                    
+0The actual length is:    0                                                                                                       
+0The computed length is   0                                                                                                       
+0The actual length is:    3                                                                                                       
+0The computed length is   3                                                                                                       
+0The actual length is:    0                                                                                                       
+0The computed length is   0                                                                                                       
+0The actual length is:    3                                                                                                       
+0The computed length is   3                                                                                                       
+0The actual length is:    3                                                                                                       
+0The computed length is   3                                                                                                       
+0The actual length is:    3                                                                                                       
+0The computed length is   3                                                                                                       
+0                                                                                                                                 
+-Now we test the PROD macro.                                                                                                      
+0Finding the product of 8                                                                                                         
+0PRODUCT =         8                                                                                                              
+0Finding the product of 8 and -10                                                                                                 
+0PRODUCT =        80-                                                                                                             
+0Finding the product of 8, 35 and -10                                                                                             
+0PRODUCT =     2,800-                                                                                                             
+0Finding the product of 8, 8 and 8                                                                                                
+0PRODUCT =       512                                                                                                              
+0Finding the product of an empty set                                                                                              
+0PRODUCT =         1                                                                                                              
+0Finding the product of 8, 35 and -10                                                                                             
+0PRODUCT =     2,800-                                                                                                             
+0Finding the product of 8 and 35                                                                                                  
+0PRODUCT =       280                                                                                                              
+1Finding the product of 8, 12, -10 and -17                                                                                        
+0PRODUCT =    16,320                                                                                                              
+0Finding the product of 8 and 35                                                                                                  
+0PRODUCT =       280                                                                                                              
+0Finding the product of 14 and 32                                                                                                 
+0PRODUCT =       448                                                                                                              
+0*** EXECUTION TIME =    0.000 SECS.       341 INSTRUCTIONS EXECUTED -   341000 INSTRUCTIONS/SEC ***                              
+0*** FIRST CARD NOT READ: NO CARDS READ:FILE UNOPENED                                                                             
+0*** AM004 - NORMAL USER TERMINATION BY RETURN ***                                                                                

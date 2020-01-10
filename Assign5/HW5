@@ -1,0 +1,233 @@
+//KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H                            00010000
+//STEP1 EXEC PGM=ASSIST                                                 00020000
+//STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR                        00030000
+//SYSPRINT DD SYSOUT=*                                                  00040000
+//SYSIN DD *                                                            00050000
+****************************************************                    00060000
+* PROGRAM HOMEWORK 5                                                    00070000
+*                                                                       00080000
+* NAME: EDUARDO LEANOS                                                  00090000
+*                                                                       00100000
+* REGISTER USAGE:                                                       00110000
+*                                                                       00120000
+* REGISTER 1: PARAMETERS                                                00130099
+* REGISTER 10: BRANCH TO LINK                                           00140099
+* REGISTER 13: SAVEAREA                                                 00180799
+* REGISTER 14: DONT USE                                                 00180800
+* REGISTER 15: BASE REGISTER                                            00181000
+***************************                                             00190000
+MAIN     CSECT                                                          00200000
+         USING MAIN,15                                                  00240000
+         TITLE 'EDUARDO, CSCI360, PROGRAM5'                             00240109
+         EJECT                                                          00240200
+         SPACE                                                          00240300
+         ST    14,EXIT                                                  00240409
+         LA    13,MAINSAVE                                              00240522
+*                                                                       00240669
+         LA    1,PLIST           LOAD PARAMS INTO REG 1                 00333122
+         L     10,=V(BUILD)      BRANCH AND LINK TO BUILD TABLE         00333224
+         BALR  14,10             BRANCH TO REG10                        00333399
+*                                                                       00333469
+         LA    1,PLIST           LOAD PARAMS INTO REG 1                 00333599
+         L     10,=V(PRINT)      BRANCH AND LINK TO BUILD PRINT         00333699
+         BALR  14,10             BRANCH TO REG10                        00333799
+*                                                                       00333869
+         LA    1,PLIST           LOAD PARAMS INTO REG 1                 00333999
+         L     10,=V(TALLY)      BRANCH AND LINK TO BUILD TALLY         00334099
+         BALR  14,10             BRANCH TO REG10                        00334199
+*                                                                       00334272
+         L     14,EXIT           LOAD REG14 FROM EXIT                   00335099
+         BR    14                END PROGRAM                            00335309
+         LTORG                   LITERAL ORIGIN                         00335499
+TABLE    DC    72F'-32'                                                 00335522
+EOT      DS    0H                                                       00335637
+PLIST    DC    A(TABLE)                                                 00335722
+         DC    A(EOT)                                                   00335822
+MAINSAVE DS    18F                                                      00335922
+EXIT     DS    F                                                        00336012
+         SPACE                                                          00336100
+         EJECT                                                          00336200
+*******************************************************                 00336300
+*  EXTERNAL SUBROUTINE: BUILD                                           00336409
+*  REGISTER USAGE:                                                      00336500
+*                                                                       00336600
+*  REG 1: XDECI                                                         00336725
+*  REG 2: COUNTER                                                       00336825
+*  REG 3: TABLE                                                         00336925
+*  REG 4: EOT                                                           00337025
+*  REG 5: XDECO                                                         00337199
+*  REG 10: NEW BASE REGISTER                                            00337299
+*  REG 13: FORWARD POINTER                                              00337399
+*  REG 14: BACKWARD POINTER                                             00337499
+*  REG 10: TRANSFERING BASE REGISTER                                    00337599
+*********************************                                       00337600
+BUILD    CSECT                                                          00337709
+         STM   14,12,12(13)        STORE REGISTERS IN REG13             00338099
+         LR    12,15               LOAD REG 15 ONTO 12                  00338199
+         USING BUILD,10            START USING BUILD                    00338299
+         LA    14,BSAVE            POINT REG14 TO BSAVE                 00338322
+         ST    13,4(0,14)          SAVE FORWARD POINTER                 00338422
+         ST    14,8(0,13)          SAVE BACKWARD POINTER                00338522
+         LR    13,14               POINT R13 TO BSAVE                   00338622
+         LM    3,4,0(1)            LOAD PARAMS INTO R3,R4               00338725
+         SR    2,2                 RESET COUNTER                        00338899
+TOPLOOPB XREAD BUFFER,80           READ THE FILE                        00339300
+         BC    B'0100',ENDB        BRANCH TO ENDB IF END OF FILE        00339400
+         LA    1,BUFFER            LOAD ADDRESS OF BUFFER TO REG1       00339500
+INLOOPB  XDECI 5,0(0,1)            DECODE NUMBER AND PUT INTO REG5      00339600
+         BC    B'0001',TOPLOOPB    BRANCH TO TOPLOOPB IF FAIL TO DECODE 00339700
+         C     5,=F'-123456789'    CHECK FOR DELIMITER                  00339899
+         BC    B'1000',ENDB        BREAK IF FOUND                       00339999
+         ST    5,0(0,3)            STORE NUMBER INTO TABLE              00340004
+         A     2,=F'1'             ADD TO COUNTER                       00340106
+         LA    3,4(0,3)            MOVE POINTER OF TABLE                00340299
+         C     2,=F'72'            CHECK IF THE 65 LIMIT IS REACHED     00340301
+         BC    B'1000',ENDB        IF REACHED, GOTO ENDB                00340400
+         B     INLOOPB             BRANCH BACK TO INLOOPB               00340500
+ENDB     DS    0H                  ENDB LABEL                           00340741
+         LA    4,0(0,3)            LOAD POINTER TO EOT TO REG4          00340979
+         L     13,4(0,13)          POINT R13 AT CALLER'S SAVE AREA.     00341133
+         LM    14,12,12(13)        RESTORE THE REGISTERS.               00341233
+         BR    14                  BACK TO MAIN                         00341317
+         LTORG                     LITERAL ORIGIN                       00341499
+BSAVE    DS    18F'0'                                                   00341527
+BUFFER   DS    80C                                                      00341615
+         DC    C'*'                                                     00341727
+EOTB     DS    F                                                        00341852
+*        SPACE                                                          00341971
+*        EJECT                                                          00342071
+********************************************************                00342100
+* SUBROUTINE: PRINT                                                     00342200
+* REGISTER USAGE:                                                       00342300
+*                                                                       00342400
+* REG 1: XDECI                                                          00342500
+* REG 2: COUNTER                                                        00342600
+* REG 3: TABLE                                                          00342700
+* REG 4: EOT                                                            00342800
+* REG 5: POINTER TO PLINE                                               00342900
+* REG 6: XDECO                                                          00343000
+* REG 10: NEW BASE REGISTER                                             00343199
+* REG 13: FORWARD POINTER                                               00343299
+* REG 14: BACKWARD POINTER                                              00343399
+* REG 15: TRANSFERING REGISTERS                                         00343499
+*******************************                                         00343500
+PRINT    CSECT                                                          00343610
+         STM   14,12,12(13)        STORE REGISTERS IN REG13             00343799
+         LR    12,15               LOAD REG 15 ONTO 12                  00343899
+         USING PRINT,10            START USING PRINT                    00343999
+         LA    14,PSAVE            POINT REG14 TO BSAVE                 00344022
+         ST    13,4(0,14)          SAVE FORWARD POINTER                 00344122
+         ST    14,8(0,13)          SAVE BACKWARD POINTER                00344222
+         LR    13,14               POINT R13 TO BSAVE                   00344322
+         LM    3,4,0(1)            LOAD PARAMS INTO R3,R4               00344422
+         XPRNT PHEADER,50          PRINT HEADER                         00344844
+TOPLOOPP DS    0H                  TOPLOOPP LABEL                       00344900
+         SR    2,2                 RESET REG2 FOR COUNTER               00345000
+         LA    5,PLINE+1           LOAD ADDRESS OF PLINE + 1            00345100
+         MVI   PLINE+1,C' '        DESTRUCTIVE                          00345200
+         MVC   PLINE+2(85),PLINE+1 OVERLAP                              00345335
+INLOOPP  DS    0H                  INLOOPP LABEL                        00345400
+         CR    3,4                 COMPARE TABLE POINTER TO EOT POINTER 00345599
+         BC    B'1000',ENDP        IF THEY MATCH, GO TO ENDP            00345600
+         A     2,=F'1'             ADD 1 TO COUNTER                     00345800
+         L     6,0(0,3)            LOAD NUMBER IN TABLE TO REG6         00345900
+         C     6,=F'-32'           CHECK IF EMPTY NUMBER IS PLACED      00346099
+         BC    B'1000',ENDP        BREAK IF TRUE                        00346199
+         XDECO 6,PTABLE            PUT NUMBER IN PTABLE                 00346200
+         MVC   0(12,5),PTABLE      PLACE NUMBER IN PLINE                00346300
+         LA    5,12(0,5)           ADVANCE PLINE POINTER                00346400
+         LA    3,4(0,3)            ADVANCE TABLE POINTER                00346500
+         C     2,=F'6'             COMPARE COUNTER TO 6                 00346639
+         BC    B'0100',INLOOPP     IF NO REACHED, GOTO INLOOPP          00346700
+         XPRNT PLINE,85            PRINT PLINE                          00346835
+         B     TOPLOOPP            GO TO TOPLOOPP AND MAKE NEW LINE     00346900
+ENDP     DS    0H                  ENDP LABEL                           00347000
+         XPRNT PLINE,85            PRINT LAST PLINE                     00347100
+         L     13,4(0,13)          POINT R13 AT CALLER'S SAVE AREA.     00347236
+         LM    14,12,12(13)        RESTORE THE REGISTERS.               00347399
+         BR    14                  BACK TO MAIN                         00347417
+         LTORG                     LITERAL ORIGIN                       00347599
+PEOT     DS    F                                                        00347699
+PSAVE    DS    18F'0'                                                   00347732
+PTABLE   DS    CL12' '                                                  00347832
+PHEADER  DC    CL50'1                               TABLE CONTENTS'     00347937
+PLINE    DC    CL1'0'                                                   00348016
+         DC    CL84' '                                                  00348140
+*        SPACE                                                          00348271
+*        EJECT                                                          00348371
+******************************************************                  00348400
+* EXTERNAL SUBROUTINE: TALLY                                            00348563
+* REGISTER USAGE:                                                       00348600
+*                                                                       00348700
+* REG 1: XDECI                                                          00348800
+* REG 2: COUNTER                                                        00348900
+* REG 3: TABLE                                                          00349000
+* REG 4: EOT                                                            00349100
+* REG 5: XDECO                                                          00349299
+* REG 6,7: MULTIPLICATION/DIVISION                                      00349300
+* REG 1O: NEW BASE REGISTER                                             00349499
+* REG 13: FORWARD POINTER                                               00349599
+* REG 14: BACKWARD POINTER                                              00349699
+* REG 15: TRANSFERING REGISTER                                          00349799
+* ****************************                                          00349800
+TALLY    CSECT                                                          00349963
+         STM   14,12,12(13)        STORE REGISTERS IN REG13             00350099
+         LR    12,15               LOAD REG 15 ONTO 12                  00350199
+         USING TALLY,10            START USING TALLY                    00350299
+         LA    14,TSAVE            POINT REG14 TO BSAVE                 00350363
+         ST    13,4(0,14)          SAVE FORWARD POINTER                 00350463
+         ST    14,8(0,13)          SAVE BACKWARD POINTER                00350563
+         LR    13,14               POINT R13 TO BSAVE                   00350663
+         LM    3,4,0(1)            LOAD PARAMS INTO R3,R4               00350763
+         S     4,=F'4'             SUBTRACT 4 FROM EOT                  00350899
+         ST    3,TABLESAV          STORE START OF TABLE IN TABLESAV     00350999
+         XPRNT TTT,1               XPRNT A SINGLE LINE                  00351099
+TREAD    XREAD TBUFFER,80          READ REST OF FILE, PUT IN TBUFFER    00351199
+         BC    B'0100',ENDT        BRANCH TO ENDB IF END OF FILE        00351293
+         LA    1,TBUFFER           LOAD ADDRESS OF TBUFFER TO REG1      00351397
+TOPLOOPT DS    0H                  TOPLOOPT LABEL                       00351497
+         XDECI 5,0(,1)             DECODE NUMBER AND PUT INTO REG5      00351599
+         BC    B'0001',TREAD       IF XDECI FAILS, XREAD                00351699
+         XDECO 5,NUM               PUT NUMBER IN REG5                   00351799
+         C     5,=F'5555555'       CHECK IF EMPTY NUM                   00351899
+         BC    B'1000',TOPLOOPT    LOOP TO TOPLOOPT                     00351999
+         SR    2,2                 RESET COUNTER                        00352099
+INLOOPT  DS    0H                  INLOOPT LABEL                        00352199
+         SR    7,7                 RESET REG2 FOR COUNTER               00352299
+         CR    4,3                 COMPARE TABLE POINTER TO EOT POINTER 00352399
+         BC    B'1000',INEND       IF THEY MATCH, GO TO ENDP            00352487
+         L     7,0(0,3)            LOAD NUMBER IN TABLE TO REG6         00352587
+         M     6,=F'1'             MULTIPLY REG7 BY 1                   00352699
+         DR    6,5                 DIVIDE REG7 BY REG5                  00352799
+         C     6,=F'0'             CHECK IF REMAINDER IS 0              00352899
+         BC    B'0110',NO          SKIP ADDIING TO COUNTER              00352999
+         A     2,=F'1'             ADD COUNTER                          00353091
+NO       LA    3,4(0,3)            ADVANCE TABLE POINTER                00353191
+         B     INLOOPT             LOOP BACK TO INLOOPT                 00353299
+INEND    DS    0H                  INEND LABEL                          00353399
+         XDECO 2,MULT              PUT REG2 IN MULT                     00353499
+         XPRNT TLINE,71            PRINT TLINE                          00353597
+         L     3,TABLESAV          LOAD TABLESAV INTO REG3              00353699
+         B     TOPLOOPT            GO TO TOPLOOPP AND MAKE NEW LINE     00353799
+ENDT     DS    0H                  ENDP LABEL                           00353863
+         L     13,4(0,13)          POINT R13 AT CALLER'S SAVE AREA.     00353963
+         LM    14,12,12(13)        RESTORE THE REGISTERS.               00354063
+         BR    14                  BACK TO MAIN                         00354163
+         LTORG                     LITERAL ORIGIN                       00354299
+TTT      DC    CL1'1'                                                   00354399
+TBUFFER  DS    80C                                                      00354487
+TSAVE    DS    18F'0'                                                   00354563
+TABLESAV DS    CL12' '                                                  00354687
+TLINE    DC    CL1'-'                                                   00354787
+         DC    CL32'THE NUMBER OF MULTIPLES OF     '                    00354887
+NUM      DS    CL12' '                                                  00354987
+         DC    CL14'  IS:         '                                     00355087
+MULT     DS    CL12' '                                                  00355187
+         DC    CL1'*'                                                   00355287
+*        SPACE                                                          00356071
+*        EJECT                                                          00450071
+********************************************                            00451070
+         END   MAIN                                                     00460063
+/*                                                                      00560000
+//FT05F001 DD DSN=KC02314.AUTUMN19.CSCI360.HW5DATA,DISP=SHR             00570000
+//                                                                      00580000

@@ -1,0 +1,644 @@
+1                   J E S 2  J O B  L O G  --  S Y S T E M  2 9 6 4  --  N O D E  S V S C J E S 2        
+0 
+ 14.58.12 JOB02473 ---- SUNDAY,    17 NOV 2019 ----
+ 14.58.12 JOB02473  IRR010I  USERID KC03E3E  IS ASSIGNED TO THIS JOB.
+ 14.58.12 JOB02473  ICH70001I KC03E3E  LAST ACCESS AT 14:55:57 ON SUNDAY, NOVEMBER 17, 2019
+ 14.58.12 JOB02473  $HASP373 KC03E3EA STARTED - INIT 2    - CLASS A        - SYS 2964
+ 14.58.13 JOB02473  -                                      -----TIMINGS (MINS.)------                          -----PAGING COUNTS-
+ 14.58.13 JOB02473  -STEPNAME PROCSTEP    RC   EXCP   CONN       TCB       SRB  CLOCK          SERV  WORKLOAD  PAGE  SWAP   VIO SW
+ 14.58.13 JOB02473  -STEP1                00     88      7       .00       .00     .0            12  BATCH        0     0     0   
+ 14.58.13 JOB02473  -KC03E3EA ENDED.  NAME-EDUARDO LEANOS       TOTAL TCB CPU TIME=      .00 TOTAL ELAPSED TIME=    .0
+ 14.58.13 JOB02473  $HASP395 KC03E3EA ENDED - RC=0000
+0------ JES2 JOB STATISTICS ------
+-  17 NOV 2019 JOB EXECUTION DATE
+-          477 CARDS READ
+-          648 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-           54 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03E3EA JOB ,'EDUARDO LEANOS',MSGCLASS=H                             JOB02473
+         2 //STEP1 EXEC PGM=ASSIST                                                         
+         3 //STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR                                
+         4 //SYSPRINT DD SYSOUT=*                                                          
+         5 //SYSIN DD *                                                                    
+         6 //FT05F001  DD  DSN=KC02314.AUTUMN19.CSCI360.HW7DATA,DISP=SHR                   
+ ICH70001I KC03E3E  LAST ACCESS AT 14:55:57 ON SUNDAY, NOVEMBER 17, 2019
+ IEFA111I KC03E3EA IS USING THE FOLLOWING JOB RELATED SETTINGS:
+          SWA=ABOVE,TIOT SIZE=32K,DSENQSHR=DISALLOW,GDGBIAS=JOB
+ IEF236I ALLOC. FOR KC03E3EA STEP1
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IGD103I SMS ALLOCATED TO DDNAME FT05F001
+ IEF142I KC03E3EA STEP1 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC02293.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03E3E.KC03E3EA.JOB02473.D0000102.?         SYSOUT        
+ IEF285I   KC03E3E.KC03E3EA.JOB02473.D0000101.?         SYSIN         
+ IGD104I KC02314.AUTUMN19.CSCI360.HW7DATA             RETAINED,  DDNAME=FT05F001
+ IEF373I STEP/STEP1   /START 2019321.1458
+ IEF032I STEP/STEP1   /STOP  2019321.1458 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   248K  EXT:        0K  SYS:    12296K
+         ATB- REAL:                  4116K  SLOTS:                     0K
+              VIRT- ALLOC:      11M SHRD:       0M
+ IEF375I  JOB/KC03E3EA/START 2019321.1458
+ IEF033I  JOB/KC03E3EA/STOP  2019321.1458 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0                                                                                                                                 
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 ***************************************************                                      
+                                       2 * ASSIGNMENT SEVEN                                                                       
+                                       3 *                                                                                        
+                                       4 * NAME: EDUARDO LEANOS - USING MY 1 FREE LATE ASSIGNMENT... :(                           
+                                       5 * NOTE - I THOUGHT IT WAS FOR ANYTIME SO TOOK TIME TO MAKE CHANGES :(                    
+                                       6 ***************************************************                                      
+ 000000                                7 BFORM   DSECT                                                                            
+ 000000                                8 ID       DS    8C                                                                        
+ 000008                                9 LNAME    DS    12C                                                                       
+ 000014                               10 FNAME    DS    10C                                                                       
+ 00001E                               11 SCORE1   DS    PL2                                                                       
+ 000020                               12 SCORE2   DS    PL2                                                                       
+ 000022                               13 SCORE3   DS    PL2           L=36                                                        
+                                      14 ****************************************************                                     
+                                      15 * MAIN                                                                                   
+                                      16 * REGISTER USAGE:                                                                        
+                                      17 *                                                                                        
+                                      18 * REGISTER 1: PARAMETERS                                                                 
+                                      19 * REGISTER 13: SAVEAREA                                                                  
+                                      20 * REGISTER 14: DONT USE                                                                  
+                                      21 * REGISTER 15: BASE REGISTER                                                             
+                                      22 ***************************                                                              
+ 000000                               23 MAIN     CSECT                                                                           
+ 000000 90EC D00C            0000C    24          STM   14,12,12(13)             ENTRY LINKAGE                                    
+ 000004 18CF                          25          LR    12,15                                                                     
+ 000000                               26          USING MAIN,12                                                                   
+ 000006 41E0 CD24            00D24    27          LA    14,MAINSAVE                                                               
+ 00000A 50E0 D008            00008    28          ST    14,8(0,13)                                                                
+ 00000E 50D0 E004            00004    29          ST    13,4(0,14)                                                                
+ 000012 18DE                          30          LR    13,14                                                                     
+                                      31 *                                                                                        
+ 000014 4110 CC24            00C24    32          LA    1,BPARMS                LOAD BPARMS INTO R1                               
+ 000018 58F0 C058            00058    33          L     15,=V(BUILD)            LOAD BUILD INTO R15                               
+ 00001C 05EF                          34          BALR  14,15                   BRANCH TO BUILD                                   
+ 00001E 4110 CC2C            00C2C    35          LA    1,PPARMS                LOAD PPARMS INTO R1                               
+ 000022 58F0 C05C            0005C    36          L     15,=V(PRINT)            LOAD PRINT INTO R15                               
+ 000026 05EF                          37          BALR  14,15                   BRANCH TO 1ST PRINT                               
+ 000028 E020 CD22 0001 00D22          38          XPRNT FREELINE,1              PRINT BLANK LINE                                  
+ 00002E 4110 CC44            00C44    39          LA    1,TPARMS                LOAD TPARMS INTO REG1                             
+ 000032 58F0 C060            00060    40          L     15,=V(TRANS)            LOAD TRANS INTO REG15                             
+ 000036 05EF                          41          BALR  14,15                   BRANCH TO TRANS                                   
+ 000038 E020 CD22 0001 00D22          42          XPRNT FREELINE,1              PRINT BLANK LINE                                  
+ 00003E 4110 CC38            00C38    43          LA    1,PPARMS2               LOAD PPARMS2 INTO R1                              
+ 000042 58F0 C05C            0005C    44          L     15,=V(PRINT)            LOAD PRINT INTO REG15 AGAIN                       
+ 000046 05EF                          45          BALR  14,15                   BRANCH TO 2ND PRINT                               
+                                      46 *                                                                                        
+ 000048 58D0 D004            00004    47          L     13,4(0,13)              EXIT LINKAGE                                      
+ 00004C 98EC D00C            0000C    48          LM    14,12,12(13)                                                              
+ 000050 07FE                          49          BR    14                      END OF MAIN PROGRAM                               
+                                      50 *                                                                                        
+                                      51          LTORG                                                                           
+ 000058 00000D70                      52                =V(BUILD)                                                                 
+1                                                                                                               PAGE    2         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 00005C 00001340                      53                =V(PRINT)                                                                 
+ 000060 000014A0                      54                =V(TRANS)                                                                 
+ 000068                               55          DS    0D                                                                        
+ 000068 4040404040404040              56 TABLE    DC    3000C' '                                                                  
+ 000C20                               57 EOT      DS    F                                                                         
+ 000C24 00000068                      58 BPARMS   DC    A(TABLE)                                                                  
+ 000C28 00000C20                      59          DC    A(EOT)                                                                    
+ 000C2C 00000068                      60 PPARMS   DC    A(TABLE)                                                                  
+ 000C30 00000C20                      61          DC    A(EOT)                                                                    
+ 000C34 00000C50                      62          DC    A(HEAD1)                                                                  
+ 000C38 00000068                      63 PPARMS2  DC    A(TABLE)                                                                  
+ 000C3C 00000C20                      64          DC    A(EOT)                                                                    
+ 000C40 00000CDC                      65          DC    A(HEAD3)                                                                  
+ 000C44 00000068                      66 TPARMS   DC    A(TABLE)                                                                  
+ 000C48 00000C20                      67          DC    A(EOT)                                                                    
+ 000C4C 00000C96                      68          DC    A(HEAD2)                                                                  
+ 000C50 F140404040404040              69 HEAD1    DC    CL50'1                           Initial Table Contents'                  
+ 000C82 4040404040404040              70          DC    CL20'           Page   1'                                                 
+ 000C96 F140404040404040              71 HEAD2    DC    CL50'1                          Results of Transactions'                  
+ 000CC8 4040404040404040              72          DC    CL20'          Page    2'                                                 
+ 000CDC F140404040404040              73 HEAD3    DC    CL50'1                         Table After Transactions'                  
+ 000D0E 4040404040404040              74          DC    CL20'          Page    3'                                                 
+ 000D22 60                            75 FREELINE DC    C'-'                                                                      
+ 000D24                               76 MAINSAVE DS    18F                                                                       
+1                                                                                                               PAGE    3         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                                                                                                                  
+                                                                                                                                  
+                                                                                                                                  
+                                      79 *******************************************************                                  
+                                      80 *  EXTERNAL SUBROUTINE: BUILD                                                            
+                                      81 *  REGISTER USAGE:                                                                       
+                                      82 *                                                                                        
+                                      83 *  REG 1: XREAD/TRT                                                                      
+                                      84 *  REG 2: TRT                                                                            
+                                      85 *  REG 3: STORE WORD                                                                     
+                                      86 *  REG 4: STORE SPACE AFTER WORD/STORE LENGTH                                            
+                                      87 *  REG 7: TABLE                                                                          
+                                      88 *  REG 8: EOT                                                                            
+                                      89 *  REG 9: PASSED IN HEADER                                                               
+                                      90 *  REG 10: NEW BASE REGISTER                                                             
+                                      91 *  REG 13: FORWARD POINTER                                                               
+                                      92 *  REG 14: BACKWARD POINTER                                                              
+                                      93 *  REG 15: TRANSFERING BASE REGISTER                                                     
+                                      94 *********************************                                                        
+ 000D70                               95 BUILD    CSECT                                                                           
+ 000D70 90EC D00C            0000C    96          STM   14,12,12(13)           ENTRY LINKAGE                                      
+ 000D74 18CF                          97          LR    12,15                                                                     
+ 000D70                               98          USING BUILD,12                                                                  
+ 000D76 41E0 C588            012F8    99          LA    14,BSAVE                                                                  
+ 000D7A 50D0 E004            00004   100          ST    13,4(0,14)                                                                
+ 000D7E 50E0 D008            00008   101          ST    14,8(0,13)                                                                
+ 000D82 18DE                         102          LR    13,14                                                                     
+                                     103 *                                                                                        
+ 000D84 9878 1000            00000   104          LM    7,8,0(1)                LOAD BPARMS INTO REG7-8                           
+ 000000                              105          USING BFORM,7                 USE BFORM FROM DSECT                              
+ 000D88                              106 BREAD    DS    0H                      BUILD READ LABEL-LOL BREAD                        
+ 000D88 E000 C110 0050 00E80         107          XREAD BUFFER,80               XREAD DATA INTO BUFFER                            
+ 000D8E 4740 C0F8            00E68   108          BL    BEND                    END IF END OF FILE                                
+ 000D92 4110 C110            00E80   109          LA    1,BUFFER                LOAD ADDRESS INTO R1                              
+                                     110 *                                                                                        
+ 000D96 DD4F 1000 C186 00000 00EF6   111          TRT   0(80,1),ALPHANUM        FIND FIRST ALPHA NUMERIC                          
+ 000D9C 4780 C018            00D88   112          BZ    BREAD                   IF ERROR READ AGAIN                               
+ 000DA0 1831                         113          LR    3,1                     LOAD ADDRESS INTO REG3                            
+ 000DA2 DD4F 1000 C286 00000 00FF6   114          TRT   0(80,1),SPACE           SEARCH FOR SPACE AFTER WORD                       
+ 000DA8 1841                         115          LR    4,1                     LOAD ADDRESS INTO REG4                            
+ 000DAA 1B43                         116          SR    4,3                     GET LENGTH BETWEEN ADDRESSES                      
+ 000DAC 0640                         117          BCTR  4,0                     REDUCE LENGTH BY 1                                
+ 000DAE D507 3000 C108 00000 00E78   118          CLC   0(8,3),=C'00000000'     COMPARE 8-BYTES TO X'00000000'                    
+ 000DB4 4780 C0F8            00E68   119          BE    BEND                    END IF FOUND                                      
+ 000DB8 4440 C162            00ED2   120          EX    4,XID                   EXECUTE MVC OF ID                                 
+                                     121 *Get First name                                                                          
+ 000DBC DD4F 1000 C186 00000 00EF6   122         TRT   0(80,1),ALPHANUM         FIND FIRST ALPHA NUMERIC                          
+ 000DC2 4780 C018            00D88   123         BZ    BREAD                    IF ERROR READ AGAIN                               
+ 000DC6 1831                         124         LR    3,1                      LOAD ADDRESS INTO REG3                            
+ 000DC8 DD4F 1000 C286 00000 00FF6   125         TRT   0(80,1),SPACE            SEARCH FOR SPACE AFTER WORD                       
+ 000DCE 1841                         126         LR    4,1                       LOAD ADDRESS INTO REG4                           
+ 000DD0 1B43                         127         SR    4,3                       GET LENGTH BETWEEN ADDRESSES                     
+ 000DD2 0640                         128         BCTR  4,0                       REDUCE LENGTH BY 1                               
+ 000DD4 4440 C168            00ED8   129         EX    4,XFNAME                  EXECUTE MVC OF FNAME                             
+ 000DD8 DC09 7014 C386 00014 010F6   130         TR    FNAME(10),LOWER           CHANGE ALL LETTERS TO LOWERCASE                  
+ 000DDE DC00 7014 C486 00014 011F6   131         TR    FNAME(1),UPPER            CHANGE FIRST LETTER TO UPPER                     
+                                     132 *Get Last name                                                                           
+1                                                                                                               PAGE    4         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 000DE4 DD4F 1000 C186 00000 00EF6   133          TRT   0(80,1),ALPHANUM         FIND FIRST ALPHA NUMERIC                         
+ 000DEA 4780 C018            00D88   134          BZ    BREAD                    IF ERROR READ AGAIN                              
+ 000DEE 1831                         135          LR    3,1                      LOAD ADDRESS INTO REG3                           
+ 000DF0 DD4F 1000 C286 00000 00FF6   136          TRT   0(80,1),SPACE            SEARCH FOR SPACE AFTER WORD                      
+ 000DF6 1841                         137          LR    4,1                      LOAD ADDRESS INTO REG4                           
+ 000DF8 1B43                         138          SR    4,3                      GET LENGTH BETWEEN ADDRESSES                     
+ 000DFA 0640                         139          BCTR  4,0                      REDUCE LENGTH BY 1                               
+ 000DFC 4440 C16E            00EDE   140          EX    4,XLNAME                 Execute MVC of LNAME                             
+ 000E00 DC0B 7008 C386 00008 010F6   141          TR    LNAME(12),LOWER          CHANGE ALL LETTERS TO LOWERCASE                  
+ 000E06 DC00 7008 C486 00008 011F6   142          TR    LNAME(1),UPPER           CHANGE FIRST LETTER TO UPPER                     
+                                     143 *Get SCORE 1                                                                             
+ 000E0C DD4F 1000 C186 00000 00EF6   144          TRT   0(80,1),ALPHANUM        FIND FIRST ALPHA NUMERIC                          
+ 000E12 4780 C018            00D88   145          BZ    BREAD                   IF ERROR READ AGAIN                               
+ 000E16 1831                         146          LR    3,1                     LOAD ADDRESS INTO REG3                            
+ 000E18 DD4F 1000 C286 00000 00FF6   147          TRT   0(80,1),SPACE           SEARCH FOR SPACE AFTER WORD                       
+ 000E1E 1841                         148          LR    4,1                     LOAD ADDRESS INTO REG4                            
+ 000E20 1B43                         149          SR    4,3                     GET LENGTH BETWEEN ADDRESSES                      
+ 000E22 0640                         150          BCTR  4,0                     REDUCE LENGTH BY 1                                
+ 000E24 4440 C174            00EE4   151          EX    4,XSCORE1               Execute MVC of SCORE1                             
+                                     152 *Get SCORE2                                                                              
+ 000E28 DD4F 1000 C186 00000 00EF6   153          TRT   0(80,1),ALPHANUM        FIND FIRST ALPHA NUMERIC                          
+ 000E2E 4780 C018            00D88   154          BZ    BREAD                   IF ERROR READ AGAIN                               
+ 000E32 1831                         155          LR    3,1                     LOAD ADDRESS INTO REG3                            
+ 000E34 DD4F 1000 C286 00000 00FF6   156          TRT   0(80,1),SPACE           SEARCH FOR SPACE AFTER WORD                       
+ 000E3A 1841                         157          LR    4,1                     LOAD ADDRESS INTO REG4                            
+ 000E3C 1B43                         158          SR    4,3                     GET LENGTH BETWEEN ADDRESSES                      
+ 000E3E 0640                         159          BCTR  4,0                     REDUCE LENGTH BY 1                                
+ 000E40 4440 C17A            00EEA   160          EX    4,XSCORE2               Execute MVC of SCORE2                             
+                                     161 *Get SCORE3                                                                              
+ 000E44 DD4F 1000 C186 00000 00EF6   162          TRT   0(80,1),ALPHANUM         FIND FIRST ALPHA NUMERIC                         
+ 000E4A 4780 C018            00D88   163          BZ    BREAD                    IF ERROR READ AGAIN                              
+ 000E4E 1831                         164          LR    3,1                      LOAD ADDRESS INTO REG3                           
+ 000E50 DD4F 1000 C286 00000 00FF6   165          TRT   0(80,1),SPACE            SEARCH FOR SPACE AFTER WORD                      
+ 000E56 1841                         166          LR    4,1                      LOAD ADDRESS INTO REG4                           
+ 000E58 1B43                         167          SR    4,3                      GET LENGTH BETWEEN ADDRESSES                     
+ 000E5A 0640                         168          BCTR  4,0                      REDUCE LENGTH BY 1                               
+ 000E5C 4440 C180            00EF0   169          EX    4,XSCORE3                Execute MVC of SCORE3                            
+                                     170 *                                                                                        
+ 000E60 4170 7024            00024   171          LA    7,36(0,7)                ADVANCE TABLE POINTER                            
+ 000E64 47F0 C018            00D88   172          BC    B'1111',BREAD            GOTO BREAD... LOL                                
+ 000E68                              173 BEND     DS    0H                       BEND LABEL                                       
+ 000E68 5070 8000            00000   174          ST    7,0(0,8)                 STORE END OF TABLE                               
+                                     175 *                                                                                        
+ 000E6C 58D0 D004            00004   176          L     13,4(0,13)               EXIT LINKAGE                                     
+ 000E70 98EC D00C            0000C   177          LM    14,12,12(13)                                                              
+ 000E74 07FE                         178          BR    14                       BRANCH BACK TO MAIN                              
+                                     179 *                                                                                        
+                                     180          LTORG                                                                           
+ 000E78 F0F0F0F0F0F0F0F0             181                =C'00000000'                                                              
+ 000E80 4040404040404040             182 BUFFER   DC    80C' '                                                                    
+ 000ED0 5C                           183          DC    C'*'                                                                      
+ 000ED2 D200 7000 3000 00000 00000   184 XID      MVC   ID(0),0(3)                                                                
+ 000ED8 D200 7014 3000 00014 00000   185 XFNAME   MVC   FNAME(0),0(3)                                                             
+ 000EDE D200 7008 3000 00008 00000   186 XLNAME   MVC   LNAME(0),0(3)                                                             
+ 000EE4 F210 701E 3000 0001E 00000   187 XSCORE1  PACK  SCORE1(2),0(0,3)                                                          
+ 000EEA F210 7020 3000 00020 00000   188 XSCORE2  PACK  SCORE2(2),0(0,3)                                                          
+ 000EF0 F210 7022 3000 00022 00000   189 XSCORE3  PACK  SCORE3(2),0(0,3)                                                          
+1                                                                                                               PAGE    5         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                     190 * SEARCH TABLE FOR ALPHANUMERIC CHARACTERS                                               
+ 000EF6 0000000000000000             191 ALPHANUM DC    256X'00'                                                                  
+ 000FB7                              192          ORG   ALPHANUM+C'A'                                                             
+ 000FB7 0101010101010101             193          DC    9X'01'                                                                    
+ 000FF6                              194          ORG                                                                             
+ 000FC7                              195          ORG   ALPHANUM+C'J'                                                             
+ 000FC7 0101010101010101             196          DC    9X'01'                                                                    
+ 000FF6                              197          ORG                                                                             
+ 000FD8                              198          ORG   ALPHANUM+C'S'                                                             
+ 000FD8 0101010101010101             199          DC    8X'01'                                                                    
+ 000FF6                              200          ORG                                                                             
+ 000F77                              201          ORG   ALPHANUM+C'a'                                                             
+ 000F77 0101010101010101             202          DC    9X'01'                                                                    
+ 000FF6                              203          ORG                                                                             
+ 000F87                              204          ORG   ALPHANUM+C'j'                                                             
+ 000F87 0101010101010101             205          DC    9X'01'                                                                    
+ 000FF6                              206          ORG                                                                             
+ 000F98                              207          ORG   ALPHANUM+C's'                                                             
+ 000F98 0101010101010101             208          DC    9X'01'                                                                    
+ 000FF6                              209          ORG                                                                             
+ 000FE6                              210          ORG   ALPHANUM+C'0'                                                             
+ 000FE6 0101010101010101             211          DC    10X'01'                                                                   
+ 000FF6                              212          ORG                                                                             
+                                     213 * SERACH TABLE FOR SPACES                                                                
+ 000FF6 0000000000000000             214 SPACE    DC    256X'00'                                                                  
+ 001036                              215          ORG   SPACE+X'40'                                                               
+ 001036 01                           216          DC    X'01'                                                                     
+ 0010F6                              217          ORG                                                                             
+                                     218 * TRANSLATE ALPHABET TO LOWERCASE                                                        
+ 0010F6 4040404040404040             219 LOWER    DC    256C' '                                                                   
+ 001177                              220          ORG   LOWER+C'a'                                                                
+ 001177 8182838485868788             221          DC    CL9'abcdefghi'                                                            
+ 0011F6                              222          ORG                                                                             
+ 001187                              223          ORG   LOWER+C'j'                                                                
+ 001187 9192939495969798             224          DC    CL9'jklmnopqr'                                                            
+ 0011F6                              225          ORG                                                                             
+ 001198                              226          ORG   LOWER+C's'                                                                
+ 001198 A2A3A4A5A6A7A8A9             227          DC    CL8'stuvwxyz'                                                             
+ 0011F6                              228          ORG                                                                             
+ 0011B7                              229          ORG   LOWER+C'A'                                                                
+ 0011B7 8182838485868788             230          DC    CL9'abcdefghi'                                                            
+ 0011F6                              231          ORG                                                                             
+ 0011C7                              232          ORG   LOWER+C'J'                                                                
+ 0011C7 9192939495969798             233          DC    CL9'jklmnopqr'                                                            
+ 0011F6                              234          ORG                                                                             
+ 0011D8                              235          ORG   LOWER+C'S'                                                                
+ 0011D8 A2A3A4A5A6A7A8A9             236          DC    CL8'stuvwxyz'                                                             
+ 0011F6                              237          ORG                                                                             
+ 0011E6                              238          ORG   LOWER+C'0'                                                                
+ 0011E6 F0F1F2F3F4F5F6F7             239          DC    CL10'0123456789'                                                          
+ 0011F6                              240          ORG                                                                             
+                                     241 * TRANSLATE ALPHABET TO UPPERCASE                                                        
+ 0011F6 4040404040404040             242 UPPER    DC    256C' '                                                                   
+ 001277                              243          ORG   UPPER+C'a'                                                                
+ 001277 C1C2C3C4C5C6C7C8             244          DC    CL9'ABCDEFGHI'                                                            
+ 0012F6                              245          ORG                                                                             
+ 001287                              246          ORG   UPPER+C'j'                                                                
+1                                                                                                               PAGE    6         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 001287 D1D2D3D4D5D6D7D8             247          DC    CL9'JKLMNOPQR'                                                            
+ 0012F6                              248          ORG                                                                             
+ 001298                              249          ORG   UPPER+C's'                                                                
+ 001298 E2E3E4E5E6E7E8E9             250          DC    CL9'STUVWXYZ'                                                             
+ 0012F6                              251          ORG                                                                             
+ 0012B7                              252          ORG   UPPER+C'A'                                                                
+ 0012B7 C1C2C3C4C5C6C7C8             253          DC    CL9'ABCDEFGHI'                                                            
+ 0012F6                              254          ORG                                                                             
+ 0012C7                              255          ORG   UPPER+C'J'                                                                
+ 0012C7 D1D2D3D4D5D6D7D8             256          DC    CL9'JKLMNOPQR'                                                            
+ 0012F6                              257          ORG                                                                             
+ 0012D8                              258          ORG   UPPER+C'S'                                                                
+ 0012D8 E2E3E4E5E6E7E8E9             259          DC    CL9'STUVWXYZ'                                                             
+ 0012F6                              260          ORG                                                                             
+ 0012E6                              261          ORG   UPPER+C'0'                                                                
+ 0012E6 F0F1F2F3F4F5F6F7             262          DC    CL10'0123456789'                                                          
+ 0012F6                              263          ORG                                                                             
+ 0012F8                              264 BSAVE    DS    18F                                                                       
+                                     265 **************************************************************                           
+                                     266 *  EXTERNAL SUBROUTINE: PRINT                                                            
+                                     267 *  REGISTER USAGE:                                                                       
+                                     268 *  REG 3: START OF WORD                                                                  
+                                     269 *  REG 4: NEXT SPACE                                                                     
+                                     270 *  REG 7: TABLE                                                                          
+                                     271 *  REG 8: EOT                                                                            
+                                     272 *  REG 9: PAGE HEADER                                                                    
+                                     273 *  REG 10: NEW BASE REGISTER                                                             
+                                     274 *  REG 13: FORWARD POINTER                                                               
+                                     275 *  REG 14: BACKWARD POINTER                                                              
+                                     276 *  REG 15: TRANSFERING BASE REGISTER                                                     
+                                     277 ***********************************                                                      
+ 001340                              278 PRINT    CSECT                                                                           
+ 001340 90EC D00C            0000C   279          STM   14,12,12(13)            ENTRY LINKAGE                                     
+ 001344 18CF                         280          LR    12,15                                                                     
+ 001340                              281          USING PRINT,12                                                                  
+ 001346 41E0 C118            01458   282          LA    14,PSAVE                                                                  
+ 00134A 50D0 E004            00004   283          ST    13,4(0,14)                                                                
+ 00134E 50E0 D008            00008   284          ST    14,8(0,13)                                                                
+ 001352 18DE                         285          LR    13,14                                                                     
+                                     286 *                                                                                        
+ 001354 9879 1000            00000   287          LM    7,9,0(1)                LOAD PPARMS(2) INTO REG7-9                        
+ 000000                              288          USING BFORM,7                 USING BFORM FORM DSECT                            
+ 001358 E020 9000 0046 00000         289          XPRNT 0(0,9),70               PRINT PASSED IN HEADER                            
+ 00135E E020 C084 004C 013C4         290          XPRNT PHEAD,76                PRINT COLLUMNS HEADER                             
+ 001364                              291 PLOOP    DS    0H                      PLOOP LABEL                                       
+ 001364 5970 8000            00000   292          C     7,0(0,8)                CHECK IF EOT                                      
+ 001368 4780 C070            013B0   293          BE    PEND                    IF EOT,END                                        
+ 00136C D207 C0D1 7000 01411 00000   294          MVC   PID(8),ID               MOVE BYTES FROM ID INTO PID                       
+ 001372 D20B C0DE 7008 0141E 00008   295          MVC   PLNAME(12),LNAME        MOVE BYTES FROM LNAME INTO PLNAM                  
+ 001378 D209 C0EE 7014 0142E 00014   296          MVC   PFNAME(10),FNAME        MOVE BYTES FROM FNAME INTO PFNAM                  
+ 00137E D203 C0FD C080 0143D 013C0   297          MVC   PSCORE1(4),=X'40202020' FORMAT PSCORE1                                    
+ 001384 DE03 C0FD 701E 0143D 0001E   298          ED    PSCORE1(4),SCORE1       ED SCORE1 INTO PSCORE1                            
+ 00138A D203 C108 C080 01448 013C0   299          MVC   PSCORE2(4),=X'40202020' FORMAT PSCORE2                                    
+ 001390 DE03 C108 7020 01448 00020   300          ED    PSCORE2(4),SCORE2       ED SCORE2 INTO PSCORE2                            
+ 001396 D203 C113 C080 01453 013C0   301          MVC   PSCORE3(4),=X'40202020' FORMAT PSCORE3                                    
+ 00139C DE03 C113 7022 01453 00022   302          ED    PSCORE3(4),SCORE3       ED SCORE3 INTO PSCORE3                            
+ 0013A2 E020 C0D0 0047 01410         303          XPRNT PLINE,71                PRINT DATA LINE      a                            
+1                                                                                                               PAGE    7         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 0013A8 4170 7024            00024   304          LA    7,36(0,7)               ADVANCE TABLE POINTER                             
+ 0013AC 47F0 C024            01364   305          B     PLOOP                   LOOP BACK TO PLOOP..I MISS BREAD                  
+                                     306 *                                                                                        
+ 0013B0 58D0 D004            00004   307 PEND     L     13,4(0,13)              EXIT LINKAGE                                      
+ 0013B4 98EC D00C            0000C   308          LM    14,12,12(13)                                                              
+ 0013B8 07FE                         309          BR    14                      BRANCH BACK TO MAIN                               
+                                     310 *                                                                                        
+                                     311          LTORG                                                                           
+ 0013C0 40202020                     312                =X'40202020'                                                              
+ 0013C4 60C9C440D5A49482             313 PHEAD    DC    CL40'-ID Number    Last Name     First Name  '                            
+ 0013EC 404040E283969985             314          DC    CL36'   Score 1     Score 2     Score 3  '                                
+ 001410 F0                           315 PLINE    DC    C'0'                                                                      
+ 001411 4040404040404040             316 PID      DC    8C' '                                                                     
+ 001419 4040404040                   317          DC    5C' '                                                                     
+ 00141E 4040404040404040             318 PLNAME   DC    12C' '                                                                    
+ 00142A 40404040                     319          DC    4C' '                                                                     
+ 00142E 4040404040404040             320 PFNAME   DC    10C' '                                                                    
+ 001438 4040404040                   321          DC    5C' '                                                                     
+ 00143D 40404040                     322 PSCORE1  DC    4C' '                                                                     
+ 001441 40404040404040               323          DC    7C' '                                                                     
+ 001448 40404040                     324 PSCORE2  DC    4C' '                                                                     
+ 00144C 40404040404040               325          DC    7C' '                                                                     
+ 001453 40404040                     326 PSCORE3  DC    4C' '                                                                     
+ 001457 5C                           327          DC    C'*'                                                                      
+ 001458                              328 PSAVE    DS    18F                                                                       
+                                     329 **************************************************************                           
+                                     330 *  EXTERNAL SUBROUTINE: TRANS                                                            
+                                     331 *  REGISTER USAGE:                                                                       
+                                     332 *                                                                                        
+                                     333 *  REG 7: TABLE                                                                          
+                                     334 *  REG 8: EOT                                                                            
+                                     335 *  REG 9: PAGE HEADER                                                                    
+                                     336 *  REG 10: NEW BASE REGISTER                                                             
+                                     337 *  REG 13: FORWARD POINTER                                                               
+                                     338 *  REG 14: BACKWARD POINTER                                                              
+                                     339 *  REG 15: TRANSFERING BASE REGISTER                                                     
+                                     340 ***********************************                                                      
+ 0014A0                              341 TRANS    CSECT                                                                           
+ 0014A0 90EC D00C            0000C   342          STM   14,12,12(13)            ENTRY LINKAGE                                     
+ 0014A4 18CF                         343          LR    12,15                                                                     
+ 0014A0                              344          USING TRANS,12                                                                  
+ 0014A6 41E0 C2F0            01790   345          LA    14,SSAVE                                                                  
+ 0014AA 50D0 E004            00004   346          ST    13,4(0,14)                                                                
+ 0014AE 50E0 D008            00008   347          ST    14,8(0,13)                                                                
+ 0014B2 18DE                         348          LR    13,14                                                                     
+                                     349 *                                                                                        
+ 0014B4 9879 1000            00000   350          LM    7,9,0(1)                LOAD PARAMETER INTO REG7-9                        
+ 0014B8 5880 8000            00000   351          L     8,0(,8)                 LOAD EOT INTO REG 8                               
+ 0014BC 5070 C29C            0173C   352          ST    7,TTABLE                STORE START OF TABLE INTO TTABLE                  
+ 0014C0 E020 9000 0045 00000         353          XPRNT 0(0,9),69               PRINT PASSED IN HEADER                            
+ 0014C6 1BBB                         354          SR    11,11                   RESET REG 11                                      
+ 0014C8 E000 C2A0 0014 01740         355 TREAD    XREAD TBUFFER,20              XREAD INTO TBUFFER                                
+ 0014CE 4740 C1AA            0164A   356          BL    TEND                    IF END OF FILE, END                               
+ 0014D2 4110 C2A0            01740   357          LA    1,TBUFFER               LOAD ADDRESS OF TBUFFER INTO REG                  
+ 0014D6                              358 TLOOP    DS    0H                      TLOOP LABEL                                       
+ 0014D6 D207 C236 1000 016D6 00000   359          MVC   TID(8),0(1)             SET TID TO ID IN TBUFFER                          
+                                     360 *GET TYPE                                                                                
+1                                                                                                               PAGE    8         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 0014DC D200 C28B 1009 0172B 00009   361          MVC   TLETTER(1),9(1)         GET THE LETTER FOR TRANSACTION                    
+ 0014E2 1831                         362          LR    3,1                    LOAD ADDRESS OF 1 INTO 3                           
+ 0014E4 D500 C28B C208 0172B 016A8   363          CLC   TLETTER(1),=C'N'       CHECK TLETTER TO 'N'                               
+ 0014EA 4770 C054            014F4   364          BNE   TINLOOP                IF NOT EQUAL GO TO TINLOOP                         
+                                     365 *GET SCORE                                                                               
+ 0014EE F212 C294 100B 01734 0000B   366          PACK  TTEMP(2),11(3,1)       PACK SCORE INTO TTEMP                              
+                                     367 *IF                                                                                      
+ 0014F4                              368 TINLOOP  DS    0H                     LABEL FOR TINLOOP                                  
+ 000000                              369          USING BFORM,7                USING BFORM FROM DSECT                             
+ 0014F4 1978                         370          CR    7,8                    CHECK IF EOT                                       
+ 0014F6 4720 C158            015F8   371          BC    B'0010',NOTFOUND       IF EOT, USER WAS NOT FOUND                         
+ 0014FA D207 C28C 7000 0172C 00000   372          MVC   TTEMPID(8),ID          MOVE BYTES FROM ID INTO TTEMPID                    
+ 001500 D507 C236 C28C 016D6 0172C   373          CLC   TID(8),TTEMPID         COMPARE TID TO TTEMPID                             
+ 001506 4780 C072            01512   374          BE    TTYPESET               IF EQUAL,SET TYPE                                  
+ 00150A 4170 7024            00024   375          LA    7,36(0,7)              ADVANCE TABLE POINTER                              
+ 00150E 47F0 C054            014F4   376          B     TINLOOP                BRANCH TO TINLOOP                                  
+                                     377 *                                                                                        
+ 001512                              378 TTYPESET DS    0H                     TTYPESET LABEL                                     
+ 001512 D500 C28B C209 0172B 016A9   379          CLC   TLETTER(1),=C'S'       COMPARE TO 'S'                                     
+ 001518 4780 C08A            0152A   380          BE    TSTATS                 BRANCH TO TSTATS IF EQUAL                          
+ 00151C D500 C28B C208 0172B 016A8   381          CLC   TLETTER(1),=C'N'       COMPARE TO 'N'                                     
+ 001522 4780 C12A            015CA   382          BE    TNEWSCOR               BRANCH TO TNEWSCOR IF EQUAL                        
+ 001526 47F0 C166            01606   383          B     NOTTRANS               TRANSACTION WAS NOT VALID                          
+                                     384 *                                                                                        
+ 00152A                              385 TSTATS   DS    0H                     TSTATS LABEL                                       
+ 00152A D210 C243 C20A 016E3 016AA   386          MVC   TTYPE(17),=C'Type = Statistics' SET TYPE LINE                             
+ 001530 59B0 C1D8            01678   387          C     11,=F'1'               COMPARE IF USER ID NOT FOUND                       
+ 001534 4780 C17C            0161C   388          BE    TPRINT                 IF EQUAL, GOTO TPRINT                              
+ 001538 D206 C259 C21B 016F9 016BB   389          MVC   TRESULT(7),=C'High  =' SET TRESULT LINE                                   
+ 00153E F811 C294 701E 01734 0001E   390          ZAP   TTEMP(2),SCORE1        FIND HIGHEST SCORE OUT OF 3                        
+ 001544 F911 C294 7020 01734 00020   391          CP    TTEMP(2),SCORE2(2)     COMPARE 1 AND 2                                    
+ 00154A 4740 C0B2            01552   392          BC    B'0100',COMPARE1       1 < 2 , BRANCH                                     
+ 00154E 47F0 C0C6            01566   393          B     COMPARE2               1 > 2 , BRANCH                                     
+                                     394 *                                                                                        
+ 001552 F811 C294 7020 01734 00020   395 COMPARE1 ZAP   TTEMP(2),SCORE2        SET TEMP AS SCORE 2                                
+ 001558 F911 C294 7022 01734 00022   396          CP    TTEMP(2),SCORE3(2)     COMPARE 2 AND 3                                    
+ 00155E 4740 C0D4            01574   397          BC    B'0100',TSET3          2 < 3 , BRANCH                                     
+ 001562 47F0 C0DE            0157E   398          B     TDONE                   2 > 3 , BRANCH                                    
+                                     399 *                                                                                        
+ 001566 F911 C294 7022 01734 00022   400 COMPARE2 CP    TTEMP(2),SCORE3(2)      COMPARE 1 AND 3                                   
+ 00156C 4740 C0D4            01574   401          BC    B'0100',TSET3           1 < 3 , BRANCH                                    
+ 001570 47F0 C0DE            0157E   402          B     TDONE                   1 > 3 , BRANCH                                    
+                                     403 *                                                                                        
+ 001574 F811 C294 7022 01734 00022   404 TSET3    ZAP   TTEMP(2),SCORE3         SET TEMP AS SCORE 3                               
+ 00157A 47F0 C0DE            0157E   405          B     TDONE                   3 > 1 && 3 > 2 , BRANCH                           
+                                     406 *                                                                                        
+ 00157E D203 C27E C1DC 0171E 0167C   407 TDONE    MVC   TSCORE(4),=X'40202020'  FORMAT TSCORE                                     
+ 001584 DE03 C27E C294 0171E 01734   408          ED    TSCORE(4),TTEMP         ED TTEMP INTO TSCORE                              
+ 00158A D203 C261 C27E 01701 0171E   409          MVC   TRESULT+8(4),TSCORE     SET TRESULT LINE                                  
+ 001590 D209 C26B C1F0 0170B 01690   410          MVC   TRESULT+18(10),=C'Average = '                                             
+ 001596 F830 C296 C222 01736 016C2   411          ZAP   TTEMP2(4),=P'0'         TAKE THE AVERAGE                                  
+ 00159C FA31 C296 701E 01736 0001E   412          AP    TTEMP2(4),SCORE1(2)     ADD SCORE1                                        
+ 0015A2 FA31 C296 7020 01736 00020   413          AP    TTEMP2(4),SCORE2(2)     ADD SCORE2                                        
+ 0015A8 FA31 C296 7022 01736 00022   414          AP    TTEMP2(4),SCORE3(2)     ADD SCORE3                                        
+ 0015AE FD30 C296 C223 01736 016C3   415          DP    TTEMP2(4),=P'3'         DIVIDE BY 3                                       
+ 0015B4 D206 C282 C224 01722 016C4   416          MVC   TSCORE2(7),=X'40202020202020'  FORMAT TSCORE2                             
+ 0015BA DE06 C282 C296 01722 01736   417          ED    TSCORE2(7),TTEMP2           ED TTEMP2 INTO TSCORE2                        
+1                                                                                                               PAGE    9         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 0015C0 D207 C275 C282 01715 01722   418          MVC   TRESULT+28(8),TSCORE2       SET TRESULTS LINE                             
+ 0015C6 47F0 C17C            0161C   419          B     TPRINT                      BRANCH TO PRINT                               
+                                     420 *                                                                                        
+ 0015CA                              421 TNEWSCOR DS    0H                          TNEWCOR LABEL                                 
+ 0015CA D203 C27E C1DC 0171E 0167C   422          MVC   TSCORE(4),=X'40202020'      TSCORE FORMAT                                 
+ 0015D0 DE03 C27E C294 0171E 01734   423          ED    TSCORE(4),TTEMP             ED TTEMP INTO TSCORE                          
+ 0015D6 F213 7022 C27E 00022 0171E   424          PACK  SCORE3(2),TSCORE(4)         PACK SCORE INTO BFORM                         
+ 0015DC D20D C243 C1FA 016E3 0169A   425          MVC   TTYPE(14),=C'Trans. Code = '  TTYPE LINE SET                              
+ 0015E2 D200 C252 C28B 016F2 0172B   426          MVC   TTYPE+15(1),TLETTER                                                       
+ 0015E8 D207 C259 C1B8 016F9 01658   427          MVC   TRESULT(8),=C'Score = '                                                   
+ 0015EE D203 C261 C27E 01701 0171E   428          MVC   TRESULT+8(4),TSCORE                                                       
+ 0015F4 47F0 C17C            0161C   429          B     TPRINT                      BRANCH TO PRINT                               
+                                     430 *                                                                                        
+ 0015F8                              431 NOTFOUND DS    0H                          NOTFOUND LABEL                                
+ 0015F8 D20B C259 C1E0 016F9 01680   432          MVC   TRESULT(12),=C'ID not found' TRESULT SET                                  
+ 0015FE 58B0 C1D8            01678   433          L     11,=F'1'                    SET REG 11 TO 1                               
+ 001602 47F0 C072            01512   434          B     TTYPESET                     BRANCH TO TTYPESET                           
+                                     435 *                                                                                        
+ 001606                              436 NOTTRANS DS    0H                           NOTTRANS LABEL                               
+ 001606 D20D C243 C1FA 016E3 0169A   437          MVC   TTYPE(14),=C'Trans. Code = ' TTYPE LINE  SET                              
+ 00160C D200 C252 C28B 016F2 0172B   438          MVC   TTYPE+15(1),TLETTER                                                       
+ 001612 D218 C259 C1C0 016F9 01660   439          MVC   TRESULT(25),=C'Invalid transaction code'                                  
+ 001618 47F0 C17C            0161C   440          B     TPRINT                       BRANCH TO PRINT                              
+                                     441 *                                                                                        
+ 00161C                              442 TPRINT   DS    0H                           TRPINT LABEL                                 
+ 00161C D204 C231 C22B 016D1 016CB   443          MVC   TLINE+1(5),=C'ID = '         SET TLINE                                    
+ 001622 E020 C230 004B 016D0         444          XPRNT TLINE,75                     PRINT TLINE                                  
+ 001628 9240 C231      016D1         445          MVI   TLINE+1,C' '                 DESTRUCTIVE OVERLAP                          
+ 00162C D24C C232 C231 016D2 016D1   446          MVC   TLINE+2(77),TLINE+1          AYY HEYO                                     
+ 001632 58B0 C1EC            0168C   447          L     11,=F'0'                     RESET REG11                                  
+ 001636 5870 C29C            0173C   448          L     7,TTABLE                     RESET TABLE POINTER                          
+ 00163A F810 C294 C222 01734 016C2   449          ZAP   TTEMP(2),=P'0'               RESET TTEMP                                  
+ 001640 F830 C296 C222 01736 016C2   450          ZAP   TTEMP2(4),=P'0'              RESET TTEMP2                                 
+ 001646 47F0 C028            014C8   451          B     TREAD                        BRANCH TO TREAD                              
+                                     452 *                                                                                        
+ 00164A 58D0 D004            00004   453 TEND     L     13,4(0,13)               EXIT LINKAGE                                     
+ 00164E 98EC D00C            0000C   454          LM    14,12,12(13)                                                              
+ 001652 07FE                         455          BR    14                       BRANCH BACK TO MAIN                              
+                                     456          LTORG                                                                           
+ 001658 E283969985407E40             457                =C'Score = '                                                              
+ 001660 C995A58193898440             458                =C'Invalid transaction code'                                              
+ 001678 00000001                     459                =F'1'                                                                     
+ 00167C 40202020                     460                =X'40202020'                                                              
+ 001680 C9C4409596A34086             461                =C'ID not found'                                                          
+ 00168C 00000000                     462                =F'0'                                                                     
+ 001690 C1A5859981878540             463                =C'Average = '                                                            
+ 00169A E3998195A24B40C3             464                =C'Trans. Code = '                                                        
+ 0016A8 D5                           465                =C'N'                                                                     
+ 0016A9 E2                           466                =C'S'                                                                     
+ 0016AA E3A89785407E40E2             467                =C'Type = Statistics'                                                     
+ 0016BB C889878840407E               468                =C'High  ='                                                               
+ 0016C2 0C                           469                =P'0'                                                                     
+ 0016C3 3C                           470                =P'3'                                                                     
+ 0016C4 40202020202020               471                =X'40202020202020'                                                        
+ 0016CB C9C4407E40                   472                =C'ID = '                                                                 
+ 0016D0 F0                           473 TLINE    DC    1C'0'                                                                     
+ 0016D1 4040404040                   474          DC    5C' '                                                                     
+1                                                                                                               PAGE   10         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 0016D6 4040404040404040             475 TID      DC    8C' '                                                                     
+ 0016DE 4040404040                   476          DC    5C' '                                                                     
+ 0016E3 4040404040404040             477 TTYPE    DC    17C' '                                                                    
+ 0016F4 4040404040                   478          DC    5C' '                                                                     
+ 0016F9 4040404040404040             479 TRESULT  DC    36C' '                                                                    
+ 00171D 5C                           480          DC    1C'*'                                                                     
+ 00171E 40404040                     481 TSCORE   DC    4C' '                                                                     
+ 001722 4040404040404040             482 TSCORE2  DC    8C' '                                                                     
+ 00172A 5C                           483          DC    C'*'                                                                      
+ 00172B 40                           484 TLETTER  DC    1C' '                                                                     
+ 00172C                              485 TTEMPID  DS    8C' '                                                                     
+ 001734                              486 TTEMP    DS    PL2'0'                                                                    
+ 001736                              487 TTEMP2   DS    PL4'0'                                                                    
+ 00173C                              488 TTABLE   DS    F                                                                         
+ 001740 4040404040404040             489 TBUFFER  DC    80C' '                                                                    
+ 001790                              490 SSAVE    DS    18F                                                                       
+                                     491          END   MAIN                          END OF PROGRAM                              
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:   25732 HIGH:    2404 LEAVING:  465432 FREE BYTES. AVERAGE:       57 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.001 SECS,   492000 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+1                           Initial Table Contents           Page   1                                                             
+-ID Number    Last Name     First Name     Score 1     Score 2     Score 3                                                        
+000418467     Addams          Sharon           41        467        334                                                           
+074463805     Allen           Ronald          724        478        358                                                           
+091695724     Baker           Brian           705        145        281                                                           
+014789358     Brown           Brian           491        995        942                                                           
+069624464     Campbell        George          391        604        902                                                           
+057058145     Carter          Susan           382        421        716                                                           
+032816827     Clark           Kevin           447        726        771                                                           
+099610491     Davis           Linda           912        667        299                                                           
+029951942     Edwards         Sarah           703        811        322                                                           
+048275436     Evans           Charles         664        141        711                                                           
+023914604     Garcia          Kimberley       547        644        662                                                           
+039020153     Gonzalez        Daniel          859        723        741                                                           
+002922382     Green           David           316         35        190                                                           
+074218716     Hall            Maria           106         40        942                                                           
+097189895     Harris          Jennifer        446        805        890                                                           
+054471726     Hernandez       Helen           350          6        101                                                           
+047711538     Hill            Sarah           629        623         84                                                           
+018699912     Jackson         Jeff            840        966        376                                                           
+056676299     Jones           Kimberly        944        439        626                                                           
+070359894     King            Richard         538        118         82                                                           
+087033811     Lee             Kevin           833        115        639                                                           
+013220333     Lewis           Daniel          930        977        306                                                           
+076734664     Martin          Elizabeth        21        745        924                                                           
+000372859     Martinez        Jennifer        829        777        573                                                           
+082536868     Miller          Thomas          986        290        161                                                           
+055477644     Mitchell        Brian           767        655        574                                                           
+039316308     Young           Mark            523        587        314                                                           
+-                                                                                                                                 
+1                          Results of Transactions          Page    2                                                             
+0ID = 91695724     Type = Statistics     High  =  705      Average =    377                                                       
+0ID = 99610491     Type = Statistics     High  =  912      Average =    626                                                       
+0ID = 70359894     Trans. Code =  D      Invalid transaction code                                                                 
+0ID = 00418467     Trans. Code =  N      Score =  230                                                                             
+0ID = 39316308     Type = Statistics     High  =  587      Average =    474                                                       
+0ID = 74463805     Type = Statistics     High  =  724      Average =    520                                                       
+0ID = 74463805     Trans. Code =  N      Score =  162                                                                             
+0ID = 74463805     Type = Statistics     High  =  724      Average =    454                                                       
+0ID = 45454545     Type = Statistics     ID not found                                                                             
+0ID = 18699912     Trans. Code =  Q      Invalid transaction code                                                                 
+0ID = 29951942     Trans. Code =  N      Score =  125                                                                             
+0ID = 99999999     Type = Statistics     ID not found                                                                             
+0ID = 50061101     Trans. Code =  N      Score =  450                                                                             
+0ID = 00372859     Type = Statistics     High  =  829      Average =    726                                                       
+0ID = 32816826     Trans. Code =  N      Score =  179                                                                             
+0ID = 00372859     Trans. Code =  N      Score =  567                                                                             
+0ID = 00372859     Type = Statistics     High  =  829      Average =    724                                                       
+-                                                                                                                                 
+1                         Table After Transactions          Page    3                                                             
+-ID Number    Last Name     First Name     Score 1     Score 2     Score 3                                                        
+000418467     Addams          Sharon           41        467        230                                                           
+074463805     Allen           Ronald          724        478        162                                                           
+091695724     Baker           Brian           705        145        281                                                           
+014789358     Brown           Brian           491        995        942                                                           
+069624464     Campbell        George          391        604        902                                                           
+057058145     Carter          Susan           382        421        716                                                           
+032816827     Clark           Kevin           447        726        771                                                           
+099610491     Davis           Linda           912        667        299                                                           
+029951942     Edwards         Sarah           703        811        125                                                           
+048275436     Evans           Charles         664        141        711                                                           
+023914604     Garcia          Kimberley       547        644        662                                                           
+039020153     Gonzalez        Daniel          859        723        741                                                           
+002922382     Green           David           316         35        190                                                           
+074218716     Hall            Maria           106         40        942                                                           
+097189895     Harris          Jennifer        446        805        890                                                           
+054471726     Hernandez       Helen           350          6        101                                                           
+047711538     Hill            Sarah           629        623         84                                                           
+018699912     Jackson         Jeff            840        966        376                                                           
+056676299     Jones           Kimberly        944        439        626                                                           
+070359894     King            Richard         538        118         82                                                           
+087033811     Lee             Kevin           833        115        639                                                           
+013220333     Lewis           Daniel          930        977        306                                                           
+076734664     Martin          Elizabeth        21        745        924                                                           
+000372859     Martinez        Jennifer        829        777        567                                                           
+082536868     Miller          Thomas          986        290        161                                                           
+055477644     Mitchell        Brian           767        655        574                                                           
+039316308     Young           Mark            523        587        314                                                           
+0*** EXECUTION TIME =    0.002 SECS.      4942 INSTRUCTIONS EXECUTED -  2471000 INSTRUCTIONS/SEC ***                              
+0*** AM004 - NORMAL USER TERMINATION BY RETURN ***                                                                                

@@ -1,0 +1,470 @@
+//KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H
+//STEP1 EXEC PGM=ASSIST
+//STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR
+//SYSPRINT DD SYSOUT=*
+//SYSIN DD *
+****************************************************
+* PROGRAM HOMEWORK 6
+*
+* NAME: EDUARDO LEANOS
+*
+***********************************
+BFORM   DSECT                      FORMAT FOR BUILD
+FNAME   DS    10C
+LNAME   DS    10C
+ID      DS    8C
+BAL     DS    PL4
+***********************************
+TFORM    DSECT                     FORMAT FOR TRANS
+ZID      DS    8C
+         DS    2C
+TYPE     DS    1C
+         DS    2C
+AMOUNT   DS    7C
+         DS    2C
+DAY      DS    2C
+MONTH    DS    2C
+YEAR     DS    4C
+****************************************************
+* MAIN
+* REGISTER USAGE:
+*
+* REGISTER 1: PARAMETERS
+* REGISTER 13: SAVEAREA
+* REGISTER 14: DONT USE
+* REGISTER 15: BASE REGISTER
+***************************
+MAIN     CSECT
+         USING MAIN,15
+         TITLE 'EDUARDO, CSCI360, PROGRAM6'
+         EJECT
+         SPACE
+         ST    14,EXIT                SAVE REG 14 IN EXIT
+         LA    13,MAINSAVE            LOAD MAIN SAVE INTO REG 13
+         LA    1,BLIST                LOAD BLIST INTO REG 1
+         L     10,=V(BUILD)           LOAD BUILD INTO REG 10
+         BALR  14,10                  BRANCH TO BUILD
+*
+         LA    1,PLIST                LOAD PLIST INTO REG 1
+         L     10,=V(PRINT)           LOAD PRINT INTO REG 10
+         BALR  14,10                  BRANCH TO PRINT
+*
+         LA     1,TLIST               LOAD TLIST INTO REG 1
+         L     10,=V(TRANS)           LOAD TRANS INTO REG 10
+         BALR  14,10                  BRANCH TO TRANS
+*
+         LA     1,PLIST2              LOAD PLIST2 INTO REG 1
+         L     10,=V(PRINT)           LOAD TRANS INTO REG 10
+         BALR  14,10                  BRANCH TO PRINT AGAIN
+*
+         L     14,EXIT                LOAD EXIT
+         BR    14                     END PROGRAM
+         LTORG                        LITERAL ORIGIN
+         ORG   MAIN+((*-MAIN+31)/32)*32
+TABLE    DS    40CL38
+EOT      DS    F
+NUM1     DC    F'1'
+NUM2     DC    F'2'
+CAPTION  DS    F
+PCOUNT   DC    PL2'0'
+BUFFER   DS    80C
+BLIST    DC    A(TABLE)
+         DC    A(EOT)
+         DC    A(BUFFER)
+PLIST    DC    A(TABLE)
+         DC    A(EOT)
+         DC    A(NUM1)
+         DC    A(PCOUNT)
+PLIST2   DC    A(TABLE)
+         DC    A(EOT)
+         DC    A(NUM2)
+         DC    A(PCOUNT)
+TLIST    DC    A(TABLE)
+         DC    A(EOT)
+         DC    A(BUFFER)
+         DC    A(PCOUNT)
+MAINSAVE DS    18F
+EXIT     DS    F
+         EJECT
+         SPACE
+*******************************************************
+*  EXTERNAL SUBROUTINE: BUILD
+*  REGISTER USAGE:
+*
+*  REG 1: XREAD
+*  REG 2: TABLE
+*  REG 3: EOT
+*  REG 4: PASSED IN BUFFER
+*  REG 10: NEW BASE REGISTER
+*  REG 13: FORWARD POINTER
+*  REG 14: BACKWARD POINTER
+*  REG 15: TRANSFERING BASE REGISTER
+*********************************
+BUILD    CSECT
+         STM   14,12,12(13)             ENTRY LINKAGE
+         LR    12,15
+         USING BUILD,10
+         USING BFORM,2                  LOAD DSECT BFORM
+         LA    14,BSAVE
+         ST    13,4(0,14)
+         ST    14,8(0,13)
+         LR    13,14                    END OF ENTRY LINKAGE
+*
+         LM    2,4,0(1)                 LOAD BLIST
+BLOOP    XREAD 0(4),80                  READ BUFFER
+         BC    B'0100',BEND             BRANCH IF END OF FILE
+         LA    1,0(0,4)                 LOAD ADDRESS OF BUFFER INTO REG 1
+         MVC   LNAME(10),0(1)           INSERT LAST NAME INTO BUFFER
+         LA    1,12(0,1)                ADVANCE POINTER
+         MVC   FNAME(10),0(1)           INSERT FIRST NAME INTO BUFFER
+         LA    1,12(0,1)                ADVANCE POINTER
+         MVC   ID(8),0(1)               INSERT POINTER INTO BUFFER
+         CLC   ID(6),=CL8'STOPHERE'     CHECK FOR END OF ENTRIES
+         BC    B'1000',BEND             BRANCH IF END OF ENTRIES
+         LA    1,10(0,1)                ADVANCE POINTER
+         MVC   TEMP(7),0(1)             INSERT BALANCE INTO TEMP
+         PACK  BAL(4),TEMP(7)           PACK BALANCE
+         CLC   7(1,1),=CL1'+'           CHECK SIGN
+         BC    B'1000',POSITIVE         BRANCH IF POSITIVE
+         MP    BAL(4),=PL1'-1'          MULTIPLY BY NEGATIVE
+POSITIVE DS    0H                       POSITIVE LABEL
+         LA    2,32(,2)                 ADVANCE POINTER
+         B     BLOOP                    BRANCH TO BLOOP
+BEND     DS    0H                       BEND LABEL
+         ST    2,0(0,3)                 STORE EOT IN TABLE
+*
+         L     13,4(0,13)               EXIT LINKAGE
+         LM    14,12,12(13)
+         BR    14                       BRANCH BACK TO MAIN
+         LTORG                          LITERAL ORIGIN
+         DC    C'*'
+TEMP     DS    CL7' '
+BSAVE    DS    18F'0'
+         EJECT
+         SPACE
+*************************************************8************
+*  EXTERNAL SUBROUTINE: PRINT
+*  REGISTER USAGE:
+*
+*  REG 1: EDMK
+*  REG 2: TABLE
+*  REG 3: EOT
+*  REG 4: PASSED IN BUFFER
+*  REG 5: PAGE COUNTER
+*  REG 6: LINE COUNTER
+*  REG 10: NEW BASE REGISTER
+*  REG 13: FORWARD POINTER
+*  REG 14: BACKWARD POINTER
+*  REG 15: TRANSFERING BASE REGISTER
+***********************************
+PRINT    CSECT
+         STM   14,12,12(13)           ENTRY LINKAGE
+         LR    12,15
+         USING PRINT,10
+         USING BFORM,2                 USE DSECT BFORM
+         LA    14,PSAVE
+         ST    13,4(0,14)
+         ST    14,8(0,13)
+         LR    13,14                   END OF ENTRY LINKAGE
+*
+         LM    2,5,0(1)                LOAD PLIST
+         SR    6,6                     SET REG 6 = 0
+         LR    7,4                     LOAD REG 4 INTO REG 7
+PAGECNT  L     6,=F'15'                SET PAGE LIMIT
+PLOOP    C     2,0(0,3)                CHECK IF EOT
+         BC    B'1000',PEND            IF EOT,BRANCH
+         C     6,=F'15'                CHECK IF NEW PAGE PROPAGATED
+         BC    B'0111',PAGESKIP        SKIP PAGE NUMERATION
+         AP    0(2,5),=PL1'1'          ADD 1 TO PAGE NUM
+         MVC   PAGENUM(4),=X'40202120' FORMAT PAGE NUM
+         ED    PAGENUM(4),0(5)
+         MVC   PAGENUM2(4),=X'40202120' FORMAT PAGE NUM2
+         ED    PAGENUM2(4),0(5)
+         C     7,=F'1620'              COMPARE IF UPDATED
+         BC    B'1000',PRINTH1         IF TRUE BRANCH TO PRINTH1
+         XPRNT PHEADER2,79             PRINT HEADER
+         B     UPDATEDH
+PRINTH1  XPRNT PHEADER,79              PRINT HEADER
+UPDATEDH XPRNT PTABLEH,76              PRINT TABLE HEADER
+PAGESKIP DS    0H                      PSKIP LABEL
+         MVC   PFNAME(10),FNAME        SET FIRST NAME
+         MVC   PLNAME(10),LNAME        SET LAST NAME
+         MVC   PID(8),ID               SET ID
+         MVC   PBAL(10),=X'4020206B2021204B2020' FORMATTING
+         LA    1,PBAL+6                LOAD BALANCE
+         EDMK  PBAL(10),BAL            FORMAT BALANCE
+         S     1,=F'1'                     GET LOCATION FOR '$'
+         MVC   0(1,1),=CL1'$'          SET '$'
+         MVC   PCR(2),=CL2'  '         ADD SPACES
+         AP    BAL,=PL1'0'             CHECK IF NEGATIVE
+         BC    B'1010',PPRINT          PRINT IF NOT NEGATIVE
+         MVC   PCR(2),=CL2'CR'         PUT IN CR
+PPRINT   XPRNT PLINE,78                PRINT LINE
+         AP    PSUM(4),BAL             ADD TO TOTAL SUM
+         AP    PNUM(2),=PL1'1'         INCREMENT PNUM BY 1
+         LA    2,32(0,2)               ADVANCE POINTER
+         S     6,=F'1'                 SUB 1 FROM REG 6
+         C     6,=F'0'                 CHECK IF ZERO
+         BC    B'1000',PAGECNT         RESET LIMIT IF TRUE
+         B     PLOOP                   BRANCH TO PLOOP
+PEND     DS    0H                      PEND LABEL
+         MVC   PNUMCUSC(4),=X'40202020' FORMAT ACCOUNT AMOUNT
+         ED    PNUMCUSC(4),PNUM
+         XPRNT PNUMCUS,32              PRINT ACCOUNT AMOUNT
+         LA    1,PSUMALLS+6
+         MVC   PSUMALLS(10),=X'4020206B2021204B2020' SUM FORMAT
+         EDMK  PSUMALLS(10),PSUM
+         S     1,=F'1'                 DECREMENT REG 1 BY 1
+         MVC   0(1,1),=CL1'$'          SET '$'
+         XPRNT PSUMALL,35              PRINT SUM
+         ZAP   PTEMP(5),PSUM(4)        USE A BIGGER NUM
+         DP    PTEMP(5),PNUM(2)        GET AVERAGE
+         LA    1,PAVGN+6
+         MVC   PAVGN(7),=X'402021204B2020' FORMAT AVERAGE
+         EDMK  PAVGN(7),PTEMP
+         S     1,=F'1'                 DECREMENT REG BY 1
+         MVC   0(1,1),=CL1'$'          SET '$'
+         XPRNT PAVG,35                 PRINT AVERAGE
+         ZAP   PNUM(2),=PL1'0'         RESET PNUM
+         ZAP   PSUM(4),=PL1'0'         RESET PSUM
+*
+         L     13,4(0,13)
+         LM    14,12,12(13)
+         BR    14                      BRANCH BACK TO MAIN
+         LTORG                         LITERAL ORIGIN
+PHEADER  DC    CL1'1'
+         DC    CL49'                     Odds and Ends Customer Data'
+         DC    CL25'                    Page'
+PAGENUM  DS    CL4' '
+PHEADER2 DC    CL1'1'
+         DC    CL49'                   Odds and Ends Updated Customer'
+         DC    CL25' Data               Page'
+PAGENUM2 DS    CL4' '
+PTABLEH  DC    CL43'-First Name           Last Name            '
+         DC    CL33'ID Number                Balance '
+PNUMCUS  DC    CL28'-Number of customers =      '
+PNUMCUSC DS    4C' '
+PSUMALL  DC    CL25'0Sum of all balances =   '
+PSUMALLS DS    10C' '
+PAVG     DC    CL28'0Average balance =          '
+PAVGN    DS    7C' '
+*
+PLINE    DC    CL1'0'
+PFNAME   DS    10C' '
+         DC    11C' '
+PLNAME   DS    10C' '
+         DC    11C' '
+PID      DS    8C' '
+         DC    14C' '
+PBAL     DS    10C' '
+         DC    1C' '
+PCR      DS    2C' '
+PNUM     DC    PL2'0'
+PTEMP    DC    PL5'0'
+PSUM     DC    PL4'0'
+PSAVE    DS    18F'0'
+         EJECT
+         SPACE
+*******************************************************
+*  EXTERNAL SUBROUTINE: TRANS
+*  REGISTER USAGE:
+*
+*  REG 1: EDMK
+*  REG 2: TABLE
+*  REG 3: EOT
+*  REG 4: PASSED IN BUFFER
+*  REG 5: PAGE COUNTER
+*  REG 6: START OF TABLE
+*  REG 10: NEW BASE REGISTER
+*  REG 13: FORWARD POINTER
+*  REG 14: BACKWARD POINTER
+*  REG 15: TRANSFERING BASE REGISTER
+********************************
+TRANS    CSECT
+         STM   14,12,12(13)           ENTRY LINKAGE
+         LR    12,15
+         USING TRANS,10
+         USING BFORM,2                USING DSECT BFORM
+         USING TFORM,4                FORMAT TRANSACTION
+         LA    14,TSAVE
+         ST    13,4(0,14)
+         ST    14,8(0,13)
+         LR    13,14                  END OF ENTRY LINKAGE
+*
+         LM    2,5,0(1)               LOAD TLIST
+         LR    6,2                    SAVE BEGGIGING OF TABLE
+         AP    0(2,5),=PL1'1'         ADD 1 TO PAGE NUMBER
+         ZAP   TSUCC,=PL1'0'          ZERO OUT SUCCESS COUNTER
+         ZAP   TERRORC,=PL1'0'        ZERO OUT FAILURE COUNTER
+         MVC   TPAGENUM(4),=X'40202120' FORMAT PAGE NUMBER
+         ED    TPAGENUM(4),0(5)
+         XPRNT THEADER,80           PRINT HEADER
+         XPRNT TTABLEH,77           PRINT TABLE HEADER
+TLOOP    XREAD 0(0,4),80            READ TRANSACTIONS
+         BC    B'0100',TEND         END IF END OF TRANSACTIONS
+         LR    2,6                  RESET TABLE
+         PACK  TNUM(4),AMOUNT(7)    PACK TRANSACTION AMOUNT
+         MVC   EAMOUNT(10),=X'4020206B2021204B2020' FORMAT TRANSACTION
+         LA    1,EAMOUNT+6
+         EDMK  EAMOUNT(10),TNUM
+         S     1,=F'1'              DECREMENT REG1 BY 1
+         MVC   0(1,1),=CL1'$'       SET '$'
+         MVC   TAMOUNT(10),EAMOUNT  COPY TRANSACTION AMOUNT
+         CLC   TYPE(1),=CL1'B'      CHECK IF BALANCE
+         BC    B'1000',TTYPEB       BRANCH IF TRUE
+         CLC   TYPE(1),=CL1'D'      CHECK IF DEPOSIT
+         BC    B'1000',TTYPED       BRANCH IF TRUE
+         CLC   TYPE(1),=CL1'W'      CHECK IF WITHDRAWL
+         BC    B'1000',TTYPEW       BRANCH IF TRUE
+*
+* //ADD LINE TYPE
+*
+TTYPEW   MVC   TTYPESEL(15),=CL15'Withdrawal     '
+         MVC   TTYPE(15),TTYPESEL
+         B     DATECONF
+*
+TTYPED   MVC   TTYPESEL(15),=CL15'Deposit        '
+         MVC   TTYPE(15),TTYPESEL
+         B     DATECONF
+*
+TTYPEB   MVC   TTYPESEL(15),=CL15'Balance Query  '
+         MVC   TTYPE(15),TTYPESEL
+*
+* //START DATE FORMAT
+*
+DATECONF DS    0H                    DATECONF LABEL
+         MVC   ERRORID(8),ZID        FORMAT ERROR DATE
+         MVC   TID(8),ZID            FORMAT TRANSACTION DATE
+         MVC   ERRDATE(2),DAY
+         MVC   ERRDATE+2(1),=C'/'
+         MVC   ERRDATE+3(2),MONTH
+         MVC   ERRDATE+5(1),=C'/'
+         MVC   ERRDATE+6(4),YEAR
+         MVC   TDATE(2),DAY
+         MVC   TDATE+2(1),=C'/'
+         MVC   TDATE+3(2),MONTH
+         MVC   TDATE+5(1),=C'/'
+         MVC   TDATE+6(4),YEAR
+*
+* //FIND ACCOUNT LOOP
+*
+INLOOP   DS    0H                    INLOOP LABEL
+         C     2,0(,3)               CHECK IF EOT
+         BC    B'1000',TERROR        BRANCH IF TRUE
+         CLC   ID(8),ZID             COMPARE IDS
+         BC    B'1000',TYPECONF      IF EQUAL, BRANCH
+         LA    2,32(0,2)             ADVANCE POINTER
+         B     INLOOP                BRANCH TO INLOOP
+*
+* //BRANCH TO CORRESPONDING TYPE
+*
+TYPECONF DS    0H                   TYPE LABEL
+         MVC   TCR(2),=CL2'  '       ADD SPACES
+         CLC   TYPE(1),=CL1'B'       CHECK IF BALANCE
+         BC    B'1000',TRANSBAL      BRANCH IF TRUE
+         CLC   TYPE(1),=CL1'D'       CHECK IF DEPOSIT
+         BC    B'1000',TRANSDEP      BRANCH IF TRUE
+         CLC   TYPE(1),=CL1'W'       CHECK IF WITHDRAWL
+         BC    B'1000',TRANSWIT      BRANCH IF TRUE
+         B     TEND                  BRANCH TO TEND
+*
+* //PRINT ERROR LINE
+*
+TERROR   DS    0H                    TERROR LABEL
+         XPRNT ERROR,81              PRINT ERROR
+         AP    TERRORC,=PL1'1'       ADD 1 TO TERRORC
+         MVI   TTYPESEL,C' '         CLEAR TYPE
+         MVI   EAMOUNT,C' '          CLEAR AMOUNT
+         B     TLOOP                 BRANCH TO TLOOP
+*
+* //WITHDRAWL TRANSACTION
+*
+TRANSWIT DS    0H                    TRANSWIT LABEL
+         AP    BAL,TNUM              ADD TRANS
+         BC    B'1010',TRANSEND      BRANCH IF POSITIVE
+         MVC   TCR(2),=CL2'CR'       SET CR
+         B     TRANSEND              BRANCH TO TRANSEND
+*
+* //DEPOSIT TRANSACTION
+*
+TRANSDEP DS    0H                    TRANSDEP LABEL
+         SP    BAL,TNUM              SUBTRACT TRANS
+         BC    B'1010',TRANSEND      BRANCH IF POSITIVE
+         MVC   TCR(2),=CL2'CR'       SET CR
+         B     TRANSEND              BRANCH TO TRANSEND
+*
+* //BALANCE TRANSACTION/DISPLAY
+*
+TRANSBAL DS    0H                    TRANSBAL LABEL
+         MVC   TAMOUNT(10),=CL10'             ' CLEAR
+         AP    BAL,=PL1'0'           CHECK IF POSITIVE
+         BC    B'1010',TRANSEND      BRANCH IF TRUE
+         MVC   TCR(2),=CL2'CR'       SET CR
+*
+* //PRINT TRANSACTION LINE
+*
+TRANSEND DS    0H                    TRANSEND LABEL
+         MVC   TBAL(10),=X'4020206B2021204B2020' FORMAT BALANCE
+         LA    1,TBAL+6
+         EDMK  TBAL(10),BAL
+         S     1,=F'1'               DECREMENT REG 1 BY 1
+         MVC   0(1,1),=CL1'$'        SET '$'
+         XPRNT TLINE,80              PRINT TRANSACTION
+         AP    TSUCC,=PL1'1'         ADD SUCCESS
+         B     TLOOP                 BRANCH TO TLOOP
+*
+* //DISPLAY FINAL RECORDS
+*
+TEND     DS    0H                    TEND LABEL
+         MVC   TSUCCF(4),=X'40202020'  FORMATING SUCCESS
+         MVC   TERRORCF(4),=X'40202020'  FORMATING ERROR
+         ED    TSUCCF(4),TSUCC
+         ED    TERRORCF(4),TERRORC
+         XPRNT TSUCCL,31             PRINT SUCCESS
+         XPRNT TERRORCL,31           PRINT ERROR
+*
+         L     13,4(0,13)            EXIT LINKAGE
+         LM    14,12,12(13)
+         BR    14                    BRANCH BACK TO MAIN
+         LTORG                       LITERAL ORIGIN
+THEADER  DC    CL42'1                             Transaction '
+         DC    CL34' Report                       Page'
+TPAGENUM DS    4C' '
+TTABLEH  DC    CL1'-'
+         DC    CL43'    Customer ID     Transaction      Amount '
+         DC    CL33'          Date            Balance'
+TLINE    DC    CL5'0    '
+TID      DS    CL8
+         DC    7C' '
+TTYPE    DS    15C' '
+         DC    CL1' '
+TAMOUNT  DS    10C' '
+         DC    6C' '
+TDATE    DS    10C' '
+         DC    5C' '
+TBAL     DS    10C' '
+         DC    1C' '
+TCR      DS    2C' '
+TERRORC  DS    PL2'0'
+TSUCC    DS    PL2'0'
+TSUCCL   DC    CL27'1 Successful transactions: '
+TSUCCF   DS    4C' '
+TERRORCL DC    CL27'- Failed transactions:     '
+TERRORCF DS    4C' '
+*
+ERROR    DC    CL13'0 Error!  ID '
+ERRORID  DS    8C' '
+         DC    CL21' was not found for a '
+TTYPESEL DS    CL15'               '
+EAMOUNT  DS    CL10'          '
+         DC    CL4' on '
+ERRDATE  DS    10C' '
+*
+TEDIT    DS    PL4'0'
+TNUM     DS    PL4'0'
+TSAVE    DS    18F'0'
+***********************************
+         END   MAIN
+/*
+//FT05F001  DD  DSN=KC02314.AUTUMN19.CSCI360.HW6DATA,DISP=SHR
+//

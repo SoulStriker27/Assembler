@@ -1,0 +1,182 @@
+//KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H                            00010000
+//STEP1 EXEC PGM=ASSIST                                                 00020000
+//STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR                        00030000
+//SYSPRINT DD SYSOUT=*                                                  00040000
+//SYSIN DD *                                                            00050000
+****************************************************                    00060000
+* PROGRAM HOMEWORK 4                                                    00070000
+*                                                                       00080000
+* NAME: EDUARDO LEANOS                                                  00090000
+*                                                                       00100000
+* REGISTER USAGE:                                                       00110000
+*                                                                       00120000
+* REGISTER 1: XDECI                                                     00130000
+* REGISTER 12: PARAMETERS                                               00140001
+* REGISTER 13: SUBROUTINE                                               00180701
+* REGISTER 14: DONT USE                                                 00180800
+* REGISTER 15: BASE REGISTER                                            00181000
+***************************                                             00190012
+MAIN     CSECT                                                          00200000
+         USING MAIN,15                                                  00240000
+         TITLE 'EDUARDO, CSCI360, PROGRAM4'                             00240100
+         EJECT                                                          00240200
+         SPACE                                                          00240300
+         LA    12,TABLE          LOAD ADDRESS OF TABLE TO REG2          00332701
+         ST    12,PARAMS         STORE TABLE IN PARAMS                  00332801
+         LA    12,EOT            LOAD ADDRESS OF EOT TO REG2            00332901
+         ST    12,PARAMS+4       STORE EOT IN PARAMS NEXT FULLWORD      00333001
+         LA    12,PARAMS         LOAD PARAMS INTO REG 2                 00333101
+         BAL   13,BUILD          BRANCH AND LINK TO BUILD TABLE         00333201
+         BAL   13,PRINT          BRANCH AND LINK TO PRINT TABLE         00333342
+         BAL   13,ODD            BRANCH AND LINK TO PRINT ODDS          00333453
+         BR    14                END PROGRAM                            00335314
+         SPACE                                                          00335600
+         EJECT                                                          00335701
+*******************************************************                 00335800
+*  SUBROUTINE: BUILD                                                    00335900
+*  REGISTER USAGE:                                                      00336000
+*                                                                       00336100
+*  REG 1: XDECI                                                         00336200
+*  REG 2: COUNTER                                                       00336300
+*  REG 3: TABLE                                                         00336400
+*  REG 4: EOT                                                           00336500
+*  REG 5:                                                               00336607
+*  REG 12: PARAMS                                                       00336801
+*  REG 13: SUBROUTINE                                                   00336901
+*  REG 14: DO NOT USE                                                   00337001
+*  REG 15: BASE REGISTER                                                00337101
+*********************************                                       00337201
+BUILD    DS    0H                  BUILD INTERNAL SUB                   00338076
+         SR    2,2                 RESET REG2 FOR COUNTER               00338176
+         LM    3,4,0(12)           LOAD MULTIPLE FROM PARAMS            00338276
+TOPLOOPB XREAD BUFFER,80           READ THE FILE                        00338476
+         BC    B'0100',ENDB        BRANCH TO ENDB IF END OF FILE        00338576
+         LA    1,BUFFER            LOAD ADDRESS OF BUFFER TO REG1       00338676
+INLOOPB  XDECI 5,0(0,1)            DECODE NUMBER AND PUT INTO REG5      00338776
+         BC    B'0001',TOPLOOPB    BRANCH TO TOPLOOPB IF FAIL TO DECODE 00338876
+         ST    5,0(0,3)            STORE NUMBER INTO TABLE              00339176
+         LA    3,4(0,3)            MOVE POINTER OF TABLE                00339276
+         A     2,=F'1'             ADD TO COUNTER                       00339376
+         C     2,=F'65'            CHECK IF THE 65 LIMIT IS REACHED     00339476
+         BC    B'1000',ENDB        IF REACHED, GOTO ENDB                00339576
+         B     INLOOPB             BRANCH BACK TO INLOOPB               00339876
+ENDB     DS    0H                  ENDB LABEL                           00339976
+         LR    4,3                 LOAD POINTER TO EOT TO REG4          00340076
+         BR    13                  BACK TO MAIN                         00340176
+         SPACE                                                          00340201
+         EJECT                                                          00340301
+********************************************************                00340400
+* SUBROUTINE: PRINT                                                     00340501
+* REGISTER USAGE:                                                       00340601
+*                                                                       00340701
+* REG 1: XDECI                                                          00340801
+* REG 2: COUNTER                                                        00340901
+* REG 3: TABLE                                                          00341001
+* REG 4: EOT                                                            00341101
+* REG 5: POINTER TO PLINE                                               00341201
+* REG 6: XDECO                                                          00341301
+* REG 12: PARAMS                                                        00341401
+* REG 13: SUBROUTINE                                                    00341501
+* REG 14: DO NOT USE                                                    00341601
+* REG 15: BASE REGISTER                                                 00341701
+*******************************                                         00341801
+PRINT    DS    0H                  PRINT SUBROUTINE                     00341976
+         XPRNT NEWPAGE,2           PRINT ON NEWPAGE                     00342076
+         XPRNT HEADER,50           PRINT HEADER                         00342176
+         XPRNT EMPTYL,85           PRINT EMPTY LINE                     00342276
+         XPRNT EMPTYL,85           ''                                   00342376
+         LM    3,4,0(12)           LOAD MULTIPLE FROM PARAMS            00342476
+TOPLOOPP DS    0H                  TOPLOOPP LABEL                       00342576
+         SR    2,2                 RESET REG2 FOR COUNTER               00342676
+         LA    5,PLINE+1           LOAD ADDRESS OF PLINE + 1            00342776
+         MVI   PLINE+1,C' '        DESTRUCTIVE                          00342876
+         MVC   PLINE+2(84),PLINE+1 OVERLAP                              00342976
+INLOOPP  DS    0H                  INLOOPP LABEL                        00343076
+         CR    3,4                 COMPARE TABLE POINTER TO EOT POINTER 00343176
+         BC    B'1000',ENDP        IF THEY MATCH, GO TO ENDP            00343276
+         A     2,=F'1'             ADD 1 TO COUNTER                     00343376
+         L     6,0(0,3)            LOAD NUMBER IN TABLE TO REG6         00343476
+         XDECO 6,PTABLE            PUT NUMBER IN PTABLE                 00343576
+         MVC   0(12,5),PTABLE      PLACE NUMBER IN PLINE                00343676
+         LA    5,12(0,5)           ADVANCE PLINE POINTER                00343776
+         LA    3,4(0,3)            ADVANCE TABLE POINTER                00343876
+         C     2,=F'6'             COMPARE COUNTER TO 6                 00343976
+         BC    B'0100',INLOOPP     IF NO REACHED, GOTO INLOOPP          00344076
+         XPRNT PLINE,80            PRINT PLINE                          00344176
+         B     TOPLOOPP            GO TO TOPLOOPP AND MAKE NEW LINE     00344276
+ENDP     DS    0H                  ENDP LABEL                           00344376
+         XPRNT PLINE,85            PRINT LAST PLINE                     00344476
+         BR    13                  BACK TO MAIN                         00344576
+         SPACE                                                          00344601
+         EJECT                                                          00344701
+******************************************************                  00344801
+* SUBROUTINE: ODD NUMBER PRINT                                          00344953
+* REGISTER USAGE:                                                       00345053
+*                                                                       00345153
+* REG 1: XDECI                                                          00345253
+* REG 2: COUNTER                                                        00345353
+* REG 3: TABLE                                                          00345453
+* REG 4: EOT                                                            00345553
+* REG 5: POINTER TO PLINE                                               00345653
+* REG 6,7: MULTIPLICATION/DIVISION                                      00345758
+* REG 12: PARAMS                                                        00345853
+* REG 13: SUBROUTINE                                                    00345953
+* REG 14: DO NOT USE                                                    00346053
+* REG 15: BASE REGISTER                                                 00346153
+* ****************************                                          00346253
+ODD      DS    0H                  ODD INTERNAL SUBROUTINE              00346376
+         XPRNT NEWPAGE,2           PRINT NEWPAGE                        00346476
+         XPRNT HEADERO,55          PRINT ODD NUMBER HEADER              00346576
+         XPRNT EMPTYL,85           PRINT EMPTY LINE                     00346676
+         XPRNT EMPTYL,85                                                00346769
+         LM    3,4,0(12)           LOAD MULTIPLE PARAMETERS             00346876
+TOPLOOPO DS    0H                  TOPLOOPO LABEL                       00346976
+         SR    2,2                 RESET COUNTER                        00347076
+         LA    5,PLINE+1           LOAD ADDRESS OF PLINE+1 TO REG5      00347176
+         MVI   PLINE+1,C' '        DESTRUCTIVE                          00347276
+         MVC   PLINE+2(84),PLINE+1 OVERLAP                              00347376
+INLOOPO  DS    0H                  INLOOPO LABEL                        00347476
+         CR    3,4                 COMPARE TABLE POINTER TO EOT POINTER 00347576
+         BC    B'1000',ENDO        IF EQUAL, GOTO ENDO                  00347676
+         L     7,0(0,3)            LOAD NUMBER INTO REG7 FROM TABLE     00347776
+         M     6,=F'1'             MULITIPLY BY 1 FOR 64 BIT            00347876
+         D     6,=F'2'             DIVIDE BY 2                          00347976
+         C     6,=F'0'             COMPARE REMAINDER WITH 0             00348076
+         BE    INENDO              IF THEY EQUAL, GOTO INENDO           00348176
+         A     2,=F'1'             ADD 1 TO THE COUNTER                 00348276
+         L     7,0(0,3)            LOAD NUMBER IN TABLE TO REG7         00348376
+         XDECO 7,OTABLE            PUT NUMBER INTO OTABLE               00348476
+         MVC   0(12,5),OTABLE      PUT OTABLE INTO PLINE                00348576
+         LA    5,12(0,5)           ADVANCE PLINE POINTER                00348676
+INENDO   LA    3,4(0,3)            ADVANCE POINTER IN TABLE             00348776
+         C     2,=F'7'             COMPARE COUNTER TO 7                 00348876
+         BC    B'0100',INLOOPO     IF SMALLER, GOTO INLOOPO             00348976
+         XPRNT PLINE,85            PRINT PLINE                          00349076
+         B     TOPLOOPO            GOTO TOPLOOPO                        00349176
+ENDO     DS    0H                  ENDO LABEL                           00349276
+         XPRNT PLINE,85            PRINT LAST LINE IN ODD NUMBERS       00349376
+         BR    13                  BRANCH BACK TO MAIN                  00349476
+         SPACE                                                          00349553
+         EJECT                                                          00349653
+*************************************************                       00349753
+         LTORG                     LITERALS ORIGIN                      00349876
+TABLE    DC    65F'-128'                                                00349900
+EOT      DS    0H                                                       00350004
+PARAMS   DS    F'0'                                                     00410038
+         DS    F'0'                                                     00420038
+HEADER   DC    CL50'1                                LIST OF NUMBERS'   00420173
+HEADERO  DC    CL1'1'                                                   00420370
+         DC    CL35' '                                                  00420474
+         DC    CL20'LIST OF ODD NUMBERS'                                00420573
+NEWPAGE  DC    CL1'-'                                                   00420668
+EMPTYL   DC    CL85' '                                                  00420769
+PTABLE   DS    CL12' '                                                  00420825
+OTABLE   DS    CL12' '                                                  00420962
+PLINE    DC    CL1'0'                                                   00421075
+         DS    CL84                                                     00422021
+BUFFER   DS    80C                                                      00430037
+         DC    C'*'                                                     00440001
+         END   MAIN                                                     00450002
+/*                                                                      00560000
+//FT05F001 DD DSN=KC02314.AUTUMN19.CSCI360.HW4DATA,DISP=SHR             00570000
+//                                                                      00580000

@@ -1,0 +1,199 @@
+1                   J E S 2  J O B  L O G  --  S Y S T E M  2 9 6 4  --  N O D E  S V S C J E S 2        
+0 
+ 10.12.48 JOB02385 ---- TUESDAY,   03 DEC 2019 ----
+ 10.12.48 JOB02385  IRR010I  USERID KC03E3E  IS ASSIGNED TO THIS JOB.
+ 10.12.48 JOB02385  ICH70001I KC03E3E  LAST ACCESS AT 10:02:22 ON TUESDAY, DECEMBER 3, 2019
+ 10.12.48 JOB02385  $HASP373 KC03E3EA STARTED - INIT 1    - CLASS A        - SYS 2964
+ 10.12.48 JOB02385  -                                      -----TIMINGS (MINS.)------                          -----PAGING COUNTS-
+ 10.12.48 JOB02385  -STEPNAME PROCSTEP    RC   EXCP   CONN       TCB       SRB  CLOCK          SERV  WORKLOAD  PAGE  SWAP   VIO SW
+ 10.12.48 JOB02385  -STEP1                00     52      4       .00       .00     .0             9  BATCH        0     0     0   
+ 10.12.48 JOB02385  -KC03E3EA ENDED.  NAME-EDUARDO LEANOS       TOTAL TCB CPU TIME=      .00 TOTAL ELAPSED TIME=    .0
+ 10.12.48 JOB02385  $HASP395 KC03E3EA ENDED - RC=0000
+0------ JES2 JOB STATISTICS ------
+-  03 DEC 2019 JOB EXECUTION DATE
+-          120 CARDS READ
+-          203 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-           18 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H                            JOB02385
+         2 //STEP1 EXEC PGM=ASSIST                                                         
+         3 //STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR                                
+         4 //SYSPRINT DD SYSOUT=*                                                          
+         5 //SYSIN DD *                                                                    
+         6 //FT05F001  DD  DSN=KC02314.AUTUMN19.CSCI360.HWEXDATA,DISP=SHR                  
+ ICH70001I KC03E3E  LAST ACCESS AT 10:02:22 ON TUESDAY, DECEMBER 3, 2019
+ IEFA111I KC03E3EA IS USING THE FOLLOWING JOB RELATED SETTINGS:
+          SWA=ABOVE,TIOT SIZE=32K,DSENQSHR=DISALLOW,GDGBIAS=JOB
+ IEF236I ALLOC. FOR KC03E3EA STEP1
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IGD103I SMS ALLOCATED TO DDNAME FT05F001
+ IEF142I KC03E3EA STEP1 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC02293.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03E3E.KC03E3EA.JOB02385.D0000102.?         SYSOUT        
+ IEF285I   KC03E3E.KC03E3EA.JOB02385.D0000101.?         SYSIN         
+ IGD104I KC02314.AUTUMN19.CSCI360.HWEXDATA            RETAINED,  DDNAME=FT05F001
+ IEF373I STEP/STEP1   /START 2019337.1012
+ IEF032I STEP/STEP1   /STOP  2019337.1012 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   264K  EXT:        0K  SYS:    11632K
+         ATB- REAL:                  1044K  SLOTS:                     0K
+              VIRT- ALLOC:      11M SHRD:       0M
+ IEF375I  JOB/KC03E3EA/START 2019337.1012
+ IEF033I  JOB/KC03E3EA/STOP  2019337.1012 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0                                                                                                                                 
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 ***************************************************                                      
+                                       2 * ASSIGNMENT EXTRA CREDIT ASSIGNMENT A                                                   
+                                       3 *                                                                                        
+                                       4 * NAME: EDUARDO LEANOS                                                                   
+                                       5 *                                                                                        
+                                       6 ***************************************************                                      
+                                       7 *MAIN                                                                                    
+                                       8 *                                                                                        
+                                       9 *  REGISTER USAGE:                                                                       
+                                      10 *  REG1: EDMK                                                                            
+                                      11 *  REG2: EDMK                                                                            
+                                      12 *  REG3: B,E                                                                             
+                                      13 *  REG4: A,D                                                                             
+                                      14 *  REG5: MULTIPLYING                                                                     
+                                      15 *  REG6: C*B                                                                             
+                                      16 *  REG7: MULTIPLYING/RESULT                                                              
+                                      17 *  REG8: FLIPING SIGNS/COMPARISON                                                        
+                                      18 *  REG9: RESULT OF FLIP                                                                  
+                                      19 *  REG10: BUFFER                                                                         
+                                      20 ***********************************                                                      
+ 000000                               21 MAIN     CSECT                                                                           
+ 000000                               22          USING MAIN,15                                                                   
+ 000000 50E0 F1E8            001E8    23          ST    14,EXIT              ENTRY LINKAGE                                        
+ 000004 41D0 F1A0            001A0    24          LA    13,SAVE                                                                   
+                                      25 *                                                                                        
+ 000008 E020 F163 002D 00163          26          XPRNT HEADER,45            PRINT HEADER                                         
+ 00000E                               27 LOOP     DS    0H                   LOOP LABEL                                           
+ 00000E E000 F0EA 0050 000EA          28          XREAD BUFFER,80            READ INTO BUFFER                                     
+ 000014 4740 F0CC            000CC    29          BL    END                  IF END OF FILE, END                                  
+ 000018 41A0 F0EA            000EA    30          LA    10,BUFFER            LOAD BUFFER INTO REG10                               
+ 00001C F275 F190 A000 00190 00000    31          PACK  NUM1D(8),0(6,10)     PACK 1ST NUM INTO NUM1D                              
+ 000022 F275 F198 A008 00198 00008    32          PACK  NUM2D(8),8(6,10)     PACK 2ND NUM INTO NUM2D                              
+ 000028 4F50 F190            00190    33          CVB   5,NUM1D              CONVERT BINARY                                       
+ 00002C 4F30 F198            00198    34          CVB   3,NUM2D              CONVERT BINARY                                       
+                                      35 ***<GET A>                                                                               
+ 000030 4110 F142            00142    36          LA    1,NUM1+5             LOAD ADDRESS OF A - SIGN                             
+ 000034 D205 F13D F0E4 0013D 000E4    37          MVC   NUM1(6),=X'402020202120'                                                  
+ 00003A DF05 F13D F195 0013D 00195    38          EDMK  NUM1(6),NUM1D+5      FORMAT A                                             
+ 000040 1255                          39          LTR   5,5                  CHECK IF POSITIVE                                    
+ 000042 47B0 F04E            0004E    40          BC    B'1011',SKIPB        BRANCH IF TRUE                                       
+ 000046 5B10 F0D8            000D8    41          S     1,=F'1'              REDUCE REG1 BY 1                                     
+ 00004A 9260 1000      00000          42          MVI   0(1),C'-'            PUT IN NEGATIVE SIGN                                 
+                                      43 ***<GET B>                                                                               
+ 00004E                               44 SKIPB    DS    0H                   LABEL B                                              
+ 00004E 4110 F152            00152    45          LA    1,NUM2+5             LOAD ADDRESS OF B - SIGN                             
+ 000052 D205 F14D F0E4 0014D 000E4    46          MVC   NUM2(6),=X'402020202120'                                                  
+ 000058 DF05 F14D F19D 0014D 0019D    47          EDMK  NUM2(6),NUM2D+5      FORMAT B                                             
+ 00005E 1233                          48          LTR   3,3                  CHECK IF B IS POSITIVE                               
+ 000060 47B0 F06C            0006C    49          BC    B'1011',SKIPC        BRANCH IF TRUE                                       
+ 000064 5B10 F0D8            000D8    50          S     1,=F'1'              REDUCE REG BY 1                                      
+ 000068 9260 1000      00000          51          MVI   0(1),C'-'            PUT IN NEGATIVE SIGN                                 
+                                      52 ***<GET C>                                                                               
+1                                                                                                               PAGE    2         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 00006C                               53 SKIPC    DS    0H                   LABEL C                                              
+ 00006C 5C40 F0D8            000D8    54          M     4,=F'1'              SET UP REG4 FOR DIVISION                             
+ 000070 1D43                          55          DR    4,3                  DIVIVE A BY B                                        
+                                      56 ***<GET RESULT>                                                                          
+ 000072 1875                          57          LR    7,5                  LOAD QUOTIENT INTO R7                                
+ 000074 1C63                          58          MR    6,3                  MULTIPLY C * B                                       
+                                      59 ***<GET E>                                                                               
+ 000076 1233                          60          LTR   3,3                 CHECK B IF POSITIVE                                   
+ 000078 4720 F084            00084    61          BC    B'0010',SKIPD       SKIP IF TRUE, IS NOW E                                
+ 00007C 1893                          62          LR    9,3                 LOAD B INTO R9                                        
+ 00007E 5C80 F0DC            000DC    63          M     8,=F'-1'            MAKE POSITIVE                                         
+ 000082 1839                          64          LR    3,9                 MOVE B BACK INTO REG3, TURNS INTO E                   
+                                      65 ***<GET D>                                                                               
+ 000084                               66 SKIPD    DS    0H                                                                        
+ 000084 1254                          67          LTR   5,4                 PUT REMAINDER INTO 5 - D                              
+ 000086 4720 F092            00092    68          BC    B'0010',SKIPD2      CHECK POSITIVE, SKIP IF TRUE                          
+ 00008A 1895                          69          LR    9,5                 LOAD D INTO R9                                        
+ 00008C 5C80 F0DC            000DC    70          M     8,=F'-1'            MAKE POSITIVE                                         
+ 000090 1859                          71          LR    5,9                 MOVE B BACK INTO REG3                                 
+                                      72 ***<GET D*2>                                                                             
+ 000092 5C40 F0E0            000E0    73 SKIPD2   M     4,=F'2'              MULTIPLY D * 2                                       
+                                      74 ***<IF - OUT>                                                                            
+ 000096 1953                          75          CR    5,3                  COMPARE D AND E                                      
+ 000098 4740 F0AE            000AE    76          BC    B'0100',PRINT        IF D < E, PRINT                                      
+                                      77 ***<IF - IN>                                                                             
+ 00009C 4F80 F190            00190    78          CVB   8,NUM1D              CONVERT A TO BINARY                                  
+ 0000A0 1288                          79          LTR   8,8                  CHECK IF NEGATIVE                                    
+ 0000A2 4740 F0AC            000AC    80          BC    B'0100',ELSE         BRANCH IF NOT                                        
+ 0000A6 1A73                          81          AR    7,3                  ADD E TO RESULT                                      
+ 0000A8 47F0 F0AE            000AE    82          B     PRINT                BRANCH TO PRINT                                      
+                                      83 ***<ELSE - IN>                                                                           
+ 0000AC                               84 ELSE     DS    0H                                                                        
+ 0000AC 1B73                          85          SR    7,3                  SUBTRACT E FROM RESULT                               
+                                      86 ***<END IN/IN>                                                                           
+                                      87 ***<END IF/OUT - PRINT>                                                                  
+ 0000AE                               88 PRINT    DS    0H                   PRINT LABEL                                          
+ 0000AE 4E70 F190            00190    89          CVD   7,NUM1D              CONVERT TO DECIMAL                                   
+ 0000B2 4110 F162            00162    90          LA    1,RESULT+5           SET POINTER                                          
+ 0000B6 D205 F15D F0E4 0015D 000E4    91          MVC   RESULT(6),=X'402020202120'                                                
+ 0000BC DF05 F15D F195 0015D 00195    92          EDMK  RESULT(6),NUM1D+5    FORMAT RESULT                                        
+ 0000C2 E020 F13A 0029 0013A          93          XPRNT LINE,41              PRINT LINE                                           
+ 0000C8 47F0 F00E            0000E    94          B     LOOP                 BRANCH LOOP                                          
+ 0000CC                               95 END      DS    0H                   END IF END OF FILE                                   
+                                      96 *                                                                                        
+ 0000CC 58E0 F1E8            001E8    97          L     14,EXIT              LOAD EXIT                                            
+ 0000D0 07FE                          98          BR    14                   END PROGRAM                                          
+                                      99          LTORG                                                                           
+ 0000D8 00000001                     100                =F'1'                                                                     
+ 0000DC FFFFFFFF                     101                =F'-1'                                                                    
+ 0000E0 00000002                     102                =F'2'                                                                     
+ 0000E4 402020202120                 103                =X'402020202120'                                                          
+ 0000EA                              104 BUFFER   DS    80C                                                                       
+ 00013A F0                           105 LINE     DC    CL1'0'                                                                    
+ 00013B 4040                         106          DC    CL2' '                                                                    
+ 00013D                              107 NUM1     DS    6C                                                                        
+ 000143 4040404040404040             108          DC    CL10'          '                                                          
+ 00014D                              109 NUM2     DS    6C                                                                        
+1                                                                                                               PAGE    3         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 000153 4040404040404040             110          DC    CL10'          '                                                          
+ 00015D                              111 RESULT   DS    6C                                                                        
+ 000163 F1C68999A2A340D5             112 HEADER   DC    CL45'1First Number   Second Number   Rounded Value'                       
+ 000190                              113 NUM1D    DS    D                                                                         
+ 000198                              114 NUM2D    DS    D                                                                         
+ 0001A0                              115 SAVE     DS    18F'0'                                                                    
+ 0001E8                              116 EXIT     DS    F                                                                         
+                                     117          END   MAIN                                                                      
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:    5068 HIGH:     764 LEAVING:  487736 FREE BYTES. AVERAGE:       49 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.000 SECS,   118000 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+1First Number   Second Number   Rounded Value                                                                                     
+0       0             100               0                                                                                         
+0       0            -100               0                                                                                         
+0       3               4               4                                                                                         
+0      -3              -4               4                                                                                         
+0      -3               4               4                                                                                         
+0       3              -4               4                                                                                         
+0      17               5              15                                                                                         
+0     -42               5              40                                                                                         
+0     -45              15              45                                                                                         
+0      45             -15              45                                                                                         
+0      39              11              44                                                                                         
+0      42               1              42                                                                                         
+0       1               1               1                                                                                         
+0      -1               1               1                                                                                         
+0       1              -1               1                                                                                         
+0      52              -1              52                                                                                         
+0      68             -10              70                                                                                         
+0     -68              10              70                                                                                         
+0     -68             -11              66                                                                                         
+0    2001             670            2010                                                                                         
+0    4003              17            3995                                                                                         
+0*** EXECUTION TIME =    0.000 SECS.       854 INSTRUCTIONS EXECUTED -   854000 INSTRUCTIONS/SEC ***                              
+0*** AM004 - NORMAL USER TERMINATION BY RETURN ***                                                                                

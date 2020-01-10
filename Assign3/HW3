@@ -1,0 +1,140 @@
+//KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H                            00010000
+//STEP1 EXEC PGM=ASSIST                                                 00020000
+//STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR                        00030000
+//SYSPRINT DD SYSOUT=*                                                  00040000
+//SYSIN DD *                                                            00050000
+****************************************************                    00060000
+* PROGRAM HOMEWORK 2                                                    00070000
+*                                                                       00080000
+* NAME: EDUARDO LEANOS                                                  00090000
+*                                                                       00100000
+* REGISTER USAGE:                                                       00110000
+*                                                                       00120000
+* REGISTER 1: XDECI                                                     00130002
+* REGISTER 2: GRAND SUM                                                 00140002
+* REGISTER 3: TOTAL                                                     00150002
+* REGISTER 4: ORDER ID & PRODUCT ID                                     00170056
+* REGISTER 5: FREE SHIPPING COUNT                                       00180056
+* REGISTER 6: MULTIPLICATION                                            00180102
+* REGISTER 7: PRICE                                                     00180202
+* REGISTER 8: TOTAL ITEMS ORDERED                                       00180326
+* REGISTER 9: DISCOUNT                                                  00180426
+* REGISTER 10, 11: DIVISION                                             00180526
+* REGISTER 12: SHIPPING                                                 00180638
+* REGISTER 13: COUNTER                                                  00180738
+* REGISTER 15: BASE REGISTER                                            00181001
+*******************************************************                 00190000
+MAIN     CSECT                                                          00200000
+         USING MAIN,15                                                  00240001
+         TITLE 'EDUARDO, CSCI360, PROGRAM3'                             00240197
+         EJECT                                                          00240297
+         SPACE                                                          00240397
+         SR    2,2          SET REG2 = 0                                00241001
+         SR    5,5          SET REG5 = 0                                00241174
+         SR    13,13        SET REG13 = 0                               00241238
+         SR    14,14        SET REG14 = 0                               00241338
+         XPRNT HEADER,70    PRINT HEADER                                00242038
+         XPRNT COLUMNS,98   PRINT COLUMN NAMES                          00322068
+TOPLOOP  XREAD BUFFER,80    XREAD INTO BUFFER                           00322489
+         BC    B'0100',END  IF EOF GO TO END                            00322591
+         SR    3,3          SET REG3 = 0                                00322635
+         SR    7,7          SET REG7 = 0                                00323035
+         SR    9,9          SET REG9 = 0                                00324038
+         SR    12,12        SET REG12 = 0                               00330038
+*                                                                       00330155
+         A     13,=F'1'     ADD 1 TO COUNTER                            00330287
+         XDECI 4,BUFFER     DECODE ORDERID INTO REG4                    00330326
+         XDECO 4,ORDERID    STORE REG4 INTO ORDERID                     00330438
+         XDECI 4,0(0,1)     GET PRODUCTID INTO REG5                     00330556
+         XDECO 4,PRODUCT    STORE REG5 INTO PRODUCT                     00330656
+         XDECI 7,0(0,1)     GET PRICE INTO REG 7                        00331062
+         XDECO 7,PRICE      STORE REG7 INTO PRICE                       00331162
+         XDECI 8,0(0,1)     GET # ORDERED INTO REG 8                    00331262
+         XDECO 8,ORDERED    STORE REG8 INTO # ORDERED                   00331362
+*                                                                       00331426
+         MR    6,8              PRICE * #_ORDERED                       00331587
+         C     7,=F'16000'      COMPARE PRETOTAL WITH 16000             00332087
+         BC    B'1010',DISCNT   IF PRETOTAL >= 160000, GOTO DISCNT      00332172
+XCHECK   C     4,=F'566824'     COMPARE PRODUCTID WITH 566824           00332273
+         BC    B'1000',SPECIAL  IF PRODUCTID = 566824, GOTO SPECIAL     00332372
+YCHECK   C     7,=F'12500'      COMPARE PRETOTAL WITH 12500             00332409
+         BC    B'0100',SHIP     IF PRETOTAL >= 12500, GOTO SHIP         00332534
+         A     5,=F'1'          ADD 1 TO FREE SHIPPING COUNTER          00332672
+         BC    B'1111',ZCHECK   GOTO ZCHECK                             00332756
+*                                                                       00332815
+DISCNT   A     9,=F'750'        ADD DISCOUNT                            00332934
+         BC    B'1111',XCHECK   GO BACK TO 1STCHECK                     00333034
+SPECIAL  A     9,=F'1000'       ADD DISCOUNT                            00333134
+         BC    B'1111',YCHECK   GO BACK TO 2NDCHECK                     00333215
+SHIP     A     12,=F'800'       ADD SHIPPING COST                       00333334
+         BC    B'1111',ZCHECK   GOTO ZCHECK                             00333454
+*                                                                       00333515
+ZCHECK   DS    0H               LABEL FOR ZCHECK                        00333638
+         AR    3,7              ADD PRETOTAL TO TOTAL                   00333852
+         AR    3,12             ADD SHIPPING TO TOTAL                   00333938
+         SR    3,9              SUBTRACT DISCOUNTS FROM TOTAL           00334038
+         AR    2,3              ADD TOTAL TO GRANDSUM                   00334138
+         XDECO 9,DISCOUNT       PUT REG9 IN DISCOUNT                    00334387
+         XDECO 12,SHIPPING      PUT REG12 IN SHIPPING                   00334487
+         XDECO 3,TOTAL          PUT REG3 IN TOTAL                       00334587
+         XPRNT ORDERID,98       PRINT ORDER LINE                        00334687
+         BC    B'1111',TOPLOOP  GO TO TOPLOOP                           00334787
+END      DS    0H               DEFINE END1                             00334891
+         SR    10,10            SET REG10 = 0                           00334987
+         LR    11,2             LOAD REG11 WITH REG2'S CONTENTS         00335087
+         M     10,=F'1'         SET REG10 TO 64 BYTES                   00335354
+         DR    10,13            DIVIDE GRANDSUM BY NUMSALES             00335487
+         C     10,=F'11'        CHECK IF ROUNDING NEEDS TO HAPPEN       00335787
+         BC    B'0100',SKIP     SKIP IF IT DOES NOT                     00335887
+         A     11,=F'1'         ADD 1 TO AVERAGE TOTAL                  00335987
+SKIP     XDECO 11,AVG           PUT REG11 INTO AVERAGE                  00336287
+         XDECO 13,NUMSALES      PUT REG13 INTO NUMSALES                 00336387
+         XDECO 5,NFS            PUT REG5 INTO NFS(NUM FREE SHIPPING)    00336487
+         XDECO 2,GRANDSUM       PUT REG2 INTO GRANDSUM                  00336587
+         XPRNT LINE2,40         PRINT NUMBER OF SALES                   00336695
+         XPRNT LINE3,40         PRINT NUMBER OF FREE SHIPPING SALES     00336795
+         XPRNT LINE4,40         PRINT GRAND TOTAL                       00336895
+         XPRNT LINE5,40         PRINT AVERAGE TOTAL                     00336996
+         BR    14               END OF CODE                             00337091
+         LTORG                  LITERAL ORIGIN                          00338087
+HEADER   DC    CL35'1'                                                  00338392
+         DC    CL35'SALES REPORT -- CUTE STUFF IS US'                   00338436
+COLUMNS  DC    CL1'0'                                                   00338592
+         DC    CL16'    ORDER ID  '                                     00338630
+         DC    CL14'  PRODUCT ID  '                                     00338723
+         DC    CL14'  PRICE EACH  '                                     00338823
+         DC    CL18'  NUMBER ORDERED  '                                 00338966
+         DC    CL14'  DISCOUNT  '                                       00339023
+         DC    CL14'  SHIPPING  '                                       00339123
+         DC    CL8'  TOTAL'                                             00339267
+ORDERID  DS    CL12                                                     00339348
+         DC    CL2' '                                                   00340064
+PRODUCT  DS    CL12                                                     00350048
+         DC    CL2' '                                                   00351064
+PRICE    DS    CL12                                                     00352065
+         DC    CL2' '                                                   00353064
+ORDERED  DS    CL12                                                     00354065
+         DC    CL4' '                                                   00355069
+DISCOUNT DS    CL12                                                     00356048
+         DC    CL2' '                                                   00357064
+SHIPPING DS    CL12                                                     00358048
+         DC    CL2' '                                                   00359064
+TOTAL    DS    CL12                                                     00359148
+         DC    CL1'!'                                                   00359226
+LINE2    DC    CL23'-TOTAL NUMBER OF SALES:'                            00359392
+         DC    CL5' '                                                   00359461
+NUMSALES DS    CL12                                                     00359548
+LINE3    DC    CL26'0NUMBER WITH FREE SHIPPING:'                        00359692
+         DC    CL2' '                                                   00359759
+NFS      DS    CL12                                                     00359848
+LINE4    DC    CL20'0SUM OF ALL SALES:'                                 00359992
+         DC    CL8' '                                                   00360026
+GRANDSUM DS    CL12                                                     00361048
+LINE5    DC    CL20'0AVERAGE SALE TOTAL:'                               00370092
+         DC    CL8' '                                                   00380095
+AVG      DS    CL12                                                     00381048
+BUFFER   DS    0C                                                       00382098
+         END   MAIN                                                     00400019
+/*                                                                      00560001
+//FT05F001 DD DSN=KC02314.AUTUMN19.CSCI360.HW3DATA,DISP=SHR             00570003
+//                                                                      00580001

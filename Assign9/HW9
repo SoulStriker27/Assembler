@@ -1,0 +1,93 @@
+//KC03E3EA JOB ,'EDUARDO LEANOS',MSGCLASS=H
+//STEP1   EXEC  PGM=ASSIST,PARM='MACRO=H'
+//STEPLIB   DD  DSN=KC02293.ASSIST.LOADLIB,DISP=SHR
+//SYSPRINT  DD  SYSOUT=*
+//SYSIN     DD  *
+***************************************************
+* ASSIGNMENT NINE
+*
+* NAME: EDUARDO LEANOS
+*
+***************************************************
+* Name: STRLEN
+*
+* DESC: TAKES IN A STRING ENDED BY A X'00' (&STR) AND A D(X,B)
+* ADDRESS OF A LENGTH LOCATION (&LEN), COUNTS HOW MANY
+* CHARACTERS ARE IN THE STRING THEN STORES LENGHT INTO THE
+* LOCATION
+*
+* REGISTERS: USAGE
+* REG8: POINTER TO &STR
+* REG9: LENGTH OF &STR
+***********************************
+         MACRO                            MACRO! STRLEN
+         STRLEN  &STR,&LEN                PARAMETERS PASSED IN
+         AIF     ('&STR' EQ '').ERROR     IF &STR EMPTY GOTO ERROR
+         AIF     ('&LEN' EQ '').ERROR     IF &LEN EMPTY GOTO ERROR
+         STM     8,9,B&SYSNDX             STORE REGISTERS 8-9
+         B       C&SYSNDX                 BRANCH PAST STORAGE
+A&SYSNDX DS      F                        NEVER USED HUH..
+B&SYSNDX DS      2F                       STORE REGS
+C&SYSNDX DS      0H                       LABEL FOR SKIP
+         LA      8,&STR                   LOAD &STR INTO 8
+         SR      9,9                      RESET 9
+D&SYSNDX DS      0H                       LABEL FOR LOOP
+         CLI     0(8),X'00'               CHECK FOR X'00', END OF STRIN
+         BE      SKIP&SYSNDX              BRANCH IF EQUAL
+         A       9,=F'1'                  ADD 1 IF NOT
+         LA      8,1(0,8)                 ADVANCE POINTER
+         B       D&SYSNDX                 BRANCH BACK TO D&SYSNDX
+SKIP&SYSNDX DS      0H                    SKIP IF  X'00' FOUND
+         ST      9,&LEN                   STORE LENGTH INTO &LEN
+         AGO     .STOP                    GO TO .STOP
+.ERROR   MNOTE   'Missing Argument'       MNOTE FOR MISSING ARG
+         MEXIT                            EXIT
+.STOP    ANOP                             .STOP LABEL
+         LM      8,9,B&SYSNDX             LOAD REGISTERS BACK
+         MEND                             EXIT/END MACRO
+*
+*
+***********************************
+*Name: PROD
+*
+* DESC: TAKES IN 2 PARAMS, &RESULT - THE RESULT OF ALL OF THE
+* &LIST PARAMS MULTIPLIED WITH EACH OTHER. AND &LIST - A SET OF
+* 0-3 PARAMS THAT NEED TO BE MULTIPLIED WITH EACH OTHER, IF NONE
+* MAKE &RESULTS = 1
+*
+* REGISTER USAGE:
+* REG 2: SET TO 1 IF PARAM LIST IS EMPTY
+* REG 4: MULIPLYING
+* REG 5: THE PRODUCT OF LIST PARAMS
+*
+***********************************
+         MACRO                          MACRO!
+         PROD  &RESULT,&LIST            NAME OF MACRO: PROD
+         LCLA  &CNT,&NUM                SET ARITHMETIC VARIABLES
+&CNT     SETA  2                        SET &CNT TO 2 FOR &LIST
+&NUM     SETA  N'&LIST                  SET &NUM AS NUM OF LIST PARAMS
+         AIF   ('&RESULT' EQ '').ERROR  IF &RESULT IS EMPTY, GOTO ERROR
+         AIF   ('&LIST' EQ '').ERROR    IF &LIST   IS EMPTY, GOTO ERROR
+         AIF   ('&LIST' EQ '()').SETIT  IF &LIST() IS EMPTY SET TO 1
+         STM   2,5,E&SYSNDX             SAVE REGISTERS 2-5
+         B     F&SYSNDX                 BRANCH TO F&SYSNDX
+E&SYSNDX DS    4F                       DECLARE SAVE AREA
+F&SYSNDX DS    0H                       LABEL
+         L     5,&LIST(1)               LOAD FIRST LIST PARAM INTO REG5
+.BLOOP   AIF   (&CNT  GT  &NUM).DONE    CHECK IF CNT IS GT THAN NUM
+         M     4,&LIST(&CNT)            MULTIPLY REG5 BY NEXT LIST PARA
+&CNT     SETA  &CNT+1                   INCREASE &CNT
+         AGO   .BLOOP                   LOOP BACK TO .BLOOP
+.SETIT   L     2,=F'1'                  SET &RESULT TO 1
+         ST    2,&RESULT                SINCE LIST () WAS EMPTY
+         AGO   .SKIP                    SKIP REGULAR STORE
+.DONE    ST    5,&RESULT                STORE REG5 INTO &RESULT
+         LM    2,5,E&SYSNDX             RESTORE REGISTERS
+.SKIP    MEXIT                          EXIT
+.ERROR   MNOTE 'Missing Argument'       MARK MISSING ARGUMENTS
+         MEND                           EXIT/END MACRO
+*
+//          DD DSN=KC02314.AUTUMN19.CSCI360.HW9.DRIVER,DISP=SHR
+//FT05F001  DD DUMMY
+//FT06F001  DD SYSOUT=*
+//

@@ -1,0 +1,487 @@
+1                   J E S 2  J O B  L O G  --  S Y S T E M  2 9 6 4  --  N O D E  S V S C J E S 2        
+0 
+ 17.29.12 JOB00589 ---- FRIDAY,    22 NOV 2019 ----
+ 17.29.12 JOB00589  IRR010I  USERID KC03E3E  IS ASSIGNED TO THIS JOB.
+ 17.29.12 JOB00589  ICH70001I KC03E3E  LAST ACCESS AT 17:28:26 ON FRIDAY, NOVEMBER 22, 2019
+ 17.29.12 JOB00589  $HASP373 KC03E3EA STARTED - INIT 1    - CLASS A        - SYS 2964
+ 17.29.12 JOB00589  -                                      -----TIMINGS (MINS.)------                          -----PAGING COUNTS-
+ 17.29.12 JOB00589  -STEPNAME PROCSTEP    RC   EXCP   CONN       TCB       SRB  CLOCK          SERV  WORKLOAD  PAGE  SWAP   VIO SW
+ 17.29.12 JOB00589  -STEP1                00     56      5       .00       .00     .0            12  BATCH        0     0     0   
+ 17.29.12 JOB00589  -KC03E3EA ENDED.  NAME-EDUARDO LEANOS       TOTAL TCB CPU TIME=      .00 TOTAL ELAPSED TIME=    .0
+ 17.29.12 JOB00589  $HASP395 KC03E3EA ENDED - RC=0000
+0------ JES2 JOB STATISTICS ------
+-  22 NOV 2019 JOB EXECUTION DATE
+-          360 CARDS READ
+-          491 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-           42 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H                            JOB00589
+         2 //STEP1 EXEC PGM=ASSIST                                                         
+         3 //STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR                                
+         4 //SYSPRINT DD SYSOUT=*                                                          
+         5 //SYSIN DD *                                                                    
+         6 //FT05F001  DD  DSN=KC02314.AUTUMN19.CSCI360.HW8DATA,DISP=SHR                   
+ ICH70001I KC03E3E  LAST ACCESS AT 17:28:26 ON FRIDAY, NOVEMBER 22, 2019
+ IEFA111I KC03E3EA IS USING THE FOLLOWING JOB RELATED SETTINGS:
+          SWA=ABOVE,TIOT SIZE=32K,DSENQSHR=DISALLOW,GDGBIAS=JOB
+ IEF236I ALLOC. FOR KC03E3EA STEP1
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IGD103I SMS ALLOCATED TO DDNAME FT05F001
+ IEF142I KC03E3EA STEP1 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC02293.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03E3E.KC03E3EA.JOB00589.D0000102.?         SYSOUT        
+ IEF285I   KC03E3E.KC03E3EA.JOB00589.D0000101.?         SYSIN         
+ IGD104I KC02314.AUTUMN19.CSCI360.HW8DATA             RETAINED,  DDNAME=FT05F001
+ IEF373I STEP/STEP1   /START 2019326.1729
+ IEF032I STEP/STEP1   /STOP  2019326.1729 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   260K  EXT:        0K  SYS:    11632K
+         ATB- REAL:                  1044K  SLOTS:                     0K
+              VIRT- ALLOC:      11M SHRD:       0M
+ IEF375I  JOB/KC03E3EA/START 2019326.1729
+ IEF033I  JOB/KC03E3EA/STOP  2019326.1729 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0                                                                                                                                 
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 ***************************************************                                      
+                                       2 * ASSIGNMENT EIGHT                                                                       
+                                       3 *                                                                                        
+                                       4 * NAME: EDUARDO LEANOS                                                                   
+                                       5 *                                                                                        
+                                       6 ***************************************************                                      
+ 000000                                7 BFORM   DSECT                                                                            
+ 000000                                8 ID       DS    CL4           BYTE MANIPULATION SUCKS :(                                  
+ 000004                                9 TEST1    DS    CL1                                                                       
+ 000005                               10 TEST2    DS    CL1                                                                       
+ 000006                               11 NUMBERS  DS    CL2                                                                       
+ 000008                               12 TOTAL    DS    CL1           LENGTH 9                                                    
+                                      13 ****************************************************                                     
+                                      14 * MAIN                                                                                   
+                                      15 * REGISTER USAGE:                                                                        
+                                      16 *                                                                                        
+                                      17 * REGISTER 1: PARAMETERS                                                                 
+                                      18 * REGISTER 13: SAVEAREA                                                                  
+                                      19 * REGISTER 14: DONT USE                                                                  
+                                      20 * REGISTER 15: BASE REGISTER                                                             
+                                      21 ***************************                                                              
+ 000000                               22 MAIN     CSECT                                                                           
+ 000000 90EC D00C            0000C    23          STM   14,12,12(13)             ENTRY LINKAGE                                    
+ 000004 18CF                          24          LR    12,15                                                                     
+ 000000                               25          USING MAIN,12                                                                   
+ 000006 41E0 C1EC            001EC    26          LA    14,MAINSAVE                                                               
+ 00000A 50E0 D008            00008    27          ST    14,8(0,13)                                                                
+ 00000E 50D0 E004            00004    28          ST    13,4(0,14)                                                                
+ 000012 18DE                          29          LR    13,14                                                                     
+                                      30 *                                                                                        
+ 000014 4110 C158            00158    31          LA    1,BPARMS                LOAD BPARMS INTO R1                               
+ 000018 58A0 C058            00058    32          L     10,=V(BUILD)            LOAD BUILD INTO R15                               
+ 00001C 05EA                          33          BALR  14,10                   BRANCH TO BUILD                                   
+ 00001E E060 C080 008C 00080          34          XDUMP TABLE,140                                                                 
+ 000024 4110 C160            00160    35          LA    1,PPARMS                LOAD PPARMS INTO R1                               
+ 000028 58A0 C05C            0005C    36          L     10,=V(PRINT)            LOAD PRINT INTO R15                               
+ 00002C 05EA                          37          BALR  14,10                   BRANCH TO 1ST PRINT                               
+ 00002E E020 C1E8 0001 001E8          38          XPRNT FREELINE,1              PRINT BLANK LINE                                  
+ 000034 4110 C16C            0016C    39          LA    1,SPARMS                LOAD SPARMS INTO REG1                             
+ 000038 58A0 C060            00060    40          L     10,=V(SORTID)           LOAD SORTID INTO REG15                            
+ 00003C 05EA                          41          BALR  14,10                   BRANCH TO SORTID                                  
+ 00003E E020 C1E8 0001 001E8          42          XPRNT FREELINE,1              PRINT BLANK LINE                                  
+ 000044 4110 C178            00178    43          LA    1,PPARMS2               LOAD PPARMS2 INTO R1                              
+ 000048 58A0 C05C            0005C    44          L     10,=V(PRINT)            LOAD PRINT INTO REG15 AGAIN                       
+ 00004C 05EA                          45          BALR  14,10                   BRANCH TO 2ND PRINT                               
+                                      46 *                                                                                        
+ 00004E 58D0 D004            00004    47          L     13,4(0,13)              EXIT LINKAGE                                      
+ 000052 98EC D00C            0000C    48          LM    14,12,12(13)                                                              
+ 000056 07FE                          49          BR    14                      END OF MAIN PROGRAM                               
+                                      50 *                                                                                        
+                                      51          LTORG                                                                           
+ 000058 00000238                      52                =V(BUILD)                                                                 
+1                                                                                                               PAGE    2         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 00005C 000003E0                      53                =V(PRINT)                                                                 
+ 000060 000006D8                      54                =V(SORTID)                                                                
+ 000080                               55          ORG   MAIN+((*-MAIN+31)/32)*32                                                  
+ 000080 C6C6404040404040              56 TABLE    DC    20CL9'FF'                                                                 
+ 000134                               57 EOT      DS    F                                                                         
+ 000138 FFFFFFFFFFFFFFFF              58 F        DC    8X'FFFFFFFF'                                                              
+ 000158 00000080                      59 BPARMS   DC    A(TABLE)                                                                  
+ 00015C 00000134                      60          DC    A(EOT)                                                                    
+ 000160 00000080                      61 PPARMS   DC    A(TABLE)                                                                  
+ 000164 00000134                      62          DC    A(EOT)                                                                    
+ 000168 00000184                      63          DC    A(HEAD1)                                                                  
+ 00016C 00000080                      64 SPARMS   DC    A(TABLE)                                                                  
+ 000170 00000134                      65          DC    A(EOT)                                                                    
+ 000174 000001B6                      66          DC    A(HEAD2)                                                                  
+ 000178 00000080                      67 PPARMS2  DC    A(TABLE)                                                                  
+ 00017C 00000134                      68          DC    A(EOT)                                                                    
+ 000180 000001B6                      69          DC    A(HEAD2)                                                                  
+ 000184 F140404040404040              70 HEAD1    DC    CL50'1                               CSCI 359 Grades   '                  
+ 0001B6 F140404040404040              71 HEAD2    DC    CL50'1                            CSCI 359 Grades by ID'                  
+ 0001E8 60                            72 FREELINE DC    C'-'                                                                      
+ 0001EC                               73 MAINSAVE DS    18F                                                                       
+1                                                                                                               PAGE    3         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                                                                                                                  
+                                                                                                                                  
+                                                                                                                                  
+                                      76 *******************************************************                                  
+                                      77 *  EXTERNAL SUBROUTINE: BUILD                                                            
+                                      78 *  REGISTER USAGE:                                                                       
+                                      79 *                                                                                        
+                                      80 *  REG 1: XREAD                                                                          
+                                      81 *  REG 2: HOLD BINARY AND PLACE INTO BFORM                                               
+                                      82 *  REG 3: TEMP REGISTER FOR MOVING BYTES AND ADDING TO REG2                              
+                                      83 *  REG 4: TEMP REGISTER FOR MOVING BYTES AND ADDING TO REG2                              
+                                      84 *  REG 5: TEMP REGISTER BFORM TOTAL                                                      
+                                      85 *  REG 7: TABLE                                                                          
+                                      86 *  REG 8: EOT                                                                            
+                                      87 *  REG 10: NEW BASE REGISTER                                                             
+                                      88 *  REG 13: FORWARD POINTER                                                               
+                                      89 *  REG 14: BACKWARD POINTER                                                              
+                                      90 *  REG 15: TRANSFERING BASE REGISTER                                                     
+                                      91 *********************************                                                        
+ 000238                               92 BUILD    CSECT                                                                           
+ 000238 90EC D00C            0000C    93          STM   14,12,12(13)              ENTRY LINKAGE                                   
+ 00023C 18CF                          94          LR    12,15                                                                     
+ 000238                               95          USING BUILD,10                                                                  
+ 00023E 41E0 A15C            00394    96          LA    14,SAVEB                                                                  
+ 000242 50D0 E004            00004    97          ST    13,4(,14)                                                                 
+ 000246 50E0 D008            00008    98          ST    14,8(,13)                                                                 
+ 00024A 18DE                          99          LR    13,14                                                                     
+                                     100 *                                                                                        
+ 00024C 9878 1000            00000   101          LM    7,8,0(1)               LOAD PARAMETER INTO REG7-9                         
+ 000000                              102          USING BFORM,7                USING BFORM                                        
+ 000250 E000 A0FB 0050 00333         103 BREAD    XREAD BUFFER,80              XREAD INTO BUFFER                                  
+ 000256 4740 A0E4            0031C   104          BL    BEND                   IF END OF FILE, END                                
+ 00025A 4110 A0FB            00333   105          LA    1,BUFFER               LOAD ADDRESS OF BUFFER INTO REG                    
+ 00025E                              106 BLOOP    DS    0H                     BLOOP LABEL                                        
+ 00025E F276 A150 1001 00388 00001   107          PACK  BTEMP(8),1(7,1)        PACK DECIMAL INTO BTEMP                            
+ 000264 4F20 A150            00388   108          CVB   2,BTEMP                CONVERT INTO BINARY                                
+ 000268 BE2F 7000            00000   109          STCM  2,B'1111',ID           STORE 4 BYTES INTO BFORM ID                        
+                                     110 *GET TEST 1                                                                              
+ 00026C F870 A150 A0F8 00388 00330   111          ZAP   BTEMP(8),=P'0'         RESER BTEMP                                        
+ 000272 F272 A150 100A 00388 0000A   112          PACK  BTEMP(8),10(3,1)       PACK  TEST1 INTO BTEMP                             
+ 000278 4F20 A150            00388   113          CVB   2,BTEMP                CONVERT INTO BINARY                                
+ 00027C 8920 0001            00001   114          SLL   2,1                    SHIFT TO THE LEFT 1                                
+ 000280 BE21 7004            00004   115          STCM  2,B'0001',TEST1        PUT THE LAST BYTE OF REG2 INTO T1                  
+ 000284 D500 101F A0F9 0001F 00331   116          CLC   31(1,1),=C'I'          CHECK IF 'I' IS IN BUFFER                          
+ 00028A 4770 A05A            00292   117          BNE   BNOTI                  SKIP IF NOT                                        
+ 00028E 9601 7004      00004         118          OI    TEST1,B'00000001'      PUT A 1 INTO THE 8TH BIT OF TEST1                  
+                                     119 *GET TEST 2                                                                              
+ 000292 F870 A150 A0F8 00388 00330   120 BNOTI    ZAP   BTEMP(8),=P'0'         RESET BTEMP                                        
+ 000298 F272 A150 100F 00388 0000F   121          PACK  BTEMP(8),15(3,1)       PACK  TEST2 INTO BTEMP                             
+ 00029E 4F20 A150            00388   122          CVB   2,BTEMP                CONVERT INTO BINARY                                
+ 0002A2 8920 0001            00001   123          SLL   2,1                    SHIFT 1 TO THE LEFT                                
+ 0002A6 BE21 7005            00005   124          STCM  2,B'0001',TEST2        INSERT LAST BYTE INTO REG2                         
+ 0002AA D500 101C A0FA 0001C 00332   125          CLC   28(1,1),=C'W'          CHECK IF 'W' IS IN BUFFER                          
+ 0002B0 4770 A080            002B8   126          BNE   BNOTW                  SKIP IF NOT                                        
+ 0002B4 9601 7005      00005         127          OI    TEST2,B'00000001'      PUT 1 INTO 8TH BIT OF TEST2                        
+                                     128 *GET NUMBER OF HW                                                                        
+ 0002B8 F870 A150 A0F8 00388 00330   129 BNOTW    ZAP   BTEMP(8),=P'0'         RESET BTEMP                                        
+1                                                                                                               PAGE    4         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 0002BE F270 A150 1014 00388 00014   130          PACK  BTEMP(8),20(1,1)       PACK NUMBER OF HW INTO BTEMP                       
+ 0002C4 4F20 A150            00388   131          CVB   2,BTEMP                CONVERT INTO BINARY                                
+ 0002C8 8920 001D            0001D   132          SLL   2,29                   SHIFT TO THE RIGHT 29 BITS                         
+                                     133 * HW TOTAL                                                                               
+ 0002CC F870 A150 A0F8 00388 00330   134          ZAP   BTEMP(8),=P'0'         RESET BTEMP                                        
+ 0002D2 F272 A150 1017 00388 00017   135          PACK  BTEMP(8),23(3,1)       PACK HW TOTAL INTO BTEMP                           
+ 0002D8 4F30 A150            00388   136          CVB   3,BTEMP                CONVERT INTO BINARY                                
+ 0002DC 8930 0013            00013   137          SLL   3,19                   SHIFT 19 BITS TO LEFT                              
+                                     138 * NUM QZ                                                                                 
+ 0002E0 F870 A150 A0F8 00388 00330   139          ZAP   BTEMP(8),=P'0'         REST BTEMP                                         
+ 0002E6 F270 A150 1022 00388 00022   140          PACK  BTEMP(8),34(1,1)       PACK NUM QZ INTO BTEMP                             
+ 0002EC 4F40 A150            00388   141          CVB   4,BTEMP                CONVERT INTO BINARY                                
+ 0002F0 8940 0010            00010   142          SLL   4,16                   SHIFT LEFT 4 16 BITS                               
+                                     143 * TOTAL QZ                                                                               
+ 0002F4 F870 A150 A0F8 00388 00330   144          ZAP   BTEMP(8),=P'0'         RESET BTEMP                                        
+ 0002FA F271 A150 1025 00388 00025   145          PACK  BTEMP(8),37(2,1)       PACK TOTAL QZ INTO BTEMP                           
+ 000300 4F50 A150            00388   146          CVB   5,BTEMP                CONVERT INTO BINARY                                
+ 000304 8950 0001            00001   147          SLL   5,1                    SHIFT TO THE LEFT 1                                
+                                     148 *                                                                                        
+ 000308 1A23                         149          AR    2,3                    ADDING THE METHODICALLY PLACED                     
+ 00030A 1A24                         150          AR    2,4                    BITS TOGETHER AND PUTTING THEM                     
+ 00030C BE2C 7006            00006   151          STCM  2,B'1100',NUMBERS      INTO BFORM NUMBERS                                 
+ 000310 BE51 7008            00008   152          STCM  5,B'0001',TOTAL        BUT REG 5 INTO TOTAL - LONELY                      
+                                     153 *                                                                                        
+ 000314 4170 7009            00009   154          LA    7,9(0,7)               ADVANCE POINTER                                    
+ 000318 47F0 A018            00250   155          B     BREAD                  BREAD IS BACK BABY! LOOP TO BREAD                  
+                                     156 *                                                                                        
+ 00031C                              157 BEND     DS    0H                     END LOOP                                           
+ 00031C 5070 8000            00000   158          ST    7,0(0,8)               STORE END OF TABLE                                 
+ 000320 58D0 D004            00004   159          L     13,4(,13)              EXIT LINKAGE                                       
+ 000324 98EC D00C            0000C   160          LM    14,12,12(13)                                                              
+ 000328 07FE                         161          BR    14                     RETURN TO MAIN                                     
+                                     162          LTORG                                                                           
+ 000330 0C                           163                =P'0'                                                                     
+ 000331 C9                           164                =C'I'                                                                     
+ 000332 E6                           165                =C'W'                                                                     
+ 000333 4040404040404040             166 BUFFER   DC    80C' '                                                                    
+ 000383 5C                           167          DC    C'*'                                                                      
+ 000388                              168 BTEMP    DS    D                                                                         
+ 000390 01                           169 BSTATUS  DC    X'01'                                                                     
+ 000394                              170 SAVEB    DS    18F'0'                                                                    
+                                     171 **************************************************************                           
+                                     172 *  EXTERNAL SUBROUTINE: PRINT                                                            
+                                     173 *  REGISTER USAGE:                                                                       
+                                     174 *  REG 3:                                                                                
+                                     175 *  REG 4:                                                                                
+                                     176 *  REG 7: TABLE                                                                          
+                                     177 *  REG 8: EOT                                                                            
+                                     178 *  REG 9: PAGE HEADER                                                                    
+                                     179 *  REG 10: NEW BASE REGISTER                                                             
+                                     180 *  REG 13: FORWARD POINTER                                                               
+                                     181 *  REG 14: BACKWARD POINTER                                                              
+                                     182 *  REG 15: TRANSFERING BASE REGISTER                                                     
+                                     183 ***********************************                                                      
+ 0003E0                              184 PRINT    CSECT                                                                           
+ 0003E0 90EC D00C            0000C   185          STM   14,12,12(13)            ENTRY LINKAGE                                     
+ 0003E4 18CF                         186          LR    12,15                                                                     
+1                                                                                                               PAGE    5         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 0003E0                              187          USING PRINT,10                                                                  
+ 0003E6 41E0 A2B0            00690   188          LA    14,SAVEP                                                                  
+ 0003EA 50D0 E004            00004   189          ST    13,4(,14)                                                                 
+ 0003EE 50E0 D008            00008   190          ST    14,8(,13)                                                                 
+ 0003F2 18DE                         191          LR    13,14                                                                     
+                                     192 *                                                                                        
+ 0003F4 9879 1000            00000   193          LM    7,9,0(1)                 LOAD MULTIPLE INTO REG8,9                        
+ 000000                              194          USING BFORM,7                  USE BFORM                                        
+ 0003F8 E020 9000 0032 00000         195 PHEADDER XPRNT 0(,9),50                 PRINT PASSED IN HEADER                           
+ 0003FE E020 A1FC 005A 005DC         196          XPRNT PHEAD,90                 PRINT 2 LINES OF HEADERS                         
+ 000404 E020 A254 0059 00634         197          XPRNT PHEAD2,89                                                                 
+ 00040A 5970 8000            00000   198 PLOOP    C     7,0(0,8)                 COMPARE WITH EOT                                 
+ 00040E 47A0 A168            00548   199          BC    B'1010',PEND             END IF EQUAL OR HIGHER                           
+ 000412 D207 A1F0 7000 005D0 00000   200          MVC   PTEMPD(8),ID             MVC ID INTO PTEMPD                               
+ 000418 5820 A1F0            005D0   201          L     2,PTEMPD                 LOAD REG2 WITH PTEMPD                            
+ 00041C 4E20 A1F0            005D0   202          CVD   2,PTEMPD                 CONVERT INTO BINARY                              
+ 000420 D207 A193 A178 00573 00558   203          MVC   PID(8),=X'F021202020202020' SET UP FORMAT                                 
+ 000426 DE07 A193 A1F4 00573 005D4   204          ED    PID(8),PTEMPD+4          ONLY USE LAST 4 BYTES AND ED                     
+ 00042C 92D9 A193      00573         205          MVI   PLINE+1,C'R'             PUT IN THE R                                     
+                                     206 *                                                                                        
+ 000430 D200 A1ED 7004 005CD 00004   207          MVC   PTEMPX(1),TEST1          MVC TEST1 INTO PTEMPX BYTE                       
+ 000436 9101 A1ED      005CD         208          TM    PTEMPX,B'00000001'       TEST IF LAST BIT IS 1                            
+ 00043A 4770 A13C            0051C   209          BNE   PINCOMPL                 BRANCH IF IT IS                                  
+ 00043E D200 A1F0 7004 005D0 00004   210 PTEST1L  MVC   PTEMPD(1),TEST1          MVC TEST1 INTO PTEMPD DOUBLE                     
+ 000444 5820 A1F0            005D0   211          L     2,PTEMPD                 LOAD REG2 WITH PTEMPD                            
+ 000448 8820 0019            00019   212          SRL   2,25                     SHIFT RIGHT 25BITS                               
+ 00044C 4E20 A1F0            005D0   213          CVD   2,PTEMPD                 CONVERT INTO BINARY                              
+ 000450 D203 A19E A180 0057E 00560   214          MVC   PTEST1(4),=X'40212020'   FORMAT PTEST1                                    
+ 000456 DE03 A19E A1F6 0057E 005D6   215          ED    PTEST1(4),PTEMPD+6       USE LAST 2 BYTES AND ED                          
+                                     216 *                                                                                        
+ 00045C D200 A1ED 7005 005CD 00005   217          MVC   PTEMPX(1),TEST2          MVC TEST2 INTO PTEMPX BYTE                       
+ 000462 D400 A1ED A18A 005CD 0056A   218          NC    PTEMPX(1),=B'00000001'   TEST IF LAST BIT IS 1                            
+ 000468 D500 A1ED A18A 005CD 0056A   219          CLC   PTEMPX(1),=B'00000001'                                                    
+ 00046E 4780 A146            00526   220          BE    PWITHDRA                 BRANCH IF IT IS                                  
+ 000472 D200 A1F0 7005 005D0 00005   221 PTEST2L  MVC   PTEMPD(1),TEST2          MVC TEST2 INTO PTEMPD DOUBLE                     
+ 000478 5820 A1F0            005D0   222          L     2,PTEMPD                 LOAD REG2 WITH PTEMPD                            
+ 00047C 8820 0019            00019   223          SRL   2,25                     SHIFT RIGHT 25BITS                               
+ 000480 4E20 A1F0            005D0   224          CVD   2,PTEMPD                 CONVERT INTO BINARY                              
+ 000484 D203 A1A8 A180 00588 00560   225          MVC   PTEST2(4),=X'40212020'   FORMAT PTEST2                                    
+ 00048A DE03 A1A8 A1F6 00588 005D6   226          ED    PTEST2(4),PTEMPD+6       USE LAST 2 BYTES AND ED                          
+                                     227 *                                                                                        
+ 000490 D207 A1F0 7006 005D0 00006   228          MVC   PTEMPD(8),NUMBERS        MVC NUMBERS INTO PTEMPD                          
+ 000496 5820 A1F0            005D0   229          L     2,PTEMPD                 LOAD REG2 WITH PTEMPD                            
+ 00049A 8820 001D            0001D   230          SRL   2,29                     SHIFT RIGHT 29 BITS                              
+ 00049E 4E20 A1F0            005D0   231          CVD   2,PTEMPD                 CONVERT BINARY                                   
+ 0004A2 D201 A1B4 A188 00594 00568   232          MVC   PNUMHW(2),=X'F021'       FORMAT                                           
+ 0004A8 DE01 A1B4 A1F7 00594 005D7   233          ED    PNUMHW(2),PTEMPD+7       USE LAST BYTE                                    
+ 0004AE 9240 A1B4      00594         234          MVI   PNUMHW,C' '              PUT IN A SPACE IN FRONT                          
+                                     235 *                                                                                        
+ 0004B2 D207 A1F0 7006 005D0 00006   236          MVC   PTEMPD(8),NUMBERS           MVC NUMBERS INTO PTEMPD                       
+ 0004B8 5820 A1F0            005D0   237          L     2,PTEMPD                    LOAD REG2 WITH PTEMPD                         
+ 0004BC 8920 0003            00003   238          SLL   2,3                         SHIFT LEFT 3 BITS                             
+ 0004C0 8820 0016            00016   239          SRL   2,22                        THEN SHIFT RIGHT 22 BITS                      
+ 0004C4 4E20 A1F0            005D0   240          CVD   2,PTEMPD                    CONVERT BINARY                                
+ 0004C8 D203 A1BD A18B 0059D 0056B   241          MVC   PTOTALHW(4),=X'4020212020'  FORMAT                                        
+ 0004CE DE03 A1BD A1F6 0059D 005D6   242          ED    PTOTALHW(4),PTEMPD+6        USE LAST 2 BYTES                              
+                                     243 *                                                                                        
+1                                                                                                               PAGE    6         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 0004D4 D207 A1F0 7006 005D0 00006   244          MVC   PTEMPD(8),NUMBERS          MVC NUMBERS INTO PTEMPD                        
+ 0004DA 5820 A1F0            005D0   245          L     2,PTEMPD                   LOAD REG2 WITH PTEMPD                          
+ 0004DE 8920 000D            0000D   246          SLL   2,13                       SHIFT LEFT 13 BITS                             
+ 0004E2 8820 001D            0001D   247          SRL   2,29                       THEN SHIFT RIGHT 29 BITS                       
+ 0004E6 4E20 A1F0            005D0   248          CVD   2,PTEMPD                   CONVERT BINARY                                 
+ 0004EA D201 A1C8 A188 005A8 00568   249          MVC   PNUMQZ(2),=X'F021'         FORMAT                                         
+ 0004F0 DE01 A1C8 A1F7 005A8 005D7   250          ED    PNUMQZ(2),PTEMPD+7         USE LAST BYTE                                  
+ 0004F6 9240 A1C8      005A8         251          MVI   PNUMQZ,C' '                PUT A SPACE INFRONT                            
+                                     252 *                                                                                        
+ 0004FA D200 A1F0 7008 005D0 00008   253          MVC   PTEMPD(1),TOTAL            MVC TOTAL  INTO PTEMPD                         
+ 000500 5820 A1F0            005D0   254          L     2,PTEMPD                   LOAD REG2 WITH PTEMPD                          
+ 000504 8820 0019            00019   255          SRL   2,25                       THEN SHIFT RIGHT 25 BITS                       
+ 000508 4E20 A1F0            005D0   256          CVD   2,PTEMPD                   CONVERT BINARY                                 
+ 00050C D203 A1D1 A184 005B1 00564   257          MVC   PTOTALQZ(4),=X'40202120'   FORMAT                                         
+ 000512 DE03 A1D1 A1F6 005B1 005D6   258          ED    PTOTALQZ(4),PTEMPD+6       USE LAST 2 BYTES                               
+                                     259 *                                                                                        
+ 000518 47F0 A150            00530   260          B     PENDLOOP                   BRANCH TO PENDLOOP                             
+                                     261 *                                                                                        
+ 00051C                              262 PINCOMPL DS    0H                                                                        
+ 00051C D200 A1E7 A190 005C7 00570   263          MVC   PINCOMP(1),=C'I'           PUT IN A 'I' IN PLACE                          
+ 000522 47F0 A05E            0043E   264          B     PTEST1L                                                                   
+                                     265 *                                                                                        
+ 000526                              266 PWITHDRA DS    0H                                                                        
+ 000526 D200 A1DD A191 005BD 00571   267          MVC   PWITHDR(1),=C'W'            PUT IN A 'W' IN PLACE                         
+ 00052C 47F0 A092            00472   268          B     PTEST2L                                                                   
+                                     269 *                                                                                        
+ 000530 4170 7009            00009   270 PENDLOOP LA    7,9(0,7)                    ADVANCE POINTER                               
+ 000534 E020 A192 005A 00572         271          XPRNT PLINE,90                    PRINT PLINE                                   
+ 00053A 9240 A193      00573         272          MVI   PLINE+1,C' '                DESTRUCTIVE OVERLAP                           
+ 00053E D259 A194 A193 00574 00573   273          MVC   PLINE+2(90),PLINE+1                                                       
+ 000544 47F0 A02A            0040A   274          B     PLOOP                       BRANCH BACK TO PLOOP                          
+ 000548 58D0 D004            00004   275 PEND     L     13,4(,13)                   EXIT LINKAGE                                  
+ 00054C 98EC D00C            0000C   276          LM    14,12,12(13)                                                              
+ 000550 07FE                         277          BR    14                                                                        
+                                     278          LTORG                                                                           
+ 000558 F021202020202020             279                =X'F021202020202020'                                                      
+ 000560 40212020                     280                =X'40212020'                                                              
+ 000564 40202120                     281                =X'40202120'                                                              
+ 000568 F021                         282                =X'F021'                                                                  
+ 00056A 01                           283                =B'00000001'                                                              
+ 00056B 4020212020                   284                =X'4020212020'                                                            
+ 000570 C9                           285                =C'I'                                                                     
+ 000571 E6                           286                =C'W'                                                                     
+ 000572 F0                           287 PLINE    DC    1C'0'                                                                     
+ 000573 4040404040404040             288 PID      DC    9C' '                                                                     
+ 00057C 4040                         289          DC    2C' '                                                                     
+ 00057E 40404040                     290 PTEST1   DC    4C' '                                                                     
+ 000582 404040404040                 291          DC    6C' '                                                                     
+ 000588 40404040                     292 PTEST2   DC    4C' '                                                                     
+ 00058C 4040404040404040             293          DC    8C' '                                                                     
+ 000594 4040                         294 PNUMHW   DC    2C' '                                                                     
+ 000596 40404040404040               295          DC    7C' '                                                                     
+ 00059D 40404040                     296 PTOTALHW DC    4C' '                                                                     
+ 0005A1 40404040404040               297          DC    7C' '                                                                     
+ 0005A8 4040                         298 PNUMQZ   DC    2C' '                                                                     
+ 0005AA 40404040404040               299          DC    7C' '                                                                     
+ 0005B1 40404040                     300 PTOTALQZ DC    4C' '                                                                     
+1                                                                                                               PAGE    7         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 0005B5 4040404040404040             301          DC    8C' '                                                                     
+ 0005BD 40                           302 PWITHDR  DC    1C' '                                                                     
+ 0005BE 4040404040404040             303          DC    9C' '                                                                     
+ 0005C7 40                           304 PINCOMP  DC    1C' '                                                                     
+ 0005C8 40404040                     305          DC    4C' '  91L                                                                
+ 0005CC 5C                           306          DC    1C'*'   92L                                                               
+ 0005CD                              307 PTEMPX   DS    X                                                                         
+ 0005D0                              308 PTEMPD   DS    D                                                                         
+ 0005D8                              309 PTEMPF   DS    F                                                                         
+ 0005DC 60404040C9C44040             310 PHEAD    DC    CL40'-   ID                         Number of'                            
+ 000604 40C8969485A69699             311          DC    CL48' Homework  Number of    Quiz     With-     Incom'                    
+ 000634 4040D5A494828599             312 PHEAD2   DC    CL40'  Number     Test1    Test2    Homeworks'                            
+ 00065C 4040E396A3819340             313          DC    CL49'  Total     Quizzes     Total    draw?     plete?'  '                
+ 000690                              314 SAVEP    DS    18F'0'                                                                    
+                                     315 **************************************************************                           
+                                     316 *  EXTERNAL SUBROUTINE: SORTID                                                           
+                                     317 *  REGISTER USAGE:                                                                       
+                                     318 *                                                                                        
+                                     319 *  REG 2: I,J,K                                                                          
+                                     320 *  REG 7: TABLE                                                                          
+                                     321 *  REG 8: EOT                                                                            
+                                     322 *  REG 9: PAGE HEADER                                                                    
+                                     323 *  REG 10: NEW BASE REGISTER                                                             
+                                     324 *  REG 13: FORWARD POINTER                                                               
+                                     325 *  REG 14: BACKWARD POINTER                                                              
+                                     326 *  REG 15: TRANSFERING BASE REGISTER                                                     
+                                     327 ***********************************                                                      
+ 0006D8                              328 SORTID   CSECT                                                                           
+ 0006D8 90EC D00C            0000C   329          STM   14,12,12(13)              ENTRY LINKAGE                                   
+ 0006DC 18CF                         330          LR    12,15                                                                     
+ 0006D8                              331          USING SORTID,10                                                                 
+ 0006DE 41E0 A078            00750   332          LA    14,SAVES                                                                  
+ 0006E2 50D0 E004            00004   333          ST    13,4(,14)                                                                 
+ 0006E6 50E0 D008            00008   334          ST    14,8(,13)                                                                 
+ 0006EA 18DE                         335          LR    13,14                                                                     
+                                     336 *                                                                                        
+ 0006EC 9878 1000            00000   337          LM    7,8,0(1)                 LOAD MULTIPLE INTO REG7,8                        
+ 000000                              338          USING BFORM,2                  USING BFORM                                      
+ 0006F0 5820 7000            00000   339          L     2,0(0,7)                 LOAD TABLE INTO REG2                             
+ 0006F4 5880 8000            00000   340          L     8,0(0,8)                 LOAD EOT INTO REG3                               
+ 0006F8 5B80 A068            00740   341          S     8,=F'9'                  DECREMENT REG8                                   
+ 0006FC                              342 SLOOPOUT DS    0H                       WHILE(I<STOP)                                    
+ 0006FC 5B80 A068            00740   343          S     8,=F'9'                  DECREMENT STOP                                   
+ 000700 1827                         344          LR    2,7                      LOAD REG7 INTO REG2                              
+ 000702 5B20 A068            00740   345          S     2,=F'9'                  DECREMENT REG2                                   
+ 000706 1928                         346          CR    2,8                      COMPARE 2 WITH STOP                              
+ 000708 47A0 A05E            00736   347          BC    B'1010',SEND             IF REG2 HIGHER OR EQUAL, BRANCH                  
+ 00070C                              348 SLOOPIN  DS    0H                       WHILE(J<STOP)                                    
+ 00070C 5A20 A068            00740   349          A     2,=F'9'                  ADVANCE POINTER                                  
+ 000710 D503 2000 2009 00000 00009   350          CLC   0(4,2),9(2) C            COMPARE ID WITH NEXT ID                          
+ 000716 47D0 A054            0072C   351          BNH   SSKIP                    SKIP IF FIRST ID LOWER                           
+ 00071A D208 A06C 2000 00744 00000   352          MVC   STEMP(9),0(2)            MVC REG2 INTO STEMP                              
+ 000720 D208 2000 2009 00000 00009   353          MVC   0(9,2),9(2)              MVC HIGHER NUMBER INTO REG2                      
+ 000726 D208 2009 A06C 00009 00744   354          MVC   9(9,2),STEMP             MVC STEMP INTO HIGHER POINTER                    
+ 00072C                              355 SSKIP    DS    0H                                                                        
+ 00072C 1928                         356          CR    2,8                      COMPARE 2 WITH STOP                              
+ 00072E 47B0 A024            006FC   357          BC    B'1011',SLOOPOUT         BRANCH TO SLOOPOUT IF REG2 HIGH                  
+1                                                                                                               PAGE    8         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 000732 47F0 A034            0070C   358          B     SLOOPIN                  BRANCH TO SLOOPIN IF REG2 LOW                    
+                                     359 *                                                                                        
+ 000736 58D0 D004            00004   360 SEND     L     13,4(,13)                EXIT LINKAGE                                     
+ 00073A 98EC D00C            0000C   361          LM    14,12,12(13)                                                              
+ 00073E 07FE                         362          BR    14                       BRANCH BACK TO MAIN                              
+                                     363          LTORG                                                                           
+ 000740 00000009                     364                =F'9'                                                                     
+ 000744                              365 STEMP    DS    9C                                                                        
+ 000750                              366 SAVES    DS    18F'0'                                                                    
+                                     367 ***********************************                                                      
+                                     368          END   MAIN                                                                      
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:   19012 HIGH:    1932 LEAVING:  472624 FREE BYTES. AVERAGE:       56 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.000 SECS,   369000 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+0BEGIN XSNAP - CALL     1 AT D0000024 USER STORAGE                                                                                
+0                             CORE ADDRESSES SPECIFIED-     000080 TO 00010C                                                      
+ 000080   00000100 A8ACD196 840060A8 24B6B4D2    2000008B EB3C9290 AEBD6600 168ED6A4   *......J........K..............O.*         
+ 0000A0   B2D06E7C 006A3D20 8A8E8B14 4600570D    B99A88AC B6760032 13A38E96 CFB67200   *................................*         
+ 0000C0   98001368 7700032E 002DB6E6 8894AD14    320049A9 2CC8B2D2 06800024 7E34AAB4   *...........W.........H.K........*         
+ 0000E0   D22D6A00 851D1D9E 98AD866E 0072E532    A2A4CF56 660048CE D27F7A66 22220056   *K.............V.........K.......*         
+ 000100   79E3B0B6 D08E7E00 00A1FB8C 94AE043A    C6C64040 40404040 40C6C640 40404040   *.T..............FF       FF     *         
+0                                                                                                                                 
+1                               CSCI 359 Grades                                                                                   
+-   ID                         Number of Homework  Number of    Quiz     With-     Incom                                          
+  Number     Test1    Test2    Homeworks  Total     Quizzes     Total    draw?     plete?                                         
+0R0000256     84        86         6        562        6         66                                                               
+0R6334500     91        90         6        580        0          0                                                               
+0R9169724     73        72         5        471        5         51                                                               
+0R1478358     82        89         6        525        6         62                                                               
+0R6962464     69        71         4        354        4         35                                                               
+0R5705145     77        68         5        406        6         59                                                               
+0R3281827     71        75         6        502        6         57                                                               
+0R9961491     52        59         0          0        3         23        W                                                      
+0R2995942     68        74         5        418        4         25                                                               
+0R4827436    100        89         6        576        6         64                                                               
+0R2391604     85        90         6        581        5         53                                                               
+0R8723741     79        76         5        432        6         55                                                               
+0R7529778     81        82         6        490        6         51                                                               
+0R4771538     63        61         3        196        2         17                  I                                            
+0R5667299     88        91         6        529        6         63                                                               
+0R0041467     70        74         5        448        4         29                                                               
+-                                                                                                                                 
+-                                                                                                                                 
+1                            CSCI 359 Grades by ID                                                                                
+-   ID                         Number of Homework  Number of    Quiz     With-     Incom                                          
+  Number     Test1    Test2    Homeworks  Total     Quizzes     Total    draw?     plete?                                         
+0R0000256     84        86         6        562        6         66                                                               
+0R0041467     70        74         5        448        4         29                                                               
+0R1478358     82        89         6        525        6         62                                                               
+0R2391604     85        90         6        581        5         53                                                               
+0R2995942     68        74         5        418        4         25                                                               
+0R3281827     71        75         6        502        6         57                                                               
+0R4771538     63        61         3        196        2         17                  I                                            
+0R4827436    100        89         6        576        6         64                                                               
+0R5667299     88        91         6        529        6         63                                                               
+0R5705145     77        68         5        406        6         59                                                               
+0R6334500     91        90         6        580        0          0                                                               
+0R6962464     69        71         4        354        4         35                                                               
+0R7529778     81        82         6        490        6         51                                                               
+0R8723741     79        76         5        432        6         55                                                               
+0R9169724     73        72         5        471        5         51                                                               
+0R9961491     52        59         0          0        3         23        W                                                      
+0*** EXECUTION TIME =    0.001 SECS.      3688 INSTRUCTIONS EXECUTED -  3688000 INSTRUCTIONS/SEC ***                              
+0*** AM004 - NORMAL USER TERMINATION BY RETURN ***                                                                                

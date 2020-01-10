@@ -1,0 +1,478 @@
+//KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H
+//STEP1 EXEC PGM=ASSIST
+//STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR
+//SYSPRINT DD SYSOUT=*
+//SYSIN DD *
+***************************************************
+* ASSIGNMENT SEVEN
+*
+* NAME: EDUARDO LEANOS - USING MY 1 FREE LATE ASSIGNMENT... :(
+* NOTE - I THOUGHT IT WAS FOR ANYTIME SO TOOK TIME TO MAKE CHANGES :(
+***************************************************
+BFORM   DSECT
+ID       DS    8C
+LNAME    DS    12C
+FNAME    DS    10C
+SCORE1   DS    PL2
+SCORE2   DS    PL2
+SCORE3   DS    PL2           L=36
+****************************************************
+* MAIN
+* REGISTER USAGE:
+*
+* REGISTER 1: PARAMETERS
+* REGISTER 13: SAVEAREA
+* REGISTER 14: DONT USE
+* REGISTER 15: BASE REGISTER
+***************************
+MAIN     CSECT
+         STM   14,12,12(13)             ENTRY LINKAGE
+         LR    12,15
+         USING MAIN,12
+         LA    14,MAINSAVE
+         ST    14,8(0,13)
+         ST    13,4(0,14)
+         LR    13,14
+*
+         LA    1,BPARMS                LOAD BPARMS INTO R1
+         L     15,=V(BUILD)            LOAD BUILD INTO R15
+         BALR  14,15                   BRANCH TO BUILD
+         LA    1,PPARMS                LOAD PPARMS INTO R1
+         L     15,=V(PRINT)            LOAD PRINT INTO R15
+         BALR  14,15                   BRANCH TO 1ST PRINT
+         XPRNT FREELINE,1              PRINT BLANK LINE
+         LA    1,TPARMS                LOAD TPARMS INTO REG1
+         L     15,=V(TRANS)            LOAD TRANS INTO REG15
+         BALR  14,15                   BRANCH TO TRANS
+         XPRNT FREELINE,1              PRINT BLANK LINE
+         LA    1,PPARMS2               LOAD PPARMS2 INTO R1
+         L     15,=V(PRINT)            LOAD PRINT INTO REG15 AGAIN
+         BALR  14,15                   BRANCH TO 2ND PRINT
+*
+         L     13,4(0,13)              EXIT LINKAGE
+         LM    14,12,12(13)
+         BR    14                      END OF MAIN PROGRAM
+*
+         LTORG
+         DS    0D
+TABLE    DC    100CL20' '
+EOT      DS    F
+BPARMS   DC    A(TABLE)
+         DC    A(EOT)
+PPARMS   DC    A(TABLE)
+         DC    A(EOT)
+         DC    A(HEAD1)
+PPARMS2  DC    A(TABLE)
+         DC    A(EOT)
+         DC    A(HEAD3)
+TPARMS   DC    A(TABLE)
+         DC    A(EOT)
+         DC    A(HEAD2)
+HEAD1    DC    CL50'1                           Initial Table Contents'
+         DC    CL20'           Page   1'
+HEAD2    DC    CL50'1                          Results of Transactions'
+         DC    CL20'          Page    2'
+HEAD3    DC    CL50'1                         Table After Transactions'
+         DC    CL20'          Page    3'
+FREELINE DC    C'-'
+MAINSAVE DS    18F
+         EJECT
+         SPACE
+*******************************************************
+*  EXTERNAL SUBROUTINE: BUILD
+*  REGISTER USAGE:
+*
+*  REG 1: XREAD/TRT
+*  REG 2: TRT
+*  REG 3: STORE WORD
+*  REG 4: STORE SPACE AFTER WORD/STORE LENGTH
+*  REG 7: TABLE
+*  REG 8: EOT
+*  REG 9: PASSED IN HEADER
+*  REG 10: NEW BASE REGISTER
+*  REG 13: FORWARD POINTER
+*  REG 14: BACKWARD POINTER
+*  REG 15: TRANSFERING BASE REGISTER
+*********************************
+BUILD    CSECT
+         STM   14,12,12(13)           ENTRY LINKAGE
+         LR    12,15
+         USING BUILD,12
+         LA    14,BSAVE
+         ST    13,4(0,14)
+         ST    14,8(0,13)
+         LR    13,14
+*
+         LM    7,8,0(1)                LOAD BPARMS INTO REG7-8
+         USING BFORM,7                 USE BFORM FROM DSECT
+BREAD    DS    0H                      BUILD READ LABEL-LOL BREAD
+         XREAD BUFFER,80               XREAD DATA INTO BUFFER
+         BL    BEND                    END IF END OF FILE
+         LA    1,BUFFER                LOAD ADDRESS INTO R1
+*
+         TRT   0(80,1),ALPHANUM        FIND FIRST ALPHA NUMERIC
+         BZ    BREAD                   IF ERROR READ AGAIN
+         LR    3,1                     LOAD ADDRESS INTO REG3
+         TRT   0(80,1),SPACE           SEARCH FOR SPACE AFTER WORD
+         LR    4,1                     LOAD ADDRESS INTO REG4
+         SR    4,3                     GET LENGTH BETWEEN ADDRESSES
+         BCTR  4,0                     REDUCE LENGTH BY 1
+         CLC   0(8,3),=C'00000000'     COMPARE 8-BYTES TO X'00000000'
+         BE    BEND                    END IF FOUND
+         EX    4,XID                   EXECUTE MVC OF ID
+*Get First name
+        TRT   0(80,1),ALPHANUM         FIND FIRST ALPHA NUMERIC
+        BZ    BREAD                    IF ERROR READ AGAIN
+        LR    3,1                      LOAD ADDRESS INTO REG3
+        TRT   0(80,1),SPACE            SEARCH FOR SPACE AFTER WORD
+        LR    4,1                       LOAD ADDRESS INTO REG4
+        SR    4,3                       GET LENGTH BETWEEN ADDRESSES
+        BCTR  4,0                       REDUCE LENGTH BY 1
+        EX    4,XFNAME                  EXECUTE MVC OF FNAME
+        TR    FNAME(10),LOWER           CHANGE ALL LETTERS TO LOWERCASE
+        TR    FNAME(1),UPPER            CHANGE FIRST LETTER TO UPPER
+*Get Last name
+         TRT   0(80,1),ALPHANUM         FIND FIRST ALPHA NUMERIC
+         BZ    BREAD                    IF ERROR READ AGAIN
+         LR    3,1                      LOAD ADDRESS INTO REG3
+         TRT   0(80,1),SPACE            SEARCH FOR SPACE AFTER WORD
+         LR    4,1                      LOAD ADDRESS INTO REG4
+         SR    4,3                      GET LENGTH BETWEEN ADDRESSES
+         BCTR  4,0                      REDUCE LENGTH BY 1
+         EX    4,XLNAME                 Execute MVC of LNAME
+         TR    LNAME(12),LOWER          CHANGE ALL LETTERS TO LOWERCASE
+         TR    LNAME(1),UPPER           CHANGE FIRST LETTER TO UPPER
+*Get SCORE 1
+         TRT   0(80,1),ALPHANUM        FIND FIRST ALPHA NUMERIC
+         BZ    BREAD                   IF ERROR READ AGAIN
+         LR    3,1                     LOAD ADDRESS INTO REG3
+         TRT   0(80,1),SPACE           SEARCH FOR SPACE AFTER WORD
+         LR    4,1                     LOAD ADDRESS INTO REG4
+         SR    4,3                     GET LENGTH BETWEEN ADDRESSES
+         BCTR  4,0                     REDUCE LENGTH BY 1
+         EX    4,XSCORE1               Execute MVC of SCORE1
+*Get SCORE2
+         TRT   0(80,1),ALPHANUM        FIND FIRST ALPHA NUMERIC
+         BZ    BREAD                   IF ERROR READ AGAIN
+         LR    3,1                     LOAD ADDRESS INTO REG3
+         TRT   0(80,1),SPACE           SEARCH FOR SPACE AFTER WORD
+         LR    4,1                     LOAD ADDRESS INTO REG4
+         SR    4,3                     GET LENGTH BETWEEN ADDRESSES
+         BCTR  4,0                     REDUCE LENGTH BY 1
+         EX    4,XSCORE2               Execute MVC of SCORE2
+*Get SCORE3
+         TRT   0(80,1),ALPHANUM         FIND FIRST ALPHA NUMERIC
+         BZ    BREAD                    IF ERROR READ AGAIN
+         LR    3,1                      LOAD ADDRESS INTO REG3
+         TRT   0(80,1),SPACE            SEARCH FOR SPACE AFTER WORD
+         LR    4,1                      LOAD ADDRESS INTO REG4
+         SR    4,3                      GET LENGTH BETWEEN ADDRESSES
+         BCTR  4,0                      REDUCE LENGTH BY 1
+         EX    4,XSCORE3                Execute MVC of SCORE3
+*
+         LA    7,36(0,7)                ADVANCE TABLE POINTER
+         BC    B'1111',BREAD            GOTO BREAD... LOL
+BEND     DS    0H                       BEND LABEL
+         ST    7,0(0,8)                 STORE END OF TABLE
+*
+         L     13,4(0,13)               EXIT LINKAGE
+         LM    14,12,12(13)
+         BR    14                       BRANCH BACK TO MAIN
+*
+         LTORG
+BUFFER   DC    80C' '
+         DC    C'*'
+XID      MVC   ID(0),0(3)
+XFNAME   MVC   FNAME(0),0(3)
+XLNAME   MVC   LNAME(0),0(3)
+XSCORE1  PACK  SCORE1(2),0(0,3)
+XSCORE2  PACK  SCORE2(2),0(0,3)
+XSCORE3  PACK  SCORE3(2),0(0,3)
+* SEARCH TABLE FOR ALPHANUMERIC CHARACTERS
+ALPHANUM DC    256X'00'
+         ORG   ALPHANUM+C'A'
+         DC    9X'01'
+         ORG
+         ORG   ALPHANUM+C'J'
+         DC    9X'01'
+         ORG
+         ORG   ALPHANUM+C'S'
+         DC    8X'01'
+         ORG
+         ORG   ALPHANUM+C'a'
+         DC    9X'01'
+         ORG
+         ORG   ALPHANUM+C'j'
+         DC    9X'01'
+         ORG
+         ORG   ALPHANUM+C's'
+         DC    9X'01'
+         ORG
+         ORG   ALPHANUM+C'0'
+         DC    10X'01'
+         ORG
+* SERACH TABLE FOR SPACES
+SPACE    DC    256X'00'
+         ORG   SPACE+X'40'
+         DC    X'01'
+         ORG
+* TRANSLATE ALPHABET TO LOWERCASE
+LOWER    DC    256C' '
+         ORG   LOWER+C'a'
+         DC    CL9'abcdefghi'
+         ORG
+         ORG   LOWER+C'j'
+         DC    CL9'jklmnopqr'
+         ORG
+         ORG   LOWER+C's'
+         DC    CL8'stuvwxyz'
+         ORG
+         ORG   LOWER+C'A'
+         DC    CL9'abcdefghi'
+         ORG
+         ORG   LOWER+C'J'
+         DC    CL9'jklmnopqr'
+         ORG
+         ORG   LOWER+C'S'
+         DC    CL8'stuvwxyz'
+         ORG
+         ORG   LOWER+C'0'
+         DC    CL10'0123456789'
+         ORG
+* TRANSLATE ALPHABET TO UPPERCASE
+UPPER    DC    256C' '
+         ORG   UPPER+C'a'
+         DC    CL9'ABCDEFGHI'
+         ORG
+         ORG   UPPER+C'j'
+         DC    CL9'JKLMNOPQR'
+         ORG
+         ORG   UPPER+C's'
+         DC    CL9'STUVWXYZ'
+         ORG
+         ORG   UPPER+C'A'
+         DC    CL9'ABCDEFGHI'
+         ORG
+         ORG   UPPER+C'J'
+         DC    CL9'JKLMNOPQR'
+         ORG
+         ORG   UPPER+C'S'
+         DC    CL9'STUVWXYZ'
+         ORG
+         ORG   UPPER+C'0'
+         DC    CL10'0123456789'
+         ORG
+BSAVE    DS    18F
+**************************************************************
+*  EXTERNAL SUBROUTINE: PRINT
+*  REGISTER USAGE:
+*  REG 3: START OF WORD
+*  REG 4: NEXT SPACE
+*  REG 7: TABLE
+*  REG 8: EOT
+*  REG 9: PAGE HEADER
+*  REG 10: NEW BASE REGISTER
+*  REG 13: FORWARD POINTER
+*  REG 14: BACKWARD POINTER
+*  REG 15: TRANSFERING BASE REGISTER
+***********************************
+PRINT    CSECT
+         STM   14,12,12(13)            ENTRY LINKAGE
+         LR    12,15
+         USING PRINT,12
+         LA    14,PSAVE
+         ST    13,4(0,14)
+         ST    14,8(0,13)
+         LR    13,14
+*
+         LM    7,9,0(1)                LOAD PPARMS(2) INTO REG7-9
+         USING BFORM,7                 USING BFORM FORM DSECT
+         XPRNT 0(0,9),70               PRINT PASSED IN HEADER
+         XPRNT PHEAD,76                PRINT COLLUMNS HEADER
+PLOOP    DS    0H                      PLOOP LABEL
+         C     7,0(0,8)                CHECK IF EOT
+         BE    PEND                    IF EOT,END
+         MVC   PID(8),ID               MOVE BYTES FROM ID INTO PID
+         MVC   PLNAME(12),LNAME        MOVE BYTES FROM LNAME INTO PLNAM
+         MVC   PFNAME(10),FNAME        MOVE BYTES FROM FNAME INTO PFNAM
+         MVC   PSCORE1(4),=X'40202020' FORMAT PSCORE1
+         ED    PSCORE1(4),SCORE1       ED SCORE1 INTO PSCORE1
+         MVC   PSCORE2(4),=X'40202020' FORMAT PSCORE2
+         ED    PSCORE2(4),SCORE2       ED SCORE2 INTO PSCORE2
+         MVC   PSCORE3(4),=X'40202020' FORMAT PSCORE3
+         ED    PSCORE3(4),SCORE3       ED SCORE3 INTO PSCORE3
+         XPRNT PLINE,71                PRINT DATA LINE      a
+         LA    7,36(0,7)               ADVANCE TABLE POINTER
+         B     PLOOP                   LOOP BACK TO PLOOP..I MISS BREAD
+*
+PEND     L     13,4(0,13)              EXIT LINKAGE
+         LM    14,12,12(13)
+         BR    14                      BRANCH BACK TO MAIN
+*
+         LTORG
+PHEAD    DC    CL40'-ID Number    Last Name     First Name  '
+         DC    CL36'   Score 1     Score 2     Score 3  '
+PLINE    DC    C'0'
+PID      DC    8C' '
+         DC    5C' '
+PLNAME   DC    12C' '
+         DC    4C' '
+PFNAME   DC    10C' '
+         DC    5C' '
+PSCORE1  DC    4C' '
+         DC    7C' '
+PSCORE2  DC    4C' '
+         DC    7C' '
+PSCORE3  DC    4C' '
+         DC    C'*'
+PSAVE    DS    18F
+**************************************************************
+*  EXTERNAL SUBROUTINE: TRANS
+*  REGISTER USAGE:
+*
+*  REG 7: TABLE
+*  REG 8: EOT
+*  REG 9: PAGE HEADER
+*  REG 10: NEW BASE REGISTER
+*  REG 13: FORWARD POINTER
+*  REG 14: BACKWARD POINTER
+*  REG 15: TRANSFERING BASE REGISTER
+***********************************
+TRANS    CSECT
+         STM   14,12,12(13)            ENTRY LINKAGE
+         LR    12,15
+         USING TRANS,12
+         LA    14,SSAVE
+         ST    13,4(0,14)
+         ST    14,8(0,13)
+         LR    13,14
+*
+         LM    7,9,0(1)                LOAD PARAMETER INTO REG7-9
+         L     8,0(,8)                 LOAD EOT INTO REG 8
+         ST    7,TTABLE                STORE START OF TABLE INTO TTABLE
+         XPRNT 0(0,9),69               PRINT PASSED IN HEADER
+         SR    11,11                   RESET REG 11
+TREAD    XREAD TBUFFER,20              XREAD INTO TBUFFER
+         BL    TEND                    IF END OF FILE, END
+         LA    1,TBUFFER               LOAD ADDRESS OF TBUFFER INTO REG
+TLOOP    DS    0H                      TLOOP LABEL
+         MVC   TID(8),0(1)             SET TID TO ID IN TBUFFER
+*GET TYPE
+         MVC   TLETTER(1),9(1)         GET THE LETTER FOR TRANSACTION
+         LR    3,1                    LOAD ADDRESS OF 1 INTO 3
+         CLC   TLETTER(1),=C'N'       CHECK TLETTER TO 'N'
+         BNE   TINLOOP                IF NOT EQUAL GO TO TINLOOP
+*GET SCORE
+         PACK  TTEMP(2),11(3,1)       PACK SCORE INTO TTEMP
+*IF
+TINLOOP  DS    0H                     LABEL FOR TINLOOP
+         USING BFORM,7                USING BFORM FROM DSECT
+         CR    7,8                    CHECK IF EOT
+         BC    B'0010',NOTFOUND       IF EOT, USER WAS NOT FOUND
+         MVC   TTEMPID(8),ID          MOVE BYTES FROM ID INTO TTEMPID
+         CLC   TID(8),TTEMPID         COMPARE TID TO TTEMPID
+         BE    TTYPESET               IF EQUAL,SET TYPE
+         LA    7,36(0,7)              ADVANCE TABLE POINTER
+         B     TINLOOP                BRANCH TO TINLOOP
+*
+TTYPESET DS    0H                     TTYPESET LABEL
+         CLC   TLETTER(1),=C'S'       COMPARE TO 'S'
+         BE    TSTATS                 BRANCH TO TSTATS IF EQUAL
+         CLC   TLETTER(1),=C'N'       COMPARE TO 'N'
+         BE    TNEWSCOR               BRANCH TO TNEWSCOR IF EQUAL
+         B     NOTTRANS               TRANSACTION WAS NOT VALID
+*
+TSTATS   DS    0H                     TSTATS LABEL
+         MVC   TTYPE(17),=C'Type = Statistics' SET TYPE LINE
+         C     11,=F'1'               COMPARE IF USER ID NOT FOUND
+         BE    TPRINT                 IF EQUAL, GOTO TPRINT
+         MVC   TRESULT(7),=C'High  =' SET TRESULT LINE
+         ZAP   TTEMP(2),SCORE1        FIND HIGHEST SCORE OUT OF 3
+         CP    TTEMP(2),SCORE2(2)     COMPARE 1 AND 2
+         BC    B'0100',COMPARE1       1 < 2 , BRANCH
+         B     COMPARE2               1 > 2 , BRANCH
+*
+COMPARE1 ZAP   TTEMP(2),SCORE2        SET TEMP AS SCORE 2
+         CP    TTEMP(2),SCORE3(2)     COMPARE 2 AND 3
+         BC    B'0100',TSET3          2 < 3 , BRANCH
+         B     TDONE                   2 > 3 , BRANCH
+*
+COMPARE2 CP    TTEMP(2),SCORE3(2)      COMPARE 1 AND 3
+         BC    B'0100',TSET3           1 < 3 , BRANCH
+         B     TDONE                   1 > 3 , BRANCH
+*
+TSET3    ZAP   TTEMP(2),SCORE3         SET TEMP AS SCORE 3
+         B     TDONE                   3 > 1 && 3 > 2 , BRANCH
+*
+TDONE    MVC   TSCORE(4),=X'40202020'  FORMAT TSCORE
+         ED    TSCORE(4),TTEMP         ED TTEMP INTO TSCORE
+         MVC   TRESULT+8(4),TSCORE     SET TRESULT LINE
+         MVC   TRESULT+18(10),=C'Average = '
+         ZAP   TTEMP2(4),=P'0'         TAKE THE AVERAGE
+         AP    TTEMP2(4),SCORE1(2)     ADD SCORE1
+         AP    TTEMP2(4),SCORE2(2)     ADD SCORE2
+         AP    TTEMP2(4),SCORE3(2)     ADD SCORE3
+         DP    TTEMP2(4),=P'3'         DIVIDE BY 3
+         MVC   TSCORE2(7),=X'40202020202020'  FORMAT TSCORE2
+         ED    TSCORE2(7),TTEMP2           ED TTEMP2 INTO TSCORE2
+         MVC   TRESULT+28(8),TSCORE2       SET TRESULTS LINE
+         B     TPRINT                      BRANCH TO PRINT
+*
+TNEWSCOR DS    0H                          TNEWCOR LABEL
+         MVC   TSCORE(4),=X'40202020'      TSCORE FORMAT
+         ED    TSCORE(4),TTEMP             ED TTEMP INTO TSCORE
+         PACK  SCORE3(2),TSCORE(4)         PACK SCORE INTO BFORM
+         MVC   TTYPE(14),=C'Trans. Code = '  TTYPE LINE SET
+         MVC   TTYPE+15(1),TLETTER
+         MVC   TRESULT(8),=C'Score = '
+         MVC   TRESULT+8(4),TSCORE
+         B     TPRINT                      BRANCH TO PRINT
+*
+NOTFOUND DS    0H                          NOTFOUND LABEL
+         MVC   TRESULT(12),=C'ID not found' TRESULT SET
+         L     11,=F'1'                    SET REG 11 TO 1
+         B     TTYPESET                     BRANCH TO TTYPESET
+*
+NOTTRANS DS    0H                           NOTTRANS LABEL
+         MVC   TTYPE(14),=C'Trans. Code = ' TTYPE LINE  SET
+         MVC   TTYPE+15(1),TLETTER
+         MVC   TRESULT(25),=C'Invalid transaction code'
+         B     TPRINT                       BRANCH TO PRINT
+*
+TPRINT   DS    0H                           TRPINT LABEL
+         MVC   TLINE+1(5),=C'ID = '         SET TLINE
+         XPRNT TLINE,75                     PRINT TLINE
+         MVI   TLINE+1,C' '                 DESTRUCTIVE OVERLAP
+         MVC   TLINE+2(77),TLINE+1          AYY HEYO
+         L     11,=F'0'                     RESET REG11
+         L     7,TTABLE                     RESET TABLE POINTER
+         ZAP   TTEMP(2),=P'0'               RESET TTEMP
+         ZAP   TTEMP2(4),=P'0'              RESET TTEMP2
+         B     TREAD                        BRANCH TO TREAD
+*
+TEND     L     13,4(0,13)               EXIT LINKAGE
+         LM    14,12,12(13)
+         BR    14                       BRANCH BACK TO MAIN
+         LTORG
+TLINE    DC    1C'0'
+         DC    5C' '
+TID      DC    8C' '
+         DC    5C' '
+TTYPE    DC    17C' '
+         DC    5C' '
+TRESULT  DC    36C' '
+         DC    1C'*'
+TSCORE   DC    4C' '
+TSCORE2  DC    8C' '
+         DC    C'*'
+TLETTER  DC    1C' '
+TTEMPID  DS    8C' '
+TTEMP    DS    PL2'0'
+TTEMP2   DS    PL4'0'
+TTABLE   DS    F
+TBUFFER  DC    80C' '
+SSAVE    DS    18F
+         END   MAIN                          END OF PROGRAM
+/*
+//FT05F001  DD  DSN=KC02314.AUTUMN19.CSCI360.HW7DATA,DISP=SHR
+//

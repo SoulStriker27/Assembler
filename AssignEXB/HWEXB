@@ -1,0 +1,77 @@
+//KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H
+//STEP1 EXEC PGM=ASSIST
+//STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR
+//SYSPRINT DD SYSOUT=*
+//SYSIN DD *
+***************************************************
+* ASSIGNMENT EXTRA CREDIT ASSIGNMENT B
+*
+* NAME: EDUARDO LEANOS   NOT FULLY IMPLEMENTED, BUT
+*                        ASSIGNMENT A IS
+***************************************************
+*MAIN
+*
+*  REGISTER USAGE:
+*  REG1: EDMK
+*  REG2: EDMK
+*  REG3: B,E
+*  REG4: A,D
+*  REG5: MULTIPLYING
+*  REG6: C*B
+*  REG7: MULTIPLYING/RESULT
+*  REG8: FLIPING SIGNS/COMPARISON
+*  REG9: RESULT OF FLIP
+*  REG10: BUFFER
+***********************************
+MAIN     CSECT
+         USING MAIN,15
+         ST    14,EXIT       ENTRY LINKAGE
+         LA    13,SAVE
+*
+         XPRNT HEADER,45     PRINT HEADER
+LOOP     DS    0H
+         XREAD BUFFER,80        READ BUFFER
+         BL    END              GOTO END IF EOF
+         LA    3,BUFFER         LOAD BUFFER INTO R12
+         PACK  TEMP(6),0(6,3)  PACK TEMP WITH A
+         LA    1,TEMP+5         LOAD R1 WHERE A IS
+         MVC   NUM1P(6),=X'402020202120'  FORMAT NUM1P
+         EDMK  NUM1P(6),TEMP+3            EDIT TEMP INTO NUM1P
+         CP    TEMP(6),=PL1'0'   COMPARE
+         BNL   SKIP              BRANCH IF POSITIVE
+         S     1,=F'1'           SUBTRACT 1 FROM R1
+         MVI   0(1),C'-'         PUT A NEGATIVE SIGN
+SKIP     DS    0H                SKIP LABEL
+         ZAP   TEMP(6),=P'0'     RESET TEMP
+         PACK  TEMP(6),8(6,3)   PACK B INTO TEMP
+         LA    1,TEMP+5                     LOAD B INTO R1
+         MVC   NUM2P(6),=X'402020202120'    FORMAT NUM2P
+         EDMK  NUM2P(6),TEMP+3              EDIT B INTO NUM2P
+         CP    TEMP(6),=PL1'0'   COMPARE B WITH 0
+         BNL   PRINT             BRANCH IF POSITIVE
+         S     1,=F'1'           SUBTRACT 1 FROM R1
+         MVI   0(1),C'-'         PUT NEGATIVE SIGN
+PRINT    DS    0H                PRINT
+         XPRNT LINE,37           PRINT LINE
+         B     LOOP              BRANCH TO LOOP
+END      DS    0H                END
+*
+         L     14,EXIT          LOAD EXIT
+         BR    14               END MAIN
+         LTORG
+BUFFER   DS    80C
+TEMP     DS    PL6
+LINE     DC    CL1'0'
+         DC    CL2' '
+NUM1P    DS    6C
+         DC    CL10'          '
+NUM2P    DS    6C
+         DC    CL10'          '
+RESULT   DC    CL2'XX'
+HEADER   DC    CL45'1First Number   Second Number   Rounded Value'
+SAVE     DS    18F'0'
+EXIT     DS    F
+         END   MAIN
+/*
+//FT05F001  DD  DSN=KC02314.AUTUMN19.CSCI360.HWEXDATA,DISP=SHR
+//

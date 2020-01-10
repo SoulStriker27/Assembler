@@ -1,0 +1,361 @@
+//KC03E3EA JOB ,'EDUARDO LEANOS' ,MSGCLASS=H
+//STEP1 EXEC PGM=ASSIST
+//STEPLIB DD DSN=KC02293.ASSIST.LOADLIB,DISP=SHR
+//SYSPRINT DD SYSOUT=*
+//SYSIN DD *
+***************************************************
+* ASSIGNMENT EIGHT
+*
+* NAME: EDUARDO LEANOS
+*
+***************************************************
+BFORM   DSECT
+ID       DS    CL4           BYTE MANIPULATION SUCKS :(
+TEST1    DS    CL1
+TEST2    DS    CL1
+NUMBERS  DS    CL2
+TOTAL    DS    CL1           LENGTH 9
+****************************************************
+* MAIN
+* REGISTER USAGE:
+*
+* REGISTER 1: PARAMETERS
+* REGISTER 13: SAVEAREA
+* REGISTER 14: DONT USE
+* REGISTER 15: BASE REGISTER
+***************************
+MAIN     CSECT
+         STM   14,12,12(13)             ENTRY LINKAGE
+         LR    12,15
+         USING MAIN,12
+         LA    14,MAINSAVE
+         ST    14,8(0,13)
+         ST    13,4(0,14)
+         LR    13,14
+*
+         LA    1,BPARMS                LOAD BPARMS INTO R1
+         L     10,=V(BUILD)            LOAD BUILD INTO R15
+         BALR  14,10                   BRANCH TO BUILD
+         XDUMP TABLE,140
+         LA    1,PPARMS                LOAD PPARMS INTO R1
+         L     10,=V(PRINT)            LOAD PRINT INTO R15
+         BALR  14,10                   BRANCH TO 1ST PRINT
+         XPRNT FREELINE,1              PRINT BLANK LINE
+         LA    1,SPARMS                LOAD SPARMS INTO REG1
+         L     10,=V(SORTID)           LOAD SORTID INTO REG15
+         BALR  14,10                   BRANCH TO SORTID
+         XPRNT FREELINE,1              PRINT BLANK LINE
+         LA    1,PPARMS2               LOAD PPARMS2 INTO R1
+         L     10,=V(PRINT)            LOAD PRINT INTO REG15 AGAIN
+         BALR  14,10                   BRANCH TO 2ND PRINT
+*
+         L     13,4(0,13)              EXIT LINKAGE
+         LM    14,12,12(13)
+         BR    14                      END OF MAIN PROGRAM
+*
+         LTORG
+         ORG   MAIN+((*-MAIN+31)/32)*32
+TABLE    DC    20CL9'FF'
+EOT      DS    F
+F        DC    8X'FFFFFFFF'
+BPARMS   DC    A(TABLE)
+         DC    A(EOT)
+PPARMS   DC    A(TABLE)
+         DC    A(EOT)
+         DC    A(HEAD1)
+SPARMS   DC    A(TABLE)
+         DC    A(EOT)
+         DC    A(HEAD2)
+PPARMS2  DC    A(TABLE)
+         DC    A(EOT)
+         DC    A(HEAD2)
+HEAD1    DC    CL50'1                               CSCI 359 Grades   '
+HEAD2    DC    CL50'1                            CSCI 359 Grades by ID'
+FREELINE DC    C'-'
+MAINSAVE DS    18F
+         EJECT
+         SPACE
+*******************************************************
+*  EXTERNAL SUBROUTINE: BUILD
+*  REGISTER USAGE:
+*
+*  REG 1: XREAD
+*  REG 2: HOLD BINARY AND PLACE INTO BFORM
+*  REG 3: TEMP REGISTER FOR MOVING BYTES AND ADDING TO REG2
+*  REG 4: TEMP REGISTER FOR MOVING BYTES AND ADDING TO REG2
+*  REG 5: TEMP REGISTER BFORM TOTAL
+*  REG 7: TABLE
+*  REG 8: EOT
+*  REG 10: NEW BASE REGISTER
+*  REG 13: FORWARD POINTER
+*  REG 14: BACKWARD POINTER
+*  REG 15: TRANSFERING BASE REGISTER
+*********************************
+BUILD    CSECT
+         STM   14,12,12(13)              ENTRY LINKAGE
+         LR    12,15
+         USING BUILD,10
+         LA    14,SAVEB
+         ST    13,4(,14)
+         ST    14,8(,13)
+         LR    13,14
+*
+         LM    7,8,0(1)               LOAD PARAMETER INTO REG7-9
+         USING BFORM,7                USING BFORM
+BREAD    XREAD BUFFER,80              XREAD INTO BUFFER
+         BL    BEND                   IF END OF FILE, END
+         LA    1,BUFFER               LOAD ADDRESS OF BUFFER INTO REG
+BLOOP    DS    0H                     BLOOP LABEL
+         PACK  BTEMP(8),1(7,1)        PACK DECIMAL INTO BTEMP
+         CVB   2,BTEMP                CONVERT INTO BINARY
+         STCM  2,B'1111',ID           STORE 4 BYTES INTO BFORM ID
+*GET TEST 1
+         ZAP   BTEMP(8),=P'0'         RESER BTEMP
+         PACK  BTEMP(8),10(3,1)       PACK  TEST1 INTO BTEMP
+         CVB   2,BTEMP                CONVERT INTO BINARY
+         SLL   2,1                    SHIFT TO THE LEFT 1
+         STCM  2,B'0001',TEST1        PUT THE LAST BYTE OF REG2 INTO T1
+         CLC   31(1,1),=C'I'          CHECK IF 'I' IS IN BUFFER
+         BNE   BNOTI                  SKIP IF NOT
+         OI    TEST1,B'00000001'      PUT A 1 INTO THE 8TH BIT OF TEST1
+*GET TEST 2
+BNOTI    ZAP   BTEMP(8),=P'0'         RESET BTEMP
+         PACK  BTEMP(8),15(3,1)       PACK  TEST2 INTO BTEMP
+         CVB   2,BTEMP                CONVERT INTO BINARY
+         SLL   2,1                    SHIFT 1 TO THE LEFT
+         STCM  2,B'0001',TEST2        INSERT LAST BYTE INTO REG2
+         CLC   28(1,1),=C'W'          CHECK IF 'W' IS IN BUFFER
+         BNE   BNOTW                  SKIP IF NOT
+         OI    TEST2,B'00000001'      PUT 1 INTO 8TH BIT OF TEST2
+*GET NUMBER OF HW
+BNOTW    ZAP   BTEMP(8),=P'0'         RESET BTEMP
+         PACK  BTEMP(8),20(1,1)       PACK NUMBER OF HW INTO BTEMP
+         CVB   2,BTEMP                CONVERT INTO BINARY
+         SLL   2,29                   SHIFT TO THE RIGHT 29 BITS
+* HW TOTAL
+         ZAP   BTEMP(8),=P'0'         RESET BTEMP
+         PACK  BTEMP(8),23(3,1)       PACK HW TOTAL INTO BTEMP
+         CVB   3,BTEMP                CONVERT INTO BINARY
+         SLL   3,19                   SHIFT 19 BITS TO LEFT
+* NUM QZ
+         ZAP   BTEMP(8),=P'0'         REST BTEMP
+         PACK  BTEMP(8),34(1,1)       PACK NUM QZ INTO BTEMP
+         CVB   4,BTEMP                CONVERT INTO BINARY
+         SLL   4,16                   SHIFT LEFT 4 16 BITS
+* TOTAL QZ
+         ZAP   BTEMP(8),=P'0'         RESET BTEMP
+         PACK  BTEMP(8),37(2,1)       PACK TOTAL QZ INTO BTEMP
+         CVB   5,BTEMP                CONVERT INTO BINARY
+         SLL   5,1                    SHIFT TO THE LEFT 1
+*
+         AR    2,3                    ADDING THE METHODICALLY PLACED
+         AR    2,4                    BITS TOGETHER AND PUTTING THEM
+         STCM  2,B'1100',NUMBERS      INTO BFORM NUMBERS
+         STCM  5,B'0001',TOTAL        BUT REG 5 INTO TOTAL - LONELY
+*
+         LA    7,9(0,7)               ADVANCE POINTER
+         B     BREAD                  BREAD IS BACK BABY! LOOP TO BREAD
+*
+BEND     DS    0H                     END LOOP
+         ST    7,0(0,8)               STORE END OF TABLE
+         L     13,4(,13)              EXIT LINKAGE
+         LM    14,12,12(13)
+         BR    14                     RETURN TO MAIN
+         LTORG
+BUFFER   DC    80C' '
+         DC    C'*'
+BTEMP    DS    D
+BSTATUS  DC    X'01'
+SAVEB    DS    18F'0'
+**************************************************************
+*  EXTERNAL SUBROUTINE: PRINT
+*  REGISTER USAGE:
+*  REG 3:
+*  REG 4:
+*  REG 7: TABLE
+*  REG 8: EOT
+*  REG 9: PAGE HEADER
+*  REG 10: NEW BASE REGISTER
+*  REG 13: FORWARD POINTER
+*  REG 14: BACKWARD POINTER
+*  REG 15: TRANSFERING BASE REGISTER
+***********************************
+PRINT    CSECT
+         STM   14,12,12(13)            ENTRY LINKAGE
+         LR    12,15
+         USING PRINT,10
+         LA    14,SAVEP
+         ST    13,4(,14)
+         ST    14,8(,13)
+         LR    13,14
+*
+         LM    7,9,0(1)                 LOAD MULTIPLE INTO REG8,9
+         USING BFORM,7                  USE BFORM
+PHEADDER XPRNT 0(,9),50                 PRINT PASSED IN HEADER
+         XPRNT PHEAD,90                 PRINT 2 LINES OF HEADERS
+         XPRNT PHEAD2,89
+PLOOP    C     7,0(0,8)                 COMPARE WITH EOT
+         BC    B'1010',PEND             END IF EQUAL OR HIGHER
+         MVC   PTEMPD(8),ID             MVC ID INTO PTEMPD
+         L     2,PTEMPD                 LOAD REG2 WITH PTEMPD
+         CVD   2,PTEMPD                 CONVERT INTO BINARY
+         MVC   PID(8),=X'F021202020202020' SET UP FORMAT
+         ED    PID(8),PTEMPD+4          ONLY USE LAST 4 BYTES AND ED
+         MVI   PLINE+1,C'R'             PUT IN THE R
+*
+         MVC   PTEMPX(1),TEST1          MVC TEST1 INTO PTEMPX BYTE
+         TM    PTEMPX,B'00000001'       TEST IF LAST BIT IS 1
+         BNE   PINCOMPL                 BRANCH IF IT IS
+PTEST1L  MVC   PTEMPD(1),TEST1          MVC TEST1 INTO PTEMPD DOUBLE
+         L     2,PTEMPD                 LOAD REG2 WITH PTEMPD
+         SRL   2,25                     SHIFT RIGHT 25BITS
+         CVD   2,PTEMPD                 CONVERT INTO BINARY
+         MVC   PTEST1(4),=X'40212020'   FORMAT PTEST1
+         ED    PTEST1(4),PTEMPD+6       USE LAST 2 BYTES AND ED
+*
+         MVC   PTEMPX(1),TEST2          MVC TEST2 INTO PTEMPX BYTE
+         NC    PTEMPX(1),=B'00000001'   TEST IF LAST BIT IS 1
+         CLC   PTEMPX(1),=B'00000001'
+         BE    PWITHDRA                 BRANCH IF IT IS
+PTEST2L  MVC   PTEMPD(1),TEST2          MVC TEST2 INTO PTEMPD DOUBLE
+         L     2,PTEMPD                 LOAD REG2 WITH PTEMPD
+         SRL   2,25                     SHIFT RIGHT 25BITS
+         CVD   2,PTEMPD                 CONVERT INTO BINARY
+         MVC   PTEST2(4),=X'40212020'   FORMAT PTEST2
+         ED    PTEST2(4),PTEMPD+6       USE LAST 2 BYTES AND ED
+*
+         MVC   PTEMPD(8),NUMBERS        MVC NUMBERS INTO PTEMPD
+         L     2,PTEMPD                 LOAD REG2 WITH PTEMPD
+         SRL   2,29                     SHIFT RIGHT 29 BITS
+         CVD   2,PTEMPD                 CONVERT BINARY
+         MVC   PNUMHW(2),=X'F021'       FORMAT
+         ED    PNUMHW(2),PTEMPD+7       USE LAST BYTE
+         MVI   PNUMHW,C' '              PUT IN A SPACE IN FRONT
+*
+         MVC   PTEMPD(8),NUMBERS           MVC NUMBERS INTO PTEMPD
+         L     2,PTEMPD                    LOAD REG2 WITH PTEMPD
+         SLL   2,3                         SHIFT LEFT 3 BITS
+         SRL   2,22                        THEN SHIFT RIGHT 22 BITS
+         CVD   2,PTEMPD                    CONVERT BINARY
+         MVC   PTOTALHW(4),=X'4020212020'  FORMAT
+         ED    PTOTALHW(4),PTEMPD+6        USE LAST 2 BYTES
+*
+         MVC   PTEMPD(8),NUMBERS          MVC NUMBERS INTO PTEMPD
+         L     2,PTEMPD                   LOAD REG2 WITH PTEMPD
+         SLL   2,13                       SHIFT LEFT 13 BITS
+         SRL   2,29                       THEN SHIFT RIGHT 29 BITS
+         CVD   2,PTEMPD                   CONVERT BINARY
+         MVC   PNUMQZ(2),=X'F021'         FORMAT
+         ED    PNUMQZ(2),PTEMPD+7         USE LAST BYTE
+         MVI   PNUMQZ,C' '                PUT A SPACE INFRONT
+*
+         MVC   PTEMPD(1),TOTAL            MVC TOTAL  INTO PTEMPD
+         L     2,PTEMPD                   LOAD REG2 WITH PTEMPD
+         SRL   2,25                       THEN SHIFT RIGHT 25 BITS
+         CVD   2,PTEMPD                   CONVERT BINARY
+         MVC   PTOTALQZ(4),=X'40202120'   FORMAT
+         ED    PTOTALQZ(4),PTEMPD+6       USE LAST 2 BYTES
+*
+         B     PENDLOOP                   BRANCH TO PENDLOOP
+*
+PINCOMPL DS    0H
+         MVC   PINCOMP(1),=C'I'           PUT IN A 'I' IN PLACE
+         B     PTEST1L
+*
+PWITHDRA DS    0H
+         MVC   PWITHDR(1),=C'W'            PUT IN A 'W' IN PLACE
+         B     PTEST2L
+*
+PENDLOOP LA    7,9(0,7)                    ADVANCE POINTER
+         XPRNT PLINE,90                    PRINT PLINE
+         MVI   PLINE+1,C' '                DESTRUCTIVE OVERLAP
+         MVC   PLINE+2(90),PLINE+1
+         B     PLOOP                       BRANCH BACK TO PLOOP
+PEND     L     13,4(,13)                   EXIT LINKAGE
+         LM    14,12,12(13)
+         BR    14
+         LTORG
+PLINE    DC    1C'0'
+PID      DC    9C' '
+         DC    2C' '
+PTEST1   DC    4C' '
+         DC    6C' '
+PTEST2   DC    4C' '
+         DC    8C' '
+PNUMHW   DC    2C' '
+         DC    7C' '
+PTOTALHW DC    4C' '
+         DC    7C' '
+PNUMQZ   DC    2C' '
+         DC    7C' '
+PTOTALQZ DC    4C' '
+         DC    8C' '
+PWITHDR  DC    1C' '
+         DC    9C' '
+PINCOMP  DC    1C' '
+         DC    4C' '  91L
+         DC    1C'*'   92L
+PTEMPX   DS    X
+PTEMPD   DS    D
+PTEMPF   DS    F
+PHEAD    DC    CL40'-   ID                         Number of'
+         DC    CL48' Homework  Number of    Quiz     With-     Incom'
+PHEAD2   DC    CL40'  Number     Test1    Test2    Homeworks'
+         DC    CL49'  Total     Quizzes     Total    draw?     plete?'  '
+SAVEP    DS    18F'0'
+**************************************************************
+*  EXTERNAL SUBROUTINE: SORTID
+*  REGISTER USAGE:
+*
+*  REG 2: I,J,K
+*  REG 7: TABLE
+*  REG 8: EOT
+*  REG 9: PAGE HEADER
+*  REG 10: NEW BASE REGISTER
+*  REG 13: FORWARD POINTER
+*  REG 14: BACKWARD POINTER
+*  REG 15: TRANSFERING BASE REGISTER
+***********************************
+SORTID   CSECT
+         STM   14,12,12(13)              ENTRY LINKAGE
+         LR    12,15
+         USING SORTID,10
+         LA    14,SAVES
+         ST    13,4(,14)
+         ST    14,8(,13)
+         LR    13,14
+*
+         LM    7,8,0(1)                 LOAD MULTIPLE INTO REG7,8
+         USING BFORM,2                  USING BFORM
+         L     2,0(0,7)                 LOAD TABLE INTO REG2
+         L     8,0(0,8)                 LOAD EOT INTO REG3
+         S     8,=F'9'                  DECREMENT REG8
+SLOOPOUT DS    0H                       WHILE(I<STOP)
+         S     8,=F'9'                  DECREMENT STOP
+         LR    2,7                      LOAD REG7 INTO REG2
+         S     2,=F'9'                  DECREMENT REG2
+         CR    2,8                      COMPARE 2 WITH STOP
+         BC    B'1010',SEND             IF REG2 HIGHER OR EQUAL, BRANCH
+SLOOPIN  DS    0H                       WHILE(J<STOP)
+         A     2,=F'9'                  ADVANCE POINTER
+         CLC   0(4,2),9(2) C            COMPARE ID WITH NEXT ID
+         BNH   SSKIP                    SKIP IF FIRST ID LOWER
+         MVC   STEMP(9),0(2)            MVC REG2 INTO STEMP
+         MVC   0(9,2),9(2)              MVC HIGHER NUMBER INTO REG2
+         MVC   9(9,2),STEMP             MVC STEMP INTO HIGHER POINTER
+SSKIP    DS    0H
+         CR    2,8                      COMPARE 2 WITH STOP
+         BC    B'1011',SLOOPOUT         BRANCH TO SLOOPOUT IF REG2 HIGH
+         B     SLOOPIN                  BRANCH TO SLOOPIN IF REG2 LOW
+*
+SEND     L     13,4(,13)                EXIT LINKAGE
+         LM    14,12,12(13)
+         BR    14                       BRANCH BACK TO MAIN
+         LTORG
+STEMP    DS    9C
+SAVES    DS    18F'0'
+***********************************
+         END   MAIN
+/*
+//FT05F001  DD  DSN=KC02314.AUTUMN19.CSCI360.HW8DATA,DISP=SHR
+//
